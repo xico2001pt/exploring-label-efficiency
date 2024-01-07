@@ -1,5 +1,4 @@
 # Code source: https://github.com/weiaicunzai/pytorch-cifar100/blob/master/models/wideresidual.py
-
 import torch.nn as nn
 
 
@@ -41,6 +40,7 @@ class WideBasic(nn.Module):
         shortcut = self.shortcut(x)
 
         return residual + shortcut
+
 
 class WideResNet(nn.Module):
     def __init__(self, num_classes, depth=50, widen_factor=1):
