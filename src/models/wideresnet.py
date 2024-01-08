@@ -1,4 +1,6 @@
-# Code source: https://github.com/weiaicunzai/pytorch-cifar100/blob/master/models/wideresidual.py
+# Code source:
+# https://github.com/weiaicunzai/pytorch-cifar100/blob/master/models/wideresidual.py
+
 import torch.nn as nn
 
 

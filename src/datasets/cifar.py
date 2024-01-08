@@ -10,6 +10,14 @@ class CIFAR10(torchvision.datasets.CIFAR10):
                 (0.24703233, 0.24348505, 0.26158768)
             )
         ])
+
+        if train:
+            transform = torchvision.transforms.Compose([
+                torchvision.transforms.RandomCrop(32, padding=4),
+                torchvision.transforms.RandomHorizontalFlip(),
+                transform
+            ])
+
         super(CIFAR10, self).__init__(
             root=root, train=train, transform=transform, download=download
         )
