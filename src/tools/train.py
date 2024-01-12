@@ -1,24 +1,17 @@
 import os
-import sys
 import time
 import torch
 import argparse
 from torch.utils.data import DataLoader
+from ..trainers.trainer import Trainer
+from ..utils.loader import Loader
+from ..utils.logger import Logger
+from ..utils.constants import Constants as c, ROOT_DIR
+from ..utils.utils import _load_model, _get_device, _get_config_name
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(BASE_DIR)
-
-
-from src.trainers.trainer import Trainer
-from src.utils.loader import Loader
-from src.utils.logger import Logger
-from src.utils.constants import Constants as c
-from src.utils.utils import _load_model, _get_device, _get_config_name
-
-
-CONFIGS_DIR = os.path.join(BASE_DIR, c.Configurations.CONFIGS_DIR)
-LOGS_DIR = os.path.join(BASE_DIR, c.Logging.LOGS_DIR)
+CONFIGS_DIR = os.path.join(ROOT_DIR, c.Configurations.CONFIGS_DIR)
+LOGS_DIR = os.path.join(ROOT_DIR, c.Logging.LOGS_DIR)
 
 
 def _load_train_data(loader, train_config, model, logger):
@@ -135,7 +128,7 @@ def main(args):
 
         end_time = time.time()
 
-        trainer.save_best_model(os.path.join(BASE_DIR, c.Trainer.WEIGHTS_DIR), logger.get_log_dir_name())
+        trainer.save_best_model(os.path.join(ROOT_DIR, c.Trainer.WEIGHTS_DIR), logger.get_log_dir_name())
 
         _log_train_time(start_time, end_time, logger)
 
