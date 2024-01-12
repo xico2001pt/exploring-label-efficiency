@@ -87,7 +87,7 @@ def main(args):
     config_name = _get_config_name(loader, args.config)
 
     log_dir = os.path.join(LOGS_DIR, config_name)
-    logger = Logger(log_dir, console_output=True, file_output=False)
+    logger = Logger(log_dir, console_output=True, file_output=True)
 
     try:
         logger.info("Loading configuration files...")
@@ -115,6 +115,8 @@ def main(args):
         device = _get_device(logger)
 
         model.to(device)
+
+        metrics = {metric_name: metric.to(device) for metric_name, metric in metrics.items()}
 
         trainer = Trainer(model, loss, device=device, logger=logger)
 

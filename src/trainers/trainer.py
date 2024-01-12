@@ -79,6 +79,7 @@ class Trainer:
         checkpoint_file = os.path.join(self.checkpoints_path, c.Trainer.Checkpoints.BEST_CHECKPOINT_FILENAME)
         weights = torch.load(checkpoint_file)["model"]
         save_path = os.path.join(save_dir, f"{filename}.pth")
+        os.makedirs(save_dir, exist_ok=True)
         torch.save(weights, save_path)
 
         self.logger.info(f"Best model saved to {save_path}")
@@ -131,8 +132,8 @@ class Trainer:
                 self._save_checkpoint(c.Trainer.Checkpoints.LATEST_CHECKPOINT_FILENAME, optimizer, epoch)
 
             for loss_term in train_loss:
-                train_history["loss"][loss_term] = train_history["loss"].get(loss_term, []).append(train_loss[loss_term])
-                validation_history["loss"][loss_term] = validation_history["loss"].get(loss_term, []).append(validation_loss[loss_term])
+                train_history["loss"].setdefault(loss_term, []).append(train_loss[loss_term])
+                validation_history["loss"].setdefault(loss_term, []).append(validation_loss[loss_term])
 
             for metric in metrics:
                 train_history["metrics"][metric].append(train_metrics[metric])
