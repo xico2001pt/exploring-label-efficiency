@@ -1,8 +1,11 @@
 import torchvision
+from ..utils.utils import process_data_path
 
 
 class CIFAR10(torchvision.datasets.CIFAR10):
     def __init__(self, root, train=True, download=True):
+        root = process_data_path(root)
+
         transform = torchvision.transforms.Compose([
             torchvision.transforms.ToTensor(),
             torchvision.transforms.Normalize(

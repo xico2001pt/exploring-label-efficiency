@@ -1,6 +1,7 @@
+import os
 import torch
 from datetime import datetime
-from .constants import Constants as c
+from .constants import Constants as c, ROOT_DIR
 
 
 def _load_model(loader, config, logger):
@@ -26,3 +27,8 @@ def _get_config_name(loader, config_path):
         name = None
 
     return datetime.now().strftime("%Y-%m-%d-%H-%M-%S") if name is None else name
+
+def process_data_path(data_path):
+    if not os.path.isabs(data_path):
+        data_path = os.path.join(ROOT_DIR, data_path)
+    return data_path
