@@ -80,7 +80,7 @@ def main(args):
     config_name = _get_config_name(loader, args.config)
 
     log_dir = os.path.join(LOGS_DIR, config_name)
-    logger = Logger(log_dir, console_output=True, output_filename=c.Logging.TRAIN_OUTPUT_FILENAME)
+    logger = Logger(log_dir, console_output=False, output_filename=c.Logging.TRAIN_OUTPUT_FILENAME)
 
     try:
         logger.info("Loading configuration files...")
