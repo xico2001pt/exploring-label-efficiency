@@ -5,14 +5,14 @@ import yaml
 from .constants import Constants as c
 
 
-def create_logger(log_dir: str, console_output: bool = True, file_output: bool = True) -> logging.Logger:
+def create_logger(log_dir: str, console_output: bool = True, output_filename: str = None) -> logging.Logger:
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
 
     formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
 
-    if file_output:
-        file_handler = logging.FileHandler(os.path.join(log_dir, c.Logging.OUTPUT_FILENAME))
+    if output_filename is not None:
+        file_handler = logging.FileHandler(os.path.join(log_dir, output_filename))
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
@@ -25,17 +25,17 @@ def create_logger(log_dir: str, console_output: bool = True, file_output: bool =
 
 
 class Logger:
-    def __init__(self, log_dir: str, console_output: bool = True, file_output: bool = True):
+    def __init__(self, log_dir: str, console_output: bool = True, output_filename: str = None):
         self.log_dir = log_dir
         self._create_log_dir()
-        self.logger = create_logger(log_dir, console_output, file_output)
+        self.logger = create_logger(log_dir, console_output, output_filename)
         self.log = dict()
 
     def _create_log_dir(self):
         os.makedirs(self.log_dir, exist_ok=True)
 
-    def save_log(self):
-        yaml.dump(self.log, open(os.path.join(self.log_dir, c.Logging.LOG_FILENAME), "w"))
+    def save_log(self, filename):
+        yaml.dump(self.log, open(os.path.join(self.log_dir, filename), "w"))
 
     def get_log_dir(self):
         return self.log_dir

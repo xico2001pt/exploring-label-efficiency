@@ -80,7 +80,7 @@ def main(args):
     config_name = _get_config_name(loader, args.config)
 
     log_dir = os.path.join(LOGS_DIR, config_name)
-    logger = Logger(log_dir, console_output=True, file_output=True)
+    logger = Logger(log_dir, console_output=True, output_filename=c.Logging.TRAIN_OUTPUT_FILENAME)
 
     try:
         logger.info("Loading configuration files...")
@@ -132,7 +132,7 @@ def main(args):
 
         _log_train_time(start_time, end_time, logger)
 
-        logger.save_log()
+        logger.save_log(c.Logging.TRAIN_LOG_FILENAME)
 
     except Exception:
         import traceback

@@ -39,8 +39,10 @@ class Constants:
 
     class Logging:  # Logging constants
         LOGS_DIR = os.path.join(ROOT_DIR, "logs")  # Root directory where all logs are stored
-        OUTPUT_FILENAME = "output.log"  # Name of the file that contains the redirected output of the console
-        LOG_FILENAME = "log.yaml"  # Name of the file that contains the configurations of the run
+        TRAIN_OUTPUT_FILENAME = "train_output.log"  # Name of the file that contains the redirected train output of the console
+        TEST_OUTPUT_FILENAME = "test_output.log"  # Name of the file that contains the redirected test output of the console
+        TRAIN_LOG_FILENAME = "train_log.yaml"  # Name of the file that contains the train configurations of the run
+        TEST_LOG_FILENAME = "test_log.yaml"  # Name of the file that contains the test configurations of the run
 
     class Trainer:  # Trainer constants
         WEIGHTS_DIR = "weights"  # Root directory where model weights are stored
