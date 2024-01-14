@@ -1,6 +1,5 @@
 import os
 import time
-import torch
 import argparse
 from torch.utils.data import DataLoader
 from ..trainers.trainer import Trainer
@@ -87,7 +86,7 @@ def main(args):
     config_name = _get_config_name(loader, args.config)
 
     log_dir = os.path.join(LOGS_DIR, config_name)
-    logger = Logger(log_dir, console_output=False, output_filename=c.Logging.TRAIN_OUTPUT_FILENAME)
+    logger = Logger(log_dir, console_output=True, output_filename=c.Logging.TRAIN_OUTPUT_FILENAME)
 
     try:
         logger.info("Loading configuration files...")
@@ -96,7 +95,7 @@ def main(args):
 
         model = _load_model(loader, config, logger)
 
-        train_config = config["train"]
+        train_config = config["SL_train"]
         data = _load_train_data(loader, train_config, model, logger)
         (
             train_dataset,
