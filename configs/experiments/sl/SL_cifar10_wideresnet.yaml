@@ -2,8 +2,9 @@ name: SL_cifar10_wideresnet18_2  # Name of experiment (used for log folder and m
 
 model: cifar10_wideresnet28_2  # Name of model
 
-train:
-  dataset: cifar10_train  # Dataset to use for training
+SL_train:
+  train_dataset: cifar10  # Dataset to use for training
+  val_dataset: cifar10  # Dataset to use for validation
   optimizer: supervised_wideresnet_sgd  # Optimizer
   loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
@@ -13,11 +14,10 @@ train:
     epochs: 200  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
     batch_size: 128  # Training batch size
-    train_val_split: 0.9  # Train/val split
     save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
 
 test:
-  dataset: cifar10_test  # Dataset to use for testing
+  test_dataset: cifar10  # Dataset to use for testing
   model_weights_path: SL_cifar10_wideresnet18_2.pth  # Path to model weights (relative to weights folder). If null, config name is used
   loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate

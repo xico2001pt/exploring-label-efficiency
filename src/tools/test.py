@@ -17,12 +17,12 @@ WEIGHTS_DIR = os.path.join(ROOT_DIR, c.Trainer.WEIGHTS_DIR)
 
 
 def _load_test_data(loader, test_config, logger):
-    dataset_name = test_config[c.Configurations.Parameters.DATASET_CONFIG_NAME]
+    dataset_name = test_config[c.Configurations.Parameters.TEST_DATASET_CONFIG_NAME]
     loss_name = test_config[c.Configurations.Parameters.LOSS_CONFIG_NAME]
     metrics_names = test_config[c.Configurations.Parameters.METRICS_CONFIG_NAME]
 
-    dataset, dataset_config = loader.load_dataset(dataset_name)
-    logger.log_config(c.Configurations.Parameters.DATASET_CONFIG_NAME, dataset_config)
+    dataset, dataset_config = loader.load_dataset(dataset_name, split="test")
+    logger.log_config(c.Configurations.Parameters.TEST_DATASET_CONFIG_NAME, dataset_config)
 
     model_weights_path = test_config[c.Configurations.Parameters.MODEL_WEIGHTS_PATH_CONFIG_NAME]
 
@@ -37,7 +37,7 @@ def _load_test_data(loader, test_config, logger):
     logger.log_config(c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME, hyperparameters)
 
     return {
-        c.Configurations.Parameters.DATASET_CONFIG_NAME: dataset,
+        c.Configurations.Parameters.TEST_DATASET_CONFIG_NAME: dataset,
         c.Configurations.Parameters.MODEL_WEIGHTS_PATH_CONFIG_NAME: model_weights_path,
         c.Configurations.Parameters.LOSS_CONFIG_NAME: loss,
         c.Configurations.Parameters.METRICS_CONFIG_NAME: metrics,

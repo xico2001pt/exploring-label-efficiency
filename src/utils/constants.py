@@ -14,7 +14,9 @@ class Constants:
 
         class Parameters:  # Configuration file parameters constants
             MODEL_CONFIG_NAME = "model"  # Name of the model configuration parameter
-            DATASET_CONFIG_NAME = "dataset"  # Name of the dataset configuration parameter
+            TRAIN_DATASET_CONFIG_NAME = "train_dataset"  # Name of the train dataset configuration parameter
+            VALIDATION_DATASET_CONFIG_NAME = "val_dataset"  # Name of the validation dataset configuration parameter
+            TEST_DATASET_CONFIG_NAME = "test_dataset"  # Name of the test dataset configuration parameter
             OPTIMIZER_CONFIG_NAME = "optimizer"  # Name of the optimizer configuration parameter
             LOSS_CONFIG_NAME = "loss"  # Name of the loss configuration parameter
             METRICS_CONFIG_NAME = "metrics"  # Name of the metrics configuration parameter
@@ -26,7 +28,6 @@ class Constants:
             EPOCHS_CONFIG_NAME = "epochs"  # Name of the epochs configuration parameter
             NUM_WORKERS_CONFIG_NAME = "num_workers"  # Name of the number of workers configuration parameter
             BATCH_SIZE_CONFIG_NAME = "batch_size"  # Name of the batch size configuration parameter
-            TRAIN_VAL_SPLIT_CONFIG_NAME = "train_val_split"  # Name of the train/val split configuration parameter
 
     class Loader:  # Loader constants
         DATASETS_CONFIG_FILENAME = "datasets.yaml"  # Name of the datasets configuration file

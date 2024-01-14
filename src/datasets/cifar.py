@@ -1,9 +1,10 @@
 import torchvision
+import torch
 from ..utils.utils import process_data_path
 
 
-class CIFAR10(torchvision.datasets.CIFAR10):
-    def __init__(self, root, train=True, download=True):
+class CIFAR10(torch.utils.data.Dataset):
+    def __init__(self, root, split='train', train_val_split=0.9):
         root = process_data_path(root)
 
         transform = torchvision.transforms.Compose([
@@ -14,6 +15,8 @@ class CIFAR10(torchvision.datasets.CIFAR10):
             )
         ])
 
+        train = split in ['train', 'val']
+
         if train:
             transform = torchvision.transforms.Compose([
                 torchvision.transforms.RandomCrop(32, padding=4),
@@ -21,8 +24,26 @@ class CIFAR10(torchvision.datasets.CIFAR10):
                 transform
             ])
 
-        super(CIFAR10, self).__init__(
-            root=root, train=train, transform=transform, download=download
+        self.dataset = torchvision.datasets.CIFAR10(
+            root,
+            train=train,
+            transform=transform,
+            download=True
         )
+
+        if train:
+            n_train = int(train_val_split * len(self.dataset))
+
+            if split == 'train':
+                self.dataset = torch.utils.data.Subset(self.dataset, range(n_train))
+            else:
+                self.dataset = torch.utils.data.Subset(self.dataset, range(n_train, len(self.dataset)))
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __getitem__(self, index):
+        return self.dataset[index]
+
 
 # TODO: Add CIFAR100

@@ -29,8 +29,8 @@ class Loader:
             config = yaml.safe_load(f)
         return config
 
-    def load_dataset(self, name: str):
-        return self._load_config(c.Loader.DATASETS_CONFIG_FILENAME, name, datasets_classes)
+    def load_dataset(self, name: str, split: str):
+        return self._load_config(c.Loader.DATASETS_CONFIG_FILENAME, name, datasets_classes, {"split": split})
 
     def load_model(self, name: str):
         return self._load_config(c.Loader.MODELS_CONFIG_FILENAME, name, models_classes)

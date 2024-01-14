@@ -15,15 +15,19 @@ LOGS_DIR = os.path.join(ROOT_DIR, c.Logging.LOGS_DIR)
 
 
 def _load_train_data(loader, train_config, model, logger):
-    dataset_name = train_config[c.Configurations.Parameters.DATASET_CONFIG_NAME]
+    train_dataset_name = train_config[c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME]
+    val_dataset_name = train_config[c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME]
     optimizer_name = train_config[c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME]
     loss_name = train_config[c.Configurations.Parameters.LOSS_CONFIG_NAME]
     metrics_names = train_config[c.Configurations.Parameters.METRICS_CONFIG_NAME]
     scheduler_name = train_config[c.Configurations.Parameters.SCHEDULER_CONFIG_NAME]
     stop_condition_name = train_config[c.Configurations.Parameters.STOP_CONDITION_CONFIG_NAME]
 
-    dataset, dataset_config = loader.load_dataset(dataset_name)
-    logger.log_config(c.Configurations.Parameters.DATASET_CONFIG_NAME, dataset_config)
+    train_dataset, train_dataset_config = loader.load_dataset(train_dataset_name, split="train")
+    logger.log_config(c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME, train_dataset_config)
+
+    val_dataset, val_dataset_config = loader.load_dataset(val_dataset_name, split="val")
+    logger.log_config(c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME, val_dataset_config)
 
     optimizer, optimizer_config = loader.load_optimizer(optimizer_name, model)
     logger.log_config(c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME, optimizer_config)
@@ -45,7 +49,8 @@ def _load_train_data(loader, train_config, model, logger):
     logger.log_config(c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME, hyperparameters)
 
     return {
-        c.Configurations.Parameters.DATASET_CONFIG_NAME: dataset,
+        c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME: train_dataset,
+        c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME: val_dataset,
         c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME: optimizer,
         c.Configurations.Parameters.LOSS_CONFIG_NAME: loss,
         c.Configurations.Parameters.METRICS_CONFIG_NAME: metrics,
@@ -55,14 +60,16 @@ def _load_train_data(loader, train_config, model, logger):
     }
 
 
-def _get_dataloaders(dataset, batch_size, num_workers, train_val_split):
-    train_size = int(train_val_split * len(dataset))
-    validation_size = len(dataset) - train_size
-    train_dataset, validation_dataset = torch.utils.data.random_split(dataset, [train_size, validation_size])
+def _get_dataloaders(train_dataset, val_dataset, batch_size, num_workers):
+    train_loader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers
+    )
 
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers)
     validation_loader = DataLoader(
-        validation_dataset,
+        val_dataset,
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
@@ -92,7 +99,8 @@ def main(args):
         train_config = config["train"]
         data = _load_train_data(loader, train_config, model, logger)
         (
-            dataset,
+            train_dataset,
+            val_dataset,
             optimizer,
             loss,
             metrics,
@@ -101,9 +109,9 @@ def main(args):
             hyperparameters,
         ) = data.values()
 
-        epochs, num_workers, batch_size, train_val_split, save_freq = hyperparameters.values()
+        epochs, num_workers, batch_size, save_freq = hyperparameters.values()
 
-        train_loader, validation_loader = _get_dataloaders(dataset, batch_size, num_workers, train_val_split)
+        train_loader, validation_loader = _get_dataloaders(train_dataset, val_dataset, batch_size, num_workers)
 
         device = _get_device(logger)
 
