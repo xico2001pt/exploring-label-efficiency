@@ -2,7 +2,7 @@ import os
 import time
 import argparse
 from torch.utils.data import DataLoader
-from ..trainers.trainer import Trainer
+from ..trainers.SL_trainer import SLTrainer
 from ..utils.loader import Loader
 from ..utils.logger import Logger
 from ..utils.constants import Constants as c, ROOT_DIR
@@ -118,7 +118,7 @@ def main(args):
 
         metrics = {metric_name: metric.to(device) for metric_name, metric in metrics.items()}
 
-        trainer = Trainer(model, loss, device=device, logger=logger)
+        trainer = SLTrainer(model, loss, device=device, logger=logger)
 
         start_time = time.time()
 

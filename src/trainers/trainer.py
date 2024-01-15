@@ -1,16 +1,12 @@
 import torch
-from tqdm import tqdm
 import numpy as np
 import os
 from ..utils.constants import Constants as c
 
-# TODO: Should be abstract class
-
 
 class Trainer:
-    def __init__(self, model, loss_fn, device, logger):
+    def __init__(self, model, device, logger):
         self.model = model
-        self.loss_fn = loss_fn
         self.device = device
         self.logger = logger
         self.checkpoints_path = os.path.join(self.logger.get_log_dir(), c.Trainer.Checkpoints.CHECKPOINTS_DIR)
@@ -32,10 +28,8 @@ class Trainer:
     def _save_stats(self, loss_history, metrics_history, name):
         self.logger.add_log_entry(f"{name}_history", {"loss": loss_history, "metrics": metrics_history})
 
-    def _compute_loss(self, inputs, targets):
-        outputs = self.model(inputs)
-        loss = self.loss_fn(outputs, targets)
-        return outputs, loss
+    def _batch_iteration(self, dataloader, is_train, optimizer, metrics, total_loss, total_metrics, description):
+        raise NotImplementedError
 
     def _epoch_iteration(self, dataloader, is_train=True, optimizer=None, metrics={}, description="Train"):
         if is_train:
@@ -49,23 +43,7 @@ class Trainer:
         total_metrics = {metric: 0.0 for metric in metrics}
 
         with torch.set_grad_enabled(is_train):
-            for inputs, targets in tqdm(dataloader, desc=description):
-                inputs, targets = inputs.to(self.device), targets.to(self.device)
-
-                if is_train:
-                    optimizer.zero_grad()
-
-                outputs, loss = self._compute_loss(inputs, targets)
-
-                if is_train:
-                    loss['total'].backward()
-                    optimizer.step()
-
-                for loss_term in loss:
-                    total_loss[loss_term] = total_loss.get(loss_term, 0.0) + loss[loss_term].item()
-
-                for metric in metrics:
-                    total_metrics[metric] += metrics[metric](outputs, targets).item()
+            self._batch_iteration(dataloader, is_train, optimizer, metrics, total_loss, total_metrics, description)
 
         for loss_term in total_loss:
             total_loss[loss_term] /= num_batches
