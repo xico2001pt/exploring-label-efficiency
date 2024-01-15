@@ -100,7 +100,7 @@ def main(args):
 
         _load_model_weights(model, model_weights_path, logger)
 
-        trainer = Trainer(model, loss, device, logger)
+        trainer = Trainer(model, device, logger, loss)
 
         start_time = time.time()
 

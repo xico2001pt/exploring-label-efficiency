@@ -5,10 +5,11 @@ from ..utils.constants import Constants as c
 
 
 class Trainer:
-    def __init__(self, model, device, logger):
+    def __init__(self, model, device, logger, loss_fn):
         self.model = model
         self.device = device
         self.logger = logger
+        self.loss_fn = loss_fn
         self.checkpoints_path = os.path.join(self.logger.get_log_dir(), c.Trainer.Checkpoints.CHECKPOINTS_DIR)
 
         os.makedirs(self.checkpoints_path, exist_ok=True)
@@ -28,8 +29,29 @@ class Trainer:
     def _save_stats(self, loss_history, metrics_history, name):
         self.logger.add_log_entry(f"{name}_history", {"loss": loss_history, "metrics": metrics_history})
 
+    def _compute_loss(self, inputs, targets):
+        outputs = self.model(inputs)
+        loss = self.loss_fn(outputs, targets)
+        return outputs, loss
+
     def _batch_iteration(self, dataloader, is_train, optimizer, metrics, total_loss, total_metrics, description):
-        raise NotImplementedError
+        for inputs, targets in tqdm(dataloader, desc=description):
+            inputs, targets = inputs.to(self.device), targets.to(self.device)
+
+            if is_train:
+                optimizer.zero_grad()
+
+            outputs, loss = self._compute_loss(inputs, targets)
+
+            if is_train:
+                loss['total'].backward()
+                optimizer.step()
+
+            for loss_term in loss:
+                total_loss[loss_term] = total_loss.get(loss_term, 0.0) + loss[loss_term].item()
+
+            for metric in metrics:
+                total_metrics[metric] += metrics[metric](outputs, targets).item()
 
     def _epoch_iteration(self, dataloader, is_train=True, optimizer=None, metrics={}, description="Train"):
         if is_train:
