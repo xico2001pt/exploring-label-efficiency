@@ -66,20 +66,21 @@ def _load_train_data(loader, train_config, model, logger):
     }
 
 
-def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers):
+def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers, drop_last):
     train_labeled_dataloader = DataLoader(
         train_labeled_dataset,
         batch_size=labeled_batch_size,
         shuffle=True,
         num_workers=num_workers,
-        pin_memory=True
+        drop_last=drop_last
     )
 
     train_unlabeled_dataloader = DataLoader(
         train_unlabeled_dataset,
         batch_size=unlabeled_batch_size,
         shuffle=True,
-        num_workers=num_workers
+        num_workers=num_workers,
+        drop_last=drop_last
     )
 
     val_dataloader = DataLoader(
@@ -128,7 +129,7 @@ def main(args):
 
         epochs, num_workers, labeled_batch_size, unlabeled_batch_size, save_freq = hyperparameters.values()
 
-        train_labeled_loader, train_unlabeled_loader, validation_loader = _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers)
+        train_labeled_loader, train_unlabeled_loader, validation_loader = _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers, method.truncate_batches())
 
         device = _get_device(logger)
 

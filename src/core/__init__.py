@@ -7,7 +7,7 @@ from .stop_conditions import StopPatience
 classes = {
     "losses": [CrossEntropyLoss],  # Add the loss classes here
     "metrics": [Accuracy],  # Add the metric classes here
-    "optimizers": [SGD],  # Add the optimizer classes here
+    "optimizers": [Adam, SGD],  # Add the optimizer classes here
     "schedulers": [MultiStepLR],  # Add the scheduler classes here
     "stop_conditions": [StopPatience]  # Add the stop condition classes here
 }
