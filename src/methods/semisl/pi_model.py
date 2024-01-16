@@ -1,3 +1,5 @@
+def gaussian_weight_fn(t)
+
 class PiModel:
     def __init__(self):
         pass

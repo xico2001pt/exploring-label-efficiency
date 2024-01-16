@@ -46,4 +46,20 @@ class CIFAR10(torch.utils.data.Dataset):
         return self.dataset[index]
 
 
+class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
+    def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=4000):
+        train_dataset = CIFAR10(root, split, train_val_split=train_val_split)
+
+        if split == 'labeled':
+            self.dataset = torch.utils.data.Subset(train_dataset, range(num_labeled))
+        else:
+            self.dataset = torch.utils.data.Subset(train_dataset, range(num_labeled, len(train_dataset)))
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __getitem__(self, index):
+        return self.dataset[index]
+
+
 # TODO: Add CIFAR100
