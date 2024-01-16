@@ -1,11 +1,9 @@
-def gaussian_weight_fn(t)
-
 class PiModel:
-    def __init__(self):
+    def __init__(self, max_unsupervised_weight):
         pass
 
     def truncate_batches(self):
         return False
 
     def compute_loss(self, labeled, targets, unlabeled):
-        pass
+        raise NotImplementedError()

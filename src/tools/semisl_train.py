@@ -10,7 +10,7 @@ from ..utils.utils import _load_model, _get_device, _get_config_name
 
 
 CONFIGS_DIR = c.Configurations.CONFIGS_DIR
-LOGS_DIR = ROOT_DIR, c.Logging.LOGS_DIR
+LOGS_DIR = c.Logging.LOGS_DIR
 
 def _load_train_data(loader, train_config, model, logger):
     train_dataset_name = train_config[c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME]
@@ -72,6 +72,7 @@ def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset
         batch_size=labeled_batch_size,
         shuffle=True,
         num_workers=num_workers,
+        pin_memory=True,
         drop_last=drop_last
     )
 
@@ -80,6 +81,7 @@ def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset
         batch_size=unlabeled_batch_size,
         shuffle=True,
         num_workers=num_workers,
+        pin_memory=True,
         drop_last=drop_last
     )
 
@@ -87,6 +89,7 @@ def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset
         val_dataset,
         batch_size=unlabeled_batch_size,
         shuffle=False,
+        pin_memory=True,
         num_workers=num_workers
     )
 

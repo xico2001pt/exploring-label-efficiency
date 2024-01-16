@@ -54,7 +54,9 @@ class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
         if split not in ['labeled', 'unlabeled']:
             raise ValueError("split must be either 'labeled' or 'unlabeled'")
 
-        train_dataset = CIFAR10(root, split, train_val_split=train_val_split)
+        self.split = split
+
+        train_dataset = CIFAR10(root, 'train', train_val_split=train_val_split)
 
         if split == 'labeled':
             self.dataset = torch.utils.data.Subset(train_dataset, range(num_labeled))
@@ -65,7 +67,9 @@ class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
         return len(self.dataset)
 
     def __getitem__(self, index):
-        return self.dataset[index]
+        if self.split == 'labeled':
+            return self.dataset[index]
+        return self.dataset[index][0]
 
 
 # TODO: Add CIFAR100
