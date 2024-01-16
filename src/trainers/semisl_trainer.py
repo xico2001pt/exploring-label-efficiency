@@ -4,12 +4,18 @@ from .trainer import Trainer
 
 
 class SemiLTrainer(Trainer):
-    def __init__(self, model, method, device, logger):
-        super().__init__(model, device, logger)
+    def __init__(self, model, device, logger, eval_loss_fn, method):
+        super().__init__(model, device, logger, eval_loss_fn)
         self.method = method
 
+    def get_num_batches(self, num_labeled_batches, num_unlabeled_batches):
+        if self.method.truncate_batches():
+            return min(num_labeled_batches, num_unlabeled_batches)
+        else:
+            return max(num_labeled_batches, num_unlabeled_batches)
+
     def _compute_semi_supervised_loss(self, labeled, targets, unlabeled):
-        labeled_outputs, loss = self.method(labeled, targets, unlabeled)
+        labeled_outputs, loss = self.method.compute_loss(labeled, targets, unlabeled)
         return labeled_outputs, loss
 
     def _semisl_batch_iteration(self, num_batches, labeled_dataloader, unlabeled_dataloader, optimizer, metrics, total_loss, loss_counter, total_metrics, description):
@@ -44,7 +50,6 @@ class SemiLTrainer(Trainer):
                 for metric in metrics:
                     total_metrics[metric] += metrics[metric](labeled_outputs, targets).item()
 
-
     def _epoch_iteration(self, dataloader, is_train=True, optimizer=None, metrics={}, description="Train"):
         if is_train:
             assert optimizer is not None, "optimizer must be provided for training"
@@ -54,7 +59,7 @@ class SemiLTrainer(Trainer):
             num_labeled_batches = len(labeled_dataloader)
             num_unlabeled_batches = len(unlabeled_dataloader)
 
-            num_batches = max(num_labeled_batches, num_unlabeled_batches)  # TODO: Should depend on the method
+            num_batches = self.get_num_batches(num_labeled_batches, num_unlabeled_batches)
 
             self.model.train()
 

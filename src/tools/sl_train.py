@@ -95,7 +95,7 @@ def main(args):
 
         model = _load_model(loader, config, logger)
 
-        train_config = config["SL_train"]
+        train_config = config["sl_train"]
         data = _load_train_data(loader, train_config, model, logger)
         (
             train_dataset,
