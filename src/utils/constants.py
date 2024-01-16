@@ -37,6 +37,7 @@ class Constants:
         OPTIMIZERS_CONFIG_FILENAME = "optimizers.yaml"  # Name of the optimizers configuration file
         SCHEDULERS_CONFIG_FILENAME = "schedulers.yaml"  # Name of the schedulers configuration file
         STOP_CONDITIONS_CONFIG_FILENAME = "stop_conditions.yaml"  # Name of the stop conditions configuration file
+        SEMISL_METHODS_CONFIG_FILENAME = "semisl_methods.yaml"  # Name of the semi-supervised methods configuration file
 
     class Logging:  # Logging constants
         LOGS_DIR = os.path.join(ROOT_DIR, "logs")  # Root directory where all logs are stored
