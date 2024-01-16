@@ -3,9 +3,9 @@ from tqdm import tqdm
 from .trainer import Trainer
 
 
-class SemiLTrainer(Trainer):
-    def __init__(self, model, device, logger, eval_loss_fn, method):
-        super().__init__(model, device, logger, eval_loss_fn)
+class SemiSLTrainer(Trainer):
+    def __init__(self, model, device, logger, val_loss_fn, method):
+        super().__init__(model, device, logger, val_loss_fn)
         self.method = method
 
     def get_num_batches(self, num_labeled_batches, num_unlabeled_batches):

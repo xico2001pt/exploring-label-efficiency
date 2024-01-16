@@ -5,6 +5,9 @@ from ..utils.utils import process_data_path
 
 class CIFAR10(torch.utils.data.Dataset):
     def __init__(self, root, split='train', train_val_split=0.9):
+        if split not in ['train', 'val', 'test']:
+            raise ValueError("split must be either 'train', 'val' or 'test'")
+
         root = process_data_path(root)
 
         transform = torchvision.transforms.Compose([
@@ -48,6 +51,9 @@ class CIFAR10(torch.utils.data.Dataset):
 
 class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
     def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=4000):
+        if split not in ['labeled', 'unlabeled']:
+            raise ValueError("split must be either 'labeled' or 'unlabeled'")
+
         train_dataset = CIFAR10(root, split, train_val_split=train_val_split)
 
         if split == 'labeled':

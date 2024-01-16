@@ -2,7 +2,7 @@ import os
 import time
 import argparse
 from torch.utils.data import DataLoader
-from ..trainers.trainer import Trainer
+from ..trainers.semisl_trainer import SemiSLTrainer
 from ..utils.loader import Loader
 from ..utils.logger import Logger
 from ..utils.constants import Constants as c, ROOT_DIR
@@ -10,20 +10,23 @@ from ..utils.utils import _load_model, _get_device, _get_config_name
 
 
 CONFIGS_DIR = c.Configurations.CONFIGS_DIR
-LOGS_DIR = c.Logging.LOGS_DIR
-
+LOGS_DIR = ROOT_DIR, c.Logging.LOGS_DIR
 
 def _load_train_data(loader, train_config, model, logger):
     train_dataset_name = train_config[c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME]
     val_dataset_name = train_config[c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME]
     optimizer_name = train_config[c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME]
-    loss_name = train_config[c.Configurations.Parameters.LOSS_CONFIG_NAME]
+    method_name = train_config[c.Configurations.Parameters.METHOD_CONFIG_NAME]
+    val_loss_name = train_config[c.Configurations.Parameters.VAL_LOSS_CONFIG_NAME]
     metrics_names = train_config[c.Configurations.Parameters.METRICS_CONFIG_NAME]
     scheduler_name = train_config[c.Configurations.Parameters.SCHEDULER_CONFIG_NAME]
     stop_condition_name = train_config[c.Configurations.Parameters.STOP_CONDITION_CONFIG_NAME]
 
-    train_dataset, train_dataset_config = loader.load_dataset(train_dataset_name, split="train")
-    logger.log_config(c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME, train_dataset_config)
+    train_labeled_dataset, train_labeled_dataset_config = loader.load_dataset(train_dataset_name, split="labeled")
+    logger.log_config(c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME, train_labeled_dataset_config)
+
+    train_unlabeled_dataset, train_unlabeled_dataset_config = loader.load_dataset(train_dataset_name, split="unlabeled")
+    logger.log_config(c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME, train_unlabeled_dataset_config)
 
     val_dataset, val_dataset_config = loader.load_dataset(val_dataset_name, split="val")
     logger.log_config(c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME, val_dataset_config)
@@ -31,8 +34,11 @@ def _load_train_data(loader, train_config, model, logger):
     optimizer, optimizer_config = loader.load_optimizer(optimizer_name, model)
     logger.log_config(c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME, optimizer_config)
 
-    loss, loss_config = loader.load_loss(loss_name)
-    logger.log_config(c.Configurations.Parameters.LOSS_CONFIG_NAME, loss_config)
+    method, method_config = loader.load_semisl_method(method_name)
+    logger.log_config(c.Configurations.Parameters.METHOD_CONFIG_NAME, method_config)
+
+    val_loss, val_loss_config = loader.load_loss(val_loss_name)
+    logger.log_config(c.Configurations.Parameters.LOSS_CONFIG_NAME, val_loss_config)
 
     metrics, metrics_config = loader.load_metrics(metrics_names)
     metrics_dict = {metric_name: metrics_config[metric_name] for metric_name in metrics_names}
@@ -48,10 +54,11 @@ def _load_train_data(loader, train_config, model, logger):
     logger.log_config(c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME, hyperparameters)
 
     return {
-        c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME: train_dataset,
+        c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME: (train_labeled_dataset, train_unlabeled_dataset),
         c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME: val_dataset,
         c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME: optimizer,
-        c.Configurations.Parameters.LOSS_CONFIG_NAME: loss,
+        c.Configurations.Parameters.METHOD_CONFIG_NAME: method,
+        c.Configurations.Parameters.VAL_LOSS_CONFIG_NAME: val_loss,
         c.Configurations.Parameters.METRICS_CONFIG_NAME: metrics,
         c.Configurations.Parameters.SCHEDULER_CONFIG_NAME: scheduler,
         c.Configurations.Parameters.STOP_CONDITION_CONFIG_NAME: stop_condition,
@@ -59,22 +66,30 @@ def _load_train_data(loader, train_config, model, logger):
     }
 
 
-def _get_dataloaders(train_dataset, val_dataset, batch_size, num_workers):
-    train_loader = DataLoader(
-        train_dataset,
-        batch_size=batch_size,
+def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers):
+    train_labeled_dataloader = DataLoader(
+        train_labeled_dataset,
+        batch_size=labeled_batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        pin_memory=True
+    )
+
+    train_unlabeled_dataloader = DataLoader(
+        train_unlabeled_dataset,
+        batch_size=unlabeled_batch_size,
         shuffle=True,
         num_workers=num_workers
     )
 
-    validation_loader = DataLoader(
+    val_dataloader = DataLoader(
         val_dataset,
-        batch_size=batch_size,
+        batch_size=unlabeled_batch_size,
         shuffle=False,
-        num_workers=num_workers,
+        num_workers=num_workers
     )
 
-    return train_loader, validation_loader
+    return train_labeled_dataloader, train_unlabeled_dataloader, val_dataloader
 
 
 def _log_train_time(start_time, end_time, logger):
@@ -95,22 +110,25 @@ def main(args):
 
         model = _load_model(loader, config, logger)
 
-        train_config = config["sl_train"]
+        train_config = config["semisl_train"]
         data = _load_train_data(loader, train_config, model, logger)
         (
             train_dataset,
             val_dataset,
             optimizer,
-            loss,
+            method,
+            val_loss,
             metrics,
             scheduler,
             stop_condition,
             hyperparameters,
         ) = data.values()
 
-        epochs, num_workers, batch_size, save_freq = hyperparameters.values()
+        train_labeled_dataset, train_unlabeled_dataset = train_dataset
 
-        train_loader, validation_loader = _get_dataloaders(train_dataset, val_dataset, batch_size, num_workers)
+        epochs, num_workers, labeled_batch_size, unlabeled_batch_size, save_freq = hyperparameters.values()
+
+        train_labeled_loader, train_unlabeled_loader, validation_loader = _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers)
 
         device = _get_device(logger)
 
@@ -118,12 +136,12 @@ def main(args):
 
         metrics = {metric_name: metric.to(device) for metric_name, metric in metrics.items()}
 
-        trainer = Trainer(model, device, logger, loss)
+        trainer = SemiSLTrainer(model, device, logger, val_loss, method)
 
         start_time = time.time()
 
         trainer.train(
-            train_loader,
+            (train_labeled_loader, train_unlabeled_loader),
             validation_loader,
             epochs,
             optimizer,
