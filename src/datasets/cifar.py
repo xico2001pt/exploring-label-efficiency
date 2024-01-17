@@ -56,7 +56,7 @@ class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
 
         self.split = split
 
-        train_dataset = CIFAR10(root, 'train', train_val_split=train_val_split)
+        train_dataset = CIFAR10(root, 'train', train_val_split)
 
         if split == 'labeled':
             self.dataset = torch.utils.data.Subset(train_dataset, range(num_labeled))

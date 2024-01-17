@@ -7,6 +7,10 @@ class SemiSLTrainer(Trainer):
     def __init__(self, model, device, logger, val_loss_fn, method):
         super().__init__(model, device, logger, val_loss_fn)
         self.method = method
+        self.method.set_model(model)
+
+    def on_change_epoch(self, epoch):
+        self.method.on_change_epoch(epoch)
 
     def get_num_batches(self, num_labeled_batches, num_unlabeled_batches):
         if self.method.truncate_batches():
@@ -19,14 +23,17 @@ class SemiSLTrainer(Trainer):
         return labeled_outputs, loss
 
     def _semisl_batch_iteration(self, num_batches, labeled_dataloader, unlabeled_dataloader, optimizer, metrics, total_loss, loss_counter, total_metrics, description):
+        labeled_dataloader_iter = iter(labeled_dataloader)
+        unlabeled_dataloader_iter = iter(unlabeled_dataloader)
+
         for _ in tqdm(range(num_batches), desc=description):
             try:
-                labeled, targets = next(iter(labeled_dataloader))
+                labeled, targets = next(labeled_dataloader_iter)
             except StopIteration:
                 labeled, targets = None, None
 
             try:
-                unlabeled = next(iter(unlabeled_dataloader))
+                unlabeled = next(unlabeled_dataloader_iter)
             except StopIteration:
                 unlabeled = None
 

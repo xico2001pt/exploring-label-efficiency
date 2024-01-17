@@ -12,6 +12,7 @@ from ..utils.utils import _load_model, _get_device, _get_config_name
 CONFIGS_DIR = c.Configurations.CONFIGS_DIR
 LOGS_DIR = c.Logging.LOGS_DIR
 
+
 def _load_train_data(loader, train_config, model, logger):
     train_dataset_name = train_config[c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME]
     val_dataset_name = train_config[c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME]
