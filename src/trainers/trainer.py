@@ -139,6 +139,8 @@ class Trainer:
 
             for loss_term in train_loss:
                 train_history["loss"].setdefault(loss_term, []).append(train_loss[loss_term])
+
+            for loss_term in validation_loss:
                 validation_history["loss"].setdefault(loss_term, []).append(validation_loss[loss_term])
 
             for metric in metrics:

@@ -23,7 +23,7 @@ class PiModel(SemiSLMethod):
         return False
 
     def on_change_epoch(self, epoch):
-        self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.max_unsupervised_weight
+        self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.max_unsupervised_weight if epoch > 0 else 0.0
 
     def compute_loss(self, labeled, targets, unlabeled):
         if unlabeled is not None:
@@ -50,14 +50,16 @@ class PiModel(SemiSLMethod):
 
         supervised_loss = supervised_loss / total_size
         unsupervised_loss = (unsupervised_loss_1 + unsupervised_loss_2) / total_size
+        unsupervised_weighted_loss = self.unsupervised_weight * unsupervised_loss
 
-        total_loss = supervised_loss + self.unsupervised_weight * unsupervised_loss
+        total_loss = supervised_loss + unsupervised_weighted_loss
 
         loss = {'total': total_loss}
         if labeled is not None:
             loss['supervised'] = supervised_loss
         if unlabeled is not None:
             loss['unsupervised'] = unsupervised_loss
+            loss['unsupervised_weighted'] = self.unsupervised_weight * unsupervised_loss
 
         return labeled_outputs, loss
 
@@ -73,4 +75,4 @@ class PiModel(SemiSLMethod):
     def compute_predictions(self, input):
         aug1, aug2 = self.augment(input)
         predictions1, predictions2 = self.model(aug1), self.model(aug2)
-        return self.unsupervised_loss(predictions1, predictions2), predictions1
+        return predictions1, predictions2
