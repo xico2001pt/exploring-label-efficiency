@@ -2,6 +2,7 @@ import numpy as np
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms
 from .semisl_method import SemiSLMethod
+from ...utils.ramps import exp_rampup
 
 
 AUGMENTATIONS = {
@@ -11,17 +12,18 @@ AUGMENTATIONS = {
 
 
 class PiModel(SemiSLMethod):
-    def __init__(self, max_unsupervised_weight, augmentations):
-        self.supervised_loss = CrossEntropyLoss()
+    def __init__(self, max_unsupervised_weight, unsupervised_weight_rampup_length, augmentations):
+        self.supervised_loss = CrossEntropyLoss(reduction='sum')
         self.unsupervised_loss = MSELoss(reduction='sum')
         self.max_unsupervised_weight = max_unsupervised_weight
+        self.unsupervised_weight_fn = exp_rampup(unsupervised_weight_rampup_length)
         self.augmentations = [AUGMENTATIONS[augmentation] for augmentation in augmentations]
 
     def truncate_batches(self):
         return False
 
-    def on_change_epoch(self, epoch, num_epochs):
-        self.unsupervised_weight = min(1.0, epoch / num_epochs + 0.2)  # TODO: CHANGE TO RAMP UP
+    def on_change_epoch(self, epoch):
+        self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.max_unsupervised_weight
 
     def compute_loss(self, labeled, targets, unlabeled):
         if unlabeled is not None:
@@ -44,7 +46,10 @@ class PiModel(SemiSLMethod):
             unsupervised_loss_2 = 0.0
             labeled_size = 0
 
-        unsupervised_loss = (unsupervised_loss_1 + unsupervised_loss_2) / (unlabeled_size + labeled_size)  # TODO: DIVIDE BY NUM CLASSES
+        total_size = labeled_size + unlabeled_size  # Never zero
+
+        supervised_loss = supervised_loss / total_size
+        unsupervised_loss = (unsupervised_loss_1 + unsupervised_loss_2) / total_size
 
         total_loss = supervised_loss + self.unsupervised_weight * unsupervised_loss
 
