@@ -4,7 +4,9 @@ supervised_wideresnet_cifar_lr:
     milestones: [60, 120, 160]
     gamma: 0.2
 
-pi_model_exponential_lr:
-  class: ExponentialLR
+pi_model_exp_warmup_lr:
+  class: ExpWarmupLR
   args:
-    gamma: 0.5
+    rampup_length: 80
+    rampdown_length: 50
+    num_epochs: 300

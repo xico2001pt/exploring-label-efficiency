@@ -44,7 +44,7 @@ class PiModel(SemiSLMethod):
             unsupervised_loss_2 = 0.0
             labeled_size = 0
 
-        unsupervised_loss = (unsupervised_loss_1 + unsupervised_loss_2) / (unlabeled_size + labeled_size)
+        unsupervised_loss = (unsupervised_loss_1 + unsupervised_loss_2) / (unlabeled_size + labeled_size)  # TODO: DIVIDE BY NUM CLASSES
 
         total_loss = supervised_loss + self.unsupervised_weight * unsupervised_loss
 
