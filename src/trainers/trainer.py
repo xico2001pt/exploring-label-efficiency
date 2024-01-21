@@ -85,7 +85,7 @@ class Trainer:
 
         self.logger.info(f"Best model saved to {save_path}")
 
-    def on_change_epoch(self, epoch):
+    def on_change_epoch(self, epoch, num_epochs):
         pass
 
     def train(
@@ -109,7 +109,7 @@ class Trainer:
         for epoch in range(start_epoch, num_epochs + 1):
             self.logger.info(f"Epoch {epoch}/{num_epochs}")
 
-            self.on_change_epoch(epoch)
+            self.on_change_epoch(epoch, num_epochs)
 
             train_loss, train_metrics = self._epoch_iteration(
                 train_dataloader,

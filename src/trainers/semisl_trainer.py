@@ -9,8 +9,8 @@ class SemiSLTrainer(Trainer):
         self.method = method
         self.method.set_model(model)
 
-    def on_change_epoch(self, epoch):
-        self.method.on_change_epoch(epoch)
+    def on_change_epoch(self, epoch, num_epochs):
+        self.method.on_change_epoch(epoch, num_epochs)
 
     def get_num_batches(self, num_labeled_batches, num_unlabeled_batches):
         if self.method.truncate_batches():
