@@ -1,4 +1,4 @@
-import numpy as np
+import torch
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms
 from .semisl_method import SemiSLMethod
@@ -7,13 +7,13 @@ from ...utils.ramps import exp_rampup
 
 AUGMENTATIONS = {
     'crop': torchvision.transforms.RandomCrop(32, padding=4),  # TODO: SIZE MUST DEPEND ON DATASET
-    'flip': torchvision.transforms.RandomHorizontalFlip()
+    'flip': torchvision.transforms.RandomHorizontalFlip(p=0.5),
 }
 
 
 class PiModel(SemiSLMethod):
     def __init__(self, max_unsupervised_weight, unsupervised_weight_rampup_length, augmentations):
-        self.supervised_loss = CrossEntropyLoss(reduction='sum')
+        self.supervised_loss = CrossEntropyLoss(reduction='mean')
         self.unsupervised_loss = MSELoss(reduction='sum')
         self.max_unsupervised_weight = max_unsupervised_weight
         self.unsupervised_weight_fn = exp_rampup(unsupervised_weight_rampup_length)
@@ -48,8 +48,7 @@ class PiModel(SemiSLMethod):
 
         total_size = labeled_size + unlabeled_size  # Never zero
 
-        supervised_loss = supervised_loss / total_size
-        unsupervised_loss = (unsupervised_loss_1 + unsupervised_loss_2) / total_size
+        unsupervised_loss = (unsupervised_loss_1 + unsupervised_loss_2) / float(total_size / 10)  # TODO: NUM CLASSES VARIABLE
         unsupervised_weighted_loss = self.unsupervised_weight * unsupervised_loss
 
         total_loss = supervised_loss + unsupervised_weighted_loss
@@ -59,20 +58,23 @@ class PiModel(SemiSLMethod):
             loss['supervised'] = supervised_loss
         if unlabeled is not None:
             loss['unsupervised'] = unsupervised_loss
-            loss['unsupervised_weighted'] = self.unsupervised_weight * unsupervised_loss
+            loss['unsupervised_weighted'] = unsupervised_weighted_loss
 
         return labeled_outputs, loss
 
     def stochastic_augmentation(self, x):
-        aug_idx = np.random.randint(len(self.augmentations))
-        return self.augmentations[aug_idx](x.clone())
+        for augmentation in self.augmentations:
+            x = augmentation(x)
+        return x
 
     def augment(self, x):
-        x_1 = self.stochastic_augmentation(x)
-        x_2 = self.stochastic_augmentation(x)
+        x_1 = self.stochastic_augmentation(x.clone())
+        x_2 = self.stochastic_augmentation(x.clone())
         return x_1, x_2
 
     def compute_predictions(self, input):
         aug1, aug2 = self.augment(input)
-        predictions1, predictions2 = self.model(aug1), self.model(aug2)
+        predictions1 = self.model(aug1)
+        with torch.no_grad():
+            predictions2 = self.model(aug2)
         return predictions1, predictions2
