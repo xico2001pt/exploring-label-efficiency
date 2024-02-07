@@ -9,14 +9,11 @@ class SemiSLTrainer(Trainer):
         self.method = method
         self.method.set_model(model)
 
+    def on_start_train(self, train_data):
+        self.method.on_start_train(train_data)
+
     def on_change_epoch(self, epoch):
         self.method.on_change_epoch(epoch)
-
-    def get_num_batches(self, num_labeled_batches, num_unlabeled_batches):
-        if self.method.truncate_batches():
-            return min(num_labeled_batches, num_unlabeled_batches)
-        else:
-            return max(num_labeled_batches, num_unlabeled_batches)
 
     def _compute_semi_supervised_loss(self, labeled, targets, unlabeled):
         labeled_outputs, loss = self.method.compute_loss(labeled, targets, unlabeled)
@@ -66,7 +63,7 @@ class SemiSLTrainer(Trainer):
             num_labeled_batches = len(labeled_dataloader)
             num_unlabeled_batches = len(unlabeled_dataloader)
 
-            num_batches = self.get_num_batches(num_labeled_batches, num_unlabeled_batches)
+            num_batches = min(num_labeled_batches, num_unlabeled_batches)
 
             self.model.train()
 

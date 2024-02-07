@@ -48,6 +48,12 @@ class CIFAR10(torch.utils.data.Dataset):
     def __getitem__(self, index):
         return self.dataset[index]
 
+    def get_input_size(self):
+        return (3, 32, 32)
+
+    def get_num_classes(self):
+        return 10
+
 
 '''
 class SemiSupervised(torch.utils.data.Dataset):
@@ -87,6 +93,12 @@ class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
         if self.split == 'labeled':
             return self.dataset[index]
         return self.dataset[index][0]
+    
+    def get_input_size(self):
+        return (3, 32, 32)
+
+    def get_num_classes(self):
+        return 10
 
 
 # TODO: Add CIFAR100

@@ -7,6 +7,7 @@ from ..utils.loader import Loader
 from ..utils.logger import Logger
 from ..utils.constants import Constants as c, ROOT_DIR
 from ..utils.utils import _load_model, _get_device, _get_config_name, set_reproducibility
+from ..utils.train import TrainData
 
 
 CONFIGS_DIR = c.Configurations.CONFIGS_DIR
@@ -67,23 +68,23 @@ def _load_train_data(loader, train_config, model, logger):
     }
 
 
-def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers, drop_last):
+def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers):
     train_labeled_dataloader = DataLoader(
         train_labeled_dataset,
         batch_size=labeled_batch_size,
-        shuffle=True,
+        shuffle=False,
         num_workers=num_workers,
         pin_memory=True,
-        drop_last=drop_last
+        drop_last=True
     )
 
     train_unlabeled_dataloader = DataLoader(
         train_unlabeled_dataset,
         batch_size=unlabeled_batch_size,
-        shuffle=True,
+        shuffle=False,
         num_workers=num_workers,
         pin_memory=True,
-        drop_last=drop_last
+        drop_last=True
     )
 
     val_dataloader = DataLoader(
@@ -135,7 +136,7 @@ def main(args):
 
         epochs, num_workers, labeled_batch_size, unlabeled_batch_size, save_freq = hyperparameters.values()
 
-        train_labeled_loader, train_unlabeled_loader, validation_loader = _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers, method.truncate_batches())
+        train_labeled_loader, train_unlabeled_loader, validation_loader = _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers)
 
         device = _get_device(logger)
 
@@ -144,6 +145,20 @@ def main(args):
         metrics = {metric_name: metric.to(device) for metric_name, metric in metrics.items()}
 
         trainer = SemiSLTrainer(model, device, logger, val_loss, method)
+
+        def generate_train_data():
+            train_data = TrainData()
+            train_data.logger = logger
+            train_data.device = device
+            train_data.input_size = train_labeled_dataset.get_input_size()
+            train_data.num_classes = train_labeled_dataset.get_num_classes()
+            train_data.dataset_size = {
+                "labeled": len(train_labeled_dataset),
+                "unlabeled": len(train_unlabeled_dataset)
+            }
+            return train_data
+
+        trainer.set_train_data(generate_train_data())
 
         start_time = time.time()
 

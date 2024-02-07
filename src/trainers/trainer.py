@@ -2,6 +2,7 @@ import os
 import torch
 import numpy as np
 from tqdm import tqdm
+from ..utils.train import TrainData
 from ..utils.constants import Constants as c
 
 
@@ -85,8 +86,14 @@ class Trainer:
 
         self.logger.info(f"Best model saved to {save_path}")
 
+    def on_start_train(self, train_data):
+        pass
+
     def on_change_epoch(self, epoch):
         pass
+
+    def set_train_data(self, train_data):
+        self.train_data = train_data
 
     def train(
         self,
@@ -105,6 +112,9 @@ class Trainer:
         train_history = {"loss": {}, "metrics": {metric: [] for metric in metrics}}
         validation_history = {"loss": {}, "metrics": {metric: [] for metric in metrics}}
         best_validation_loss = np.inf
+
+        if self.train_data:
+            self.on_start_train(self.train_data)
 
         for epoch in range(start_epoch, num_epochs + 1):
             self.logger.info(f"Epoch {epoch}/{num_epochs}")
