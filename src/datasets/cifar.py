@@ -1,6 +1,8 @@
 import torchvision
 import torch
+from torch.utils.data import random_split
 from ..utils.utils import process_data_path
+from ..utils.constants import Constants as c
 
 
 class CIFAR10(torch.utils.data.Dataset):
@@ -35,18 +37,33 @@ class CIFAR10(torch.utils.data.Dataset):
         )
 
         if train:
-            n_train = int(train_val_split * len(self.dataset))
+            generator = torch.Generator().manual_seed(c.Miscellaneous.SEED)
+            splitted_data = random_split(self.dataset, [train_val_split, 1 - train_val_split], generator=generator)
 
-            if split == 'train':
-                self.dataset = torch.utils.data.Subset(self.dataset, range(n_train))
-            else:
-                self.dataset = torch.utils.data.Subset(self.dataset, range(n_train, len(self.dataset)))
+            self.dataset = splitted_data[0] if split == 'train' else splitted_data[1]
 
     def __len__(self):
         return len(self.dataset)
 
     def __getitem__(self, index):
         return self.dataset[index]
+
+
+'''
+class SemiSupervised(torch.utils.data.Dataset):
+    def __init__(self, ds):
+        self.ds = ds
+        self.ix = ...  # random.choice(len(ds), size=1000)
+
+    def __len__(self):
+        return len(self.ix)
+
+    def __getitem__(self, index):
+        return self.ds[self.ix[index]]
+
+
+cifar_semisup = SemiSupervised(CIFAR10('data', 'train'))
+'''
 
 
 class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
@@ -58,10 +75,10 @@ class SemiSupervisedCIFAR10(torch.utils.data.Dataset):
 
         train_dataset = CIFAR10(root, 'train', train_val_split)
 
-        if split == 'labeled':
-            self.dataset = torch.utils.data.Subset(train_dataset, range(num_labeled))
-        else:
-            self.dataset = torch.utils.data.Subset(train_dataset, range(num_labeled, len(train_dataset)))
+        generator = torch.Generator().manual_seed(c.Miscellaneous.SEED)
+        splitted_data = random_split(train_dataset, [num_labeled, len(train_dataset) - num_labeled], generator=generator)
+
+        self.dataset = splitted_data[0] if split == 'labeled' else splitted_data[1]
 
     def __len__(self):
         return len(self.dataset)

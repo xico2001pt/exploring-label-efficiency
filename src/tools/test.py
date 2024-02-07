@@ -8,7 +8,7 @@ from ..trainers.trainer import Trainer
 from ..utils.loader import Loader
 from ..utils.logger import Logger
 from ..utils.constants import Constants as c, ROOT_DIR
-from ..utils.utils import _load_model, _get_device, _get_config_name
+from ..utils.utils import _load_model, _get_device, _get_config_name, set_reproducibility
 
 
 CONFIGS_DIR = os.path.join(ROOT_DIR, c.Configurations.CONFIGS_DIR)
@@ -65,6 +65,8 @@ def _log_test_time(start_time, end_time, logger):
 
 
 def main(args):
+    set_reproducibility(c.Miscellaneous.SEED)
+
     loader = Loader(CONFIGS_DIR)
     config_name = _get_config_name(loader, args.config)
 

@@ -6,7 +6,7 @@ from ..trainers.semisl_trainer import SemiSLTrainer
 from ..utils.loader import Loader
 from ..utils.logger import Logger
 from ..utils.constants import Constants as c, ROOT_DIR
-from ..utils.utils import _load_model, _get_device, _get_config_name
+from ..utils.utils import _load_model, _get_device, _get_config_name, set_reproducibility
 
 
 CONFIGS_DIR = c.Configurations.CONFIGS_DIR
@@ -88,7 +88,7 @@ def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset
 
     val_dataloader = DataLoader(
         val_dataset,
-        batch_size=unlabeled_batch_size,
+        batch_size=labeled_batch_size+unlabeled_batch_size,
         shuffle=False,
         pin_memory=True,
         num_workers=num_workers
@@ -102,6 +102,8 @@ def _log_train_time(start_time, end_time, logger):
 
 
 def main(args):
+    set_reproducibility(c.Miscellaneous.SEED)
+
     loader = Loader(CONFIGS_DIR)
     config_name = _get_config_name(loader, args.config)
 

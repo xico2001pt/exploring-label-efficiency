@@ -57,3 +57,6 @@ class Constants:
             CHECKPOINTS_DIR = "checkpoints"  # Directory (inside the run log directory) where checkpoints are stored
             BEST_CHECKPOINT_FILENAME = "best_checkpoint.pth"  # Name of the best checkpoint file
             LATEST_CHECKPOINT_FILENAME = "latest_checkpoint.pth"  # Name of the latest checkpoint file
+
+    class Miscellaneous:
+        SEED = 201905337  # Seed for reproducibility

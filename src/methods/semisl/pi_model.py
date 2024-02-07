@@ -50,7 +50,7 @@ class PiModel(SemiSLMethod):
             labeled_outputs = out1[:labeled.size(0)]
             supervised_loss = self.supervised_loss(labeled_outputs, targets)
 
-        unsupervised_loss = self.unsupervised_loss(out1, out2) / 10  # TODO: NUM CLASSES VARIABLE
+        unsupervised_loss = self.unsupervised_loss(out1, out2)
         unsupervised_weighted_loss = self.unsupervised_weight * unsupervised_loss
 
         total_loss = supervised_loss + unsupervised_weighted_loss
