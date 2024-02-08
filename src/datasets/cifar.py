@@ -38,7 +38,9 @@ class CIFAR10(torch.utils.data.Dataset):
 
         if train:
             generator = torch.Generator().manual_seed(c.Miscellaneous.SEED)
-            splitted_data = random_split(self.dataset, [train_val_split, 1 - train_val_split], generator=generator)
+            train_samples = int(train_val_split * len(self.dataset))
+            val_samples = len(self.dataset) - train_samples
+            splitted_data = random_split(self.dataset, [train_samples, val_samples], generator=generator)
 
             self.dataset = splitted_data[0] if split == 'train' else splitted_data[1]
 
