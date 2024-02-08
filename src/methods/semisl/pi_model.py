@@ -13,9 +13,7 @@ class PiModel(SemiSLMethod):
         self.unsupervised_weight_fn = exp_rampup(unsupervised_weight_rampup_length)
 
     def on_start_train(self, train_data):
-        labeled_size, unlabeled_size = train_data.dataset_size["labeled"], train_data.dataset_size["unlabeled"]
-        total_size = labeled_size + unlabeled_size
-        self.max_unsupervised_weight *= labeled_size / total_size
+        self.max_unsupervised_weight *= train_data.dataset_size["labeled"] / train_data.dataset_size["total"]
         self.num_classes = train_data.num_classes
 
         input_size = train_data.input_size[-2:]
@@ -28,18 +26,22 @@ class PiModel(SemiSLMethod):
         epoch = epoch - 1
         self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.max_unsupervised_weight if epoch > 0 else 0.0
 
-    def compute_loss(self, labeled, targets, unlabeled):
+    def get_predictions(self, idx, labeled, unlabeled):
         l1, l2 = self.augment(labeled)
         u1, u2 = self.augment(unlabeled)
 
         branch1, branch2 = torch.cat([l1, u1]), torch.cat([l2, u2])
 
         pred1 = self.model(branch1)
-
         with torch.no_grad():
             pred2 = self.model(branch2)
 
-        labeled_outputs = pred1[:l1.size(0)]
+        return pred1, pred2
+
+    def compute_loss(self, idx, labeled, targets, unlabeled):
+        pred1, pred2 = self.get_predictions(idx, labeled, unlabeled)
+
+        labeled_outputs = pred1[:labeled.size(0)]
         supervised_loss = self.supervised_loss(labeled_outputs, targets)
 
         unsupervised_loss = self.unsupervised_loss(pred1, pred2)

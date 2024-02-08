@@ -8,5 +8,5 @@ class SemiSLMethod:
     def set_model(self, model):
         self.model = model
 
-    def compute_loss(self, labeled, targets, unlabeled):
+    def compute_loss(self, idx, labeled, targets, unlabeled):
         raise NotImplementedError
