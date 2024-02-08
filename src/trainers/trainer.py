@@ -12,6 +12,7 @@ class Trainer:
         self.device = device
         self.logger = logger
         self.loss_fn = loss_fn
+        self.train_data = None
         self.checkpoints_path = os.path.join(self.logger.get_log_dir(), c.Trainer.Checkpoints.CHECKPOINTS_DIR)
 
         os.makedirs(self.checkpoints_path, exist_ok=True)

@@ -1,7 +1,7 @@
 import yaml
 import os
 from ..core import classes as core_classes
-from ..datasets import classes as datasets_classes
+from ..datasets import classes as datasets_classes, SemiSuperivisedDataset
 from ..models import classes as models_classes
 from ..methods.semisl import classes as semisl_classes
 from .constants import Constants as c
@@ -31,7 +31,20 @@ class Loader:
         return config
 
     def load_dataset(self, name: str, split: str):
-        return self._load_config(c.Loader.DATASETS_CONFIG_FILENAME, name, datasets_classes, {"split": split})
+        try:
+            dataset, config = self._load_config(c.Loader.DATASETS_CONFIG_FILENAME, name, datasets_classes, {"split": split})
+        except ValueError:
+            if split in ["labeled", "unlabeled"]:
+                dataset, config = self._load_config(c.Loader.DATASETS_CONFIG_FILENAME, name, datasets_classes, {"split": "train"})
+            else:
+                raise ValueError(f"Invalid split: {split}")
+        
+        if c.Configurations.Parameters.NUM_LABELED_CONFIG_NAME in config:
+            if split not in ["labeled", "unlabeled"]:
+                split = "labeled"
+            num_labeled = config[c.Configurations.Parameters.NUM_LABELED_CONFIG_NAME]
+            dataset = SemiSuperivisedDataset(dataset, split, num_labeled)
+        return dataset, config
 
     def load_model(self, name: str):
         return self._load_config(c.Loader.MODELS_CONFIG_FILENAME, name, models_classes)

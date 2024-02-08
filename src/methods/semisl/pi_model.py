@@ -16,8 +16,9 @@ class PiModel(SemiSLMethod):
         labeled_size, unlabeled_size = train_data.dataset_size["labeled"], train_data.dataset_size["unlabeled"]
         total_size = labeled_size + unlabeled_size
         self.max_unsupervised_weight *= labeled_size / total_size
-        input_size = train_data.input_size[-2:]
+        self.num_classes = train_data.num_classes
 
+        input_size = train_data.input_size[-2:]
         self.augmentations = [
             torchvision.transforms.RandomCrop(input_size, padding=4),
             torchvision.transforms.RandomHorizontalFlip(p=0.5),

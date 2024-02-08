@@ -26,6 +26,7 @@ class Constants:
             STOP_CONDITION_CONFIG_NAME = "stop_condition"  # Name of the stop condition configuration parameter
             MODEL_WEIGHTS_PATH_CONFIG_NAME = "model_weights_path"  # Name of the model weights path configuration parameter
             HYPERPARAMETERS_CONFIG_NAME = "hyperparameters"  # Name of the hyperparameters configuration parameter
+            NUM_LABELED_CONFIG_NAME = "num_labeled"  # Name of the number of labeled samples configuration parameter
 
             EPOCHS_CONFIG_NAME = "epochs"  # Name of the epochs configuration parameter
             NUM_WORKERS_CONFIG_NAME = "num_workers"  # Name of the number of workers configuration parameter
