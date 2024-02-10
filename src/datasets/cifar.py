@@ -1,5 +1,5 @@
-import torchvision
 import torch
+import torchvision
 from torch.utils.data import random_split
 from ..utils.utils import process_data_path
 from ..utils.constants import Constants as c

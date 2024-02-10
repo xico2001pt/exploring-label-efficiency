@@ -1,11 +1,12 @@
 import torch
 from torch.utils.data import random_split
 from .cifar import CIFAR10
+from .cityscapes import Cityscapes
 from ..utils.constants import Constants as c
 
-classes = [CIFAR10]  # Add the dataset classes here
+classes = [CIFAR10, Cityscapes]  # Add the dataset classes here
 
-
+# TODO: Move to file
 class SemiSuperivisedDataset(torch.utils.data.Dataset):
     def __init__(self, dataset, split='labeled', num_labeled=4000):
         if split not in ['labeled', 'unlabeled']:
