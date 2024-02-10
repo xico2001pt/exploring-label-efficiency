@@ -90,7 +90,13 @@ class Trainer:
     def on_start_train(self, train_data):
         pass
 
-    def on_change_epoch(self, epoch):
+    def on_start_epoch(self, epoch):
+        pass
+
+    def on_end_train(self, train_data):
+        pass
+
+    def on_end_epoch(self, epoch):
         pass
 
     def set_train_data(self, train_data):
@@ -120,7 +126,7 @@ class Trainer:
         for epoch in range(start_epoch, num_epochs + 1):
             self.logger.info(f"Epoch {epoch}/{num_epochs}")
 
-            self.on_change_epoch(epoch)
+            self.on_start_epoch(epoch)
 
             train_loss, train_metrics = self._epoch_iteration(
                 train_dataloader,
@@ -129,6 +135,8 @@ class Trainer:
                 metrics=metrics,
                 description="Train",
             )
+
+            self.on_end_epoch(epoch)
 
             self._log_epoch_stats(train_loss, train_metrics, "Train")
 
@@ -167,6 +175,9 @@ class Trainer:
 
             if scheduler:
                 scheduler.step()
+
+        if self.train_data:
+            self.on_end_train(self.train_data)
 
         self.logger.info(f"Best validation loss: {best_validation_loss}")
 

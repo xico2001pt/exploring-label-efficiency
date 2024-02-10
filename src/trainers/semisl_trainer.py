@@ -12,8 +12,14 @@ class SemiSLTrainer(Trainer):
     def on_start_train(self, train_data):
         self.method.on_start_train(train_data)
 
-    def on_change_epoch(self, epoch):
-        self.method.on_change_epoch(epoch)
+    def on_start_epoch(self, epoch):
+        self.method.on_start_epoch(epoch)
+
+    def on_end_train(self, train_data):
+        self.method.on_end_train(train_data)
+
+    def on_end_epoch(self, epoch):
+        self.method.on_end_epoch(epoch)
 
     def _compute_semi_supervised_loss(self, idx, labeled, targets, unlabeled):
         labeled_outputs, loss = self.method.compute_loss(idx, labeled, targets, unlabeled)

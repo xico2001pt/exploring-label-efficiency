@@ -17,12 +17,12 @@ class PiModel(SemiSLMethod):
         self.num_classes = train_data.num_classes
 
         input_size = train_data.input_size[-2:]
-        self.augmentations = [
+        self.augmentations = torchvision.transforms.Compose([
             torchvision.transforms.RandomCrop(input_size, padding=4),
             torchvision.transforms.RandomHorizontalFlip(p=0.5),
-        ]
+        ])
 
-    def on_change_epoch(self, epoch):
+    def on_start_epoch(self, epoch):
         epoch = epoch - 1
         self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.max_unsupervised_weight if epoch > 0 else 0.0
 
@@ -59,11 +59,9 @@ class PiModel(SemiSLMethod):
         return labeled_outputs, loss
 
     def stochastic_augmentation(self, x):
-        for augmentation in self.augmentations:
-            x = augmentation(x)
-        return x
+        return self.augmentations(x)
 
     def augment(self, x):
-        x_1 = self.stochastic_augmentation(x.clone())
-        x_2 = self.stochastic_augmentation(x.clone())
+        x_1 = self.stochastic_augmentation(x)
+        x_2 = self.stochastic_augmentation(x)
         return x_1, x_2
