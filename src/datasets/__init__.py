@@ -1,10 +1,10 @@
 import torch
 from torch.utils.data import random_split
 from .cifar import CIFAR10
-from .cityscapes import Cityscapes
+from .cityscapes import CityscapesSeg
 from ..utils.constants import Constants as c
 
-classes = [CIFAR10, Cityscapes]  # Add the dataset classes here
+classes = [CIFAR10, CityscapesSeg]  # Add the dataset classes here
 
 # TODO: Move to file
 class SemiSuperivisedDataset(torch.utils.data.Dataset):

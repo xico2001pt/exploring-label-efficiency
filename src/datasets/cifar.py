@@ -51,7 +51,7 @@ class CIFAR10(torch.utils.data.Dataset):
         return self.dataset[index]
 
     def get_input_size(self):
-        return (3, 32, 32)
+        return tuple(self[0][0].shape)
 
     def get_num_classes(self):
         return 10
