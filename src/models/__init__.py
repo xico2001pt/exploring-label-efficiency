@@ -1,3 +1,4 @@
+from .deeplab import DeepLabV3
 from .wideresnet import WideResNet
 
-classes = [WideResNet]  # Add the model classes here
+classes = [DeepLabV3, WideResNet]  # Add the model classes here
