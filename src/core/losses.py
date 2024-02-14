@@ -11,6 +11,7 @@ class CrossEntropyLoss(nn.CrossEntropyLoss):
         return {"total": loss}
 
 
+# TODO: Not working
 class DiceLoss(nn.Module):
     def __init__(self, *args, **kwargs):
         super(DiceLoss, self).__init__()

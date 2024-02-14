@@ -1,4 +1,4 @@
-from .cifar import CIFAR10
+from .cifar import CIFAR10, SemiSupervisedCIFAR10
 from .cityscapes import CityscapesSeg
 
-classes = [CIFAR10, CityscapesSeg]  # Add the dataset classes here
+classes = [CIFAR10, SemiSupervisedCIFAR10, CityscapesSeg]  # Add the dataset classes here

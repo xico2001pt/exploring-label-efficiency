@@ -2,6 +2,7 @@ import torch
 import torchvision
 from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
+from .semi_supervised import SemiSupervisedDataset
 from ..utils.utils import process_data_path
 
 
@@ -67,6 +68,13 @@ class CityscapesSeg(torch.utils.data.Dataset):
 
     def get_num_classes(self):
         return len(self.valid_classes) + 1  # +1 for the ignore index
+
+
+class SemiSupervisedCityscapesSeg(SemiSupervisedDataset):
+    def __init__(self, root, split='labeled', mode='fine', num_labeled=372):
+        # If split is 'labeled', select num_labeled samples from the train set
+        # If split is 'unlabeled', select the samples from the extra set
+        pass
 
 
 if __name__ == "__main__":
