@@ -12,7 +12,7 @@ class CityscapesSeg(torch.utils.data.Dataset):
         self.valid_classes = [7, 8, 11, 12, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33]
 
         # TODO: Transformations as arguments
-        transform = v2.Compose([
+        image_transform = v2.Compose([
             v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
             v2.Normalize(
                 (0.485, 0.456, 0.406),
@@ -25,10 +25,15 @@ class CityscapesSeg(torch.utils.data.Dataset):
         self.transforms = v2.Compose([
             v2.Resize(int(512*1.05)),  # TODO: Make this an argument
             v2.RandomCrop(512),  # TODO: Make this an argument
-            v2.RandomHorizontalFlip(),
         ])
 
-        self.dataset = torchvision.datasets.Cityscapes(root, split=split, mode=mode, target_type='semantic', transform=transform, target_transform=target_transform)
+        if split == 'train':
+            self.transforms = v2.Compose([
+                self.transforms,
+                v2.RandomHorizontalFlip()
+            ])
+
+        self.dataset = torchvision.datasets.Cityscapes(root, split=split, mode=mode, target_type='semantic', transform=image_transform, target_transform=target_transform)
 
     def _convert_target(self, target):
         # Copy the target tensor

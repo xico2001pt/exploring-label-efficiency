@@ -1,6 +1,7 @@
 import torch
 import torchvision
 from torch.utils.data import random_split
+from .semi_supervised import SemiSupervisedDataset
 from ..utils.utils import process_data_path
 from ..utils.constants import Constants as c
 
@@ -20,9 +21,9 @@ class CIFAR10(torch.utils.data.Dataset):
             )
         ])
 
-        train = split in ['train', 'val']
+        train_or_val = split in ['train', 'val']
 
-        if train:
+        if split == 'train':
             transform = torchvision.transforms.Compose([
                 torchvision.transforms.RandomCrop(32, padding=4),
                 torchvision.transforms.RandomHorizontalFlip(),
@@ -31,12 +32,12 @@ class CIFAR10(torch.utils.data.Dataset):
 
         self.dataset = torchvision.datasets.CIFAR10(
             root,
-            train=train,
+            train=train_or_val,
             transform=transform,
             download=True
         )
 
-        if train:
+        if train_or_val:
             generator = torch.Generator().manual_seed(c.Miscellaneous.SEED)
             train_samples = int(train_val_split * len(self.dataset))
             val_samples = len(self.dataset) - train_samples
@@ -55,5 +56,11 @@ class CIFAR10(torch.utils.data.Dataset):
 
     def get_num_classes(self):
         return 10
+
+
+class SemiSupervisedCIFAR10(SemiSupervisedDataset):
+    def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=4000):
+        dataset = CIFAR10(root, split='train', train_val_split=train_val_split)
+        super().__init__(dataset, split=split, num_labeled=num_labeled)
 
 # TODO: Add CIFAR100
