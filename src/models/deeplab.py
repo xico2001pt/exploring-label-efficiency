@@ -12,4 +12,12 @@ def DeepLabV3(backbone, **kwargs):
     if fn is None:
         raise ValueError(f"Invalid backbone {backbone}")
     model = fn(**kwargs)
+
+    old_forward = model.forward
+
+    def forward(x):
+        outputs = old_forward(x)
+        return outputs["out"]
+
+    model.forward = forward
     return model
