@@ -169,8 +169,9 @@ class Trainer:
             self._save_stats(train_history["loss"], train_history["metrics"], "train")
             self._save_stats(validation_history["loss"], validation_history["metrics"], "validation")
 
-            if stop_condition and stop_condition(train_loss, validation_loss):
+            if stop_condition and stop_condition(train_loss['total'], validation_loss['total']):
                 self.logger.warning("Stopping due to stop condition")
+                self.logger.add_log_entry("early_stopped", epoch)
                 break
 
             if scheduler:

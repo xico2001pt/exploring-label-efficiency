@@ -1,5 +1,4 @@
 import torch
-from PIL import Image
 import torchvision
 from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
@@ -21,11 +20,12 @@ class CityscapesSeg(torch.utils.data.Dataset):
             )
         ])
 
-        target_transform = v2.Lambda(lambda x: tv_tensors.Mask(x))
+        target_transform = v2.Lambda(lambda x: tv_tensors.Mask(x, dtype=torch.long))
 
         self.transforms = v2.Compose([
             v2.Resize(int(512*1.05)),  # TODO: Make this an argument
             v2.RandomCrop(512),  # TODO: Make this an argument
+            v2.RandomHorizontalFlip(),
         ])
 
         self.dataset = torchvision.datasets.Cityscapes(root, split=split, mode=mode, target_type='semantic', transform=transform, target_transform=target_transform)
@@ -52,6 +52,8 @@ class CityscapesSeg(torch.utils.data.Dataset):
 
         if self.transforms is not None:
             image, target = self.transforms(image, target)
+
+        target = torch.squeeze(target)
 
         return image, target
 
