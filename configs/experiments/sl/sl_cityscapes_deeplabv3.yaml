@@ -7,7 +7,7 @@ sl_train:
   val_dataset: cityscapes_segmentation  # Dataset to use for validation
   optimizer: supervised_cityscapes_sgd  # Optimizer
   loss: cityscapes_cross_entropy  # Loss function
-  metrics: [cityscapes_dice, cityscapes_jaccard]  # Metrics to evaluate
+  metrics: [cityscapes_jaccard_macro, cityscapes_jaccard_micro, cityscapes_dice]  # Metrics to evaluate
   scheduler: deeplabv3_lr  # Learning rate scheduler. Can be null
   stop_condition: cityscapes_stop_patience  # Condition to stop training. Can be null
   hyperparameters:  # Hyperparameters for training
@@ -20,7 +20,7 @@ test:
   test_dataset: cityscapes_segmentation  # Dataset to use for testing
   model_weights_path: sl_cityscapes_deeplabv3.pth  # Path to model weights (relative to weights folder). If null, config name is used
   loss: cityscapes_cross_entropy  # Loss function
-  metrics: [cityscapes_dice, cityscapes_jaccard]  # Metrics to evaluate
+  metrics: [cityscapes_jaccard_macro, cityscapes_jaccard_micro, cityscapes_dice]  # Metrics to evaluate
   hyperparameters:  # Hyperparameters for testing
     num_workers: 4  # Number of workers for data loading
     batch_size: 16  # Test batch size

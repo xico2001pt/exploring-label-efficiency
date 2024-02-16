@@ -1,9 +1,7 @@
 import torch
 import torchvision
-from torch.utils.data import random_split
 from .semi_supervised import SemiSupervisedDataset
-from ..utils.utils import process_data_path
-from ..utils.constants import Constants as c
+from ..utils.utils import process_data_path, split_train_val_data
 
 
 class CIFAR10(torch.utils.data.Dataset):
@@ -38,11 +36,7 @@ class CIFAR10(torch.utils.data.Dataset):
         )
 
         if train_or_val:
-            generator = torch.Generator().manual_seed(c.Miscellaneous.SEED)
-            train_samples = int(train_val_split * len(self.dataset))
-            val_samples = len(self.dataset) - train_samples
-            splitted_data = random_split(self.dataset, [train_samples, val_samples], generator=generator)
-
+            splitted_data = split_train_val_data(self.dataset, train_val_split)
             self.dataset = splitted_data[0] if split == 'train' else splitted_data[1]
 
     def __len__(self):

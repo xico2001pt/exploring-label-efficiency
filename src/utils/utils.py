@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import random
 from datetime import datetime
+from torch.utils.data import random_split
 from .constants import Constants as c, ROOT_DIR
 
 
@@ -43,3 +44,15 @@ def set_reproducibility(seed):
     random.seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = False
+
+
+def split_train_val_data(dataset, train_val_split):
+    generator = torch.Generator().manual_seed(c.Miscellaneous.SEED)
+
+    if train_val_split > 1:
+        train_samples = train_val_split
+    else:
+        train_samples = int(train_val_split * len(dataset))
+
+    val_samples = len(dataset) - train_samples
+    return random_split(dataset, [train_samples, val_samples], generator=generator)

@@ -12,13 +12,23 @@ cifar10_top5_accuracy:
     num_classes: 10
     top_k: 5
 
-cityscapes_jaccard:
+cityscapes_jaccard_macro:
   class: JaccardIndex
   args:
     task: "multiclass"
+    average: "macro"
     num_classes: 20
     ignore_index: 0
-    validate_args: True #False
+    validate_args: False
+
+cityscapes_jaccard_micro:
+  class: JaccardIndex
+  args:
+    task: "multiclass"
+    average: "micro"
+    num_classes: 20
+    ignore_index: 0
+    validate_args: False
 
 cityscapes_dice:
   class: Dice
