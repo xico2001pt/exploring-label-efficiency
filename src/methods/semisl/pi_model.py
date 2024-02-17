@@ -1,6 +1,6 @@
 import torch
 from torch.nn import CrossEntropyLoss, MSELoss
-import torchvision.transforms
+import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
 from ...utils.ramps import exp_rampup
 
@@ -17,9 +17,9 @@ class PiModel(SemiSLMethod):
         self.num_classes = train_data.num_classes
 
         input_size = train_data.input_size[-2:]
-        self.augmentations = torchvision.transforms.Compose([
-            torchvision.transforms.RandomCrop(input_size, padding=4),
-            torchvision.transforms.RandomHorizontalFlip(p=0.5),
+        self.augmentations = v2.Compose([
+            v2.RandomCrop(input_size, padding=4),
+            v2.RandomHorizontalFlip(p=0.5),
         ])
 
     def on_start_epoch(self, epoch):
