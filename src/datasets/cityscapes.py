@@ -7,7 +7,7 @@ from ..utils.utils import process_data_path, split_train_val_data
 
 
 class CityscapesSeg(torch.utils.data.Dataset):
-    def __init__(self, root, split='train', mode='fine', train_val_split=0.9):
+    def __init__(self, root, split='train', mode='fine', train_val_split=2475):
         root = process_data_path(root)
         self.ignore_index = 0
         self.valid_classes = [7, 8, 11, 12, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33]
@@ -49,13 +49,8 @@ class CityscapesSeg(torch.utils.data.Dataset):
             self.dataset = splitted_data[0] if split == 'train' else splitted_data[1]
 
     def _convert_target(self, target):
-        # Copy the target tensor
         copy = target.clone()
-
-        # Set all pixels to ignore_index
         target.fill_(self.ignore_index)
-
-        # Set the valid classes to their respective indices
         for i, cl in enumerate(self.valid_classes):
             target[copy == cl] = i+1
 
@@ -83,10 +78,17 @@ class CityscapesSeg(torch.utils.data.Dataset):
 
 
 class SemiSupervisedCityscapesSeg(SemiSupervisedDataset):
-    def __init__(self, root, split='labeled', mode='fine', num_labeled=372):
-        # If split is 'labeled', select num_labeled samples from the train set
-        # If split is 'unlabeled', select the samples from the extra set
-        pass
+    def __init__(self, root, split='labeled', train_val_split=2475, num_labeled=372):
+        if split == 'train':
+            split = 'labeled'
+
+        if split == 'labeled':
+            dataset = CityscapesSeg(root, split='train', mode='fine', train_val_split=train_val_split)
+        else:
+            dataset = CityscapesSeg(root, split='train_extra', mode='coarse', train_val_split=train_val_split)
+            num_labeled = 0
+
+        super().__init__(dataset, split, num_labeled)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,8 @@ from ..utils.constants import Constants as c
 
 class SemiSupervisedDataset(torch.utils.data.Dataset):
     def __init__(self, dataset, split='labeled', num_labeled=4000):
+        if split == 'train':
+            split = 'labeled'
         if split not in ['labeled', 'unlabeled']:
             raise ValueError("split must be either 'labeled' or 'unlabeled'")
 
