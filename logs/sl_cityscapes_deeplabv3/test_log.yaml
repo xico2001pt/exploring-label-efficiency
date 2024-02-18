@@ -1,5 +1,5 @@
 device: cuda
-duration: 134.22287607192993
+duration: 35.357478857040405
 hyperparameters:
   batch_size: 16
   num_workers: 4
@@ -14,12 +14,21 @@ metrics:
       ignore_index: 0
       num_classes: 20
     class: Dice
-  cityscapes_jaccard:
+  cityscapes_jaccard_macro:
     args:
+      average: macro
       ignore_index: 0
       num_classes: 20
       task: multiclass
-      validate_args: true
+      validate_args: false
+    class: JaccardIndex
+  cityscapes_jaccard_micro:
+    args:
+      average: micro
+      ignore_index: 0
+      num_classes: 20
+      task: multiclass
+      validate_args: false
     class: JaccardIndex
 model:
   args:
@@ -30,10 +39,12 @@ test_dataset:
   args:
     mode: fine
     root: /data/auto/cityscapes
+    train_val_split: 2475
   class: CityscapesSeg
 test_history:
   loss:
-    total: .nan
+    total: 0.16229274100624025
   metrics:
-    cityscapes_dice: 0.0
-    cityscapes_jaccard: .nan
+    cityscapes_dice: 0.8964458387345076
+    cityscapes_jaccard_macro: 0.6052202489227057
+    cityscapes_jaccard_micro: 0.901119889691472
