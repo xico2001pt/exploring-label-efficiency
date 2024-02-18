@@ -1,8 +1,8 @@
 import torch
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms.v2 as v2
-from .semisl_method import SemiSLMethod
-from ...utils.ramps import exp_rampup
+from ..semisl_method import SemiSLMethod
+from ....utils.ramps import exp_rampup
 
 
 class PiModel(SemiSLMethod):
@@ -49,14 +49,13 @@ class PiModel(SemiSLMethod):
 
         total_loss = supervised_loss + unsupervised_weighted_loss
 
-        loss = {'total': total_loss}
-        if labeled is not None:
-            loss['supervised'] = supervised_loss
-        if unlabeled is not None:
-            loss['unsupervised'] = unsupervised_loss
-            loss['unsupervised_weighted'] = unsupervised_weighted_loss
-
-        return labeled_outputs, loss
+        loss = {
+            'total': total_loss,
+            'supervised': supervised_loss,
+            'unsupervised': unsupervised_loss,
+            'unsupervised_weighted': unsupervised_weighted_loss
+        }
+        return labeled_outputs, targets, loss
 
     def stochastic_augmentation(self, x):
         return self.augmentations(x)

@@ -1,6 +1,6 @@
 import torch
 from .pi_model import PiModel
-from ...utils.structures import EMA
+from ....utils.structures import EMA
 
 
 class TemporalEnsembling(PiModel):

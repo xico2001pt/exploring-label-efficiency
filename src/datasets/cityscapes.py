@@ -92,6 +92,7 @@ class SemiSupervisedCityscapesSeg(SemiSupervisedDataset):
 
 
 if __name__ == "__main__":
+    ############  DEBUGGING  ############
     dataset = CityscapesSeg(root='/data/auto/cityscapes', split='train')
 
     from torchvision.utils import draw_segmentation_masks, save_image

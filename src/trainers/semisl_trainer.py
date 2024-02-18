@@ -22,8 +22,8 @@ class SemiSLTrainer(Trainer):
         self.method.on_end_epoch(epoch)
 
     def _compute_semi_supervised_loss(self, idx, labeled, targets, unlabeled):
-        labeled_outputs, loss = self.method.compute_loss(idx, labeled, targets, unlabeled)
-        return labeled_outputs, loss
+        labeled_outputs, targets, loss = self.method.compute_loss(idx, labeled, targets, unlabeled)
+        return labeled_outputs, targets, loss
 
     def _semisl_batch_iteration(self, num_batches, labeled_dataloader, unlabeled_dataloader, optimizer, metrics, total_loss, loss_counter, total_metrics, description):
         labeled_dataloader_iter = iter(labeled_dataloader)
@@ -47,7 +47,7 @@ class SemiSLTrainer(Trainer):
 
             optimizer.zero_grad()
 
-            labeled_outputs, loss = self._compute_semi_supervised_loss(idx, labeled, targets, unlabeled)
+            labeled_outputs, targets, loss = self._compute_semi_supervised_loss(idx, labeled, targets, unlabeled)
 
             loss['total'].backward()
             optimizer.step()
