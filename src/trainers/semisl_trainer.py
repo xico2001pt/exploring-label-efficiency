@@ -30,20 +30,11 @@ class SemiSLTrainer(Trainer):
         unlabeled_dataloader_iter = iter(unlabeled_dataloader)
 
         for idx in tqdm(range(num_batches), desc=description):
-            try:
-                labeled, targets = next(labeled_dataloader_iter)
-            except StopIteration:
-                labeled, targets = None, None
+            labeled, targets = next(labeled_dataloader_iter)
+            unlabeled = next(unlabeled_dataloader_iter)
 
-            try:
-                unlabeled = next(unlabeled_dataloader_iter)
-            except StopIteration:
-                unlabeled = None
-
-            if labeled is not None:
-                labeled, targets = labeled.to(self.device), targets.to(self.device)
-            if unlabeled is not None:
-                unlabeled = unlabeled.to(self.device)
+            unlabeled = unlabeled.to(self.device)
+            labeled, targets = labeled.to(self.device), targets.to(self.device)
 
             optimizer.zero_grad()
 
@@ -56,9 +47,8 @@ class SemiSLTrainer(Trainer):
                 total_loss[loss_term] = total_loss.get(loss_term, 0.0) + loss[loss_term].item()
                 loss_counter[loss_term] = loss_counter.get(loss_term, 0) + 1
 
-            if labeled_outputs is not None:
-                for metric in metrics:
-                    total_metrics[metric] += metrics[metric](labeled_outputs, targets).item()
+            for metric in metrics:
+                total_metrics[metric] += metrics[metric](labeled_outputs, targets).item()
 
     def _epoch_iteration(self, dataloader, is_train=True, optimizer=None, metrics={}, description="Train"):
         if is_train:

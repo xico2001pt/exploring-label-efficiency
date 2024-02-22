@@ -1,5 +1,6 @@
 import torch
 from torch.nn import CrossEntropyLoss, MSELoss
+import torchvision.tv_tensors as tv_tensors
 import torchvision.transforms.v2 as v2
 from ..semisl_method import SemiSLMethod
 from ....utils.ramps import exp_rampup
@@ -22,9 +23,12 @@ class PiModelSeg(SemiSLMethod):
             v2.RandomHorizontalFlip(p=0.5)
         ])
         self.individual_augmentations = v2.Compose([
+            #v2.Identity(),
+            v2.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1),
             v2.RandomAdjustSharpness(sharpness_factor=2, p=0.5),
-            v2.RandomAutocontrast(p=0.5),
-            v2.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
+            #v2.RandomAutocontrast(p=0.5),
+            #v2.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1),
+            #v2.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
         ])
 
     def on_start_epoch(self, epoch):
@@ -32,6 +36,9 @@ class PiModelSeg(SemiSLMethod):
         self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.max_unsupervised_weight if epoch > 0 else 0.0
 
     def get_predictions(self, idx, labeled, targets, unlabeled):
+        labeled, targets = tv_tensors.Image(labeled), tv_tensors.Mask(targets)
+        unlabeled = tv_tensors.Image(unlabeled)
+
         l1, l2, targets = self.augment_labeled(labeled, targets)
         u1, u2 = self.augment_unlabeled(unlabeled)
 

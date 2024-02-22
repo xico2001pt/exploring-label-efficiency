@@ -21,7 +21,11 @@ class CityscapesSeg(torch.utils.data.Dataset):
             )
         ])
 
-        target_transform = v2.Lambda(lambda x: tv_tensors.Mask(x, dtype=torch.long))
+        target_transform = v2.Compose([
+            v2.Lambda(lambda x: tv_tensors.Mask(x, dtype=torch.long)),
+            v2.Lambda(lambda x: x.squeeze()),
+            v2.Lambda(lambda x: tv_tensors.Mask(x)),
+        ])
 
         self.transforms = v2.Compose([
             v2.Resize(int(512*1.05)),  # TODO: Make this an argument
@@ -31,7 +35,7 @@ class CityscapesSeg(torch.utils.data.Dataset):
         if split in ['train', 'train_extra']:
             self.transforms = v2.Compose([
                 self.transforms,
-                v2.RandomHorizontalFlip()
+                v2.RandomHorizontalFlip(p=0.5)
             ])
 
         pseudo_split = split
@@ -66,8 +70,6 @@ class CityscapesSeg(torch.utils.data.Dataset):
         if self.transforms is not None:
             image, target = self.transforms(image, target)
 
-        target = torch.squeeze(target)
-
         return image, target
 
     def get_input_size(self):
@@ -95,67 +97,40 @@ if __name__ == "__main__":
     ############  DEBUGGING  ############
     dataset = CityscapesSeg(root='/data/auto/cityscapes', split='train')
 
-    from torchvision.utils import draw_segmentation_masks, save_image
-    from ..models import DeepLabV3
-    from ..utils.constants import Constants as c, ROOT_DIR
-    import os
+    from torchvision.utils import save_image
+    from ..utils.utils import set_reproducibility
 
-    model = DeepLabV3(backbone='resnet101', num_classes=20)
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    device = torch.device(device)
-    model.to(device)
-    model.eval()
+    set_reproducibility(201905337)
 
+    img, _ = dataset[0]
+    save_image(img, 'cityscapes0.png')
 
+    # Crop and resize
+    img1 = v2.Compose([
+        v2.RandomCrop(512, padding=50),
+    ])(img)
+    save_image(img1, 'cityscapes1.png')
 
-    WEIGHTS_DIR = os.path.join(ROOT_DIR, c.Trainer.WEIGHTS_DIR)
-    path = os.path.join(WEIGHTS_DIR, 'sl_cityscapes_deeplabv3.pth')
-    model.load_state_dict(torch.load(path))
+    # Flip
+    img2 = v2.RandomHorizontalFlip(p=1)(img)
+    save_image(img2, 'cityscapes2.png')
 
-    img_ori, target_ori = dataset[4]
+    # Color distortion
+    img3 = v2.ColorJitter(brightness=(0.7, 0.7), contrast=0.5, saturation=(0.9, 0.9), hue=(0.5, 0.5))(img)
+    save_image(img3, 'cityscapes3.png')
 
-    sample = img_ori.unsqueeze(0).to(device)
-    output = model(sample)
+    # Rotation
+    img4 = v2.RandomRotation((90, 90))(img)
+    save_image(img4, 'cityscapes4.png')
 
-    import torchmetrics
+    # Cutout
+    img5 = v2.RandomErasing(p=1, ratio=(1, 1))(img)
+    save_image(img5, 'cityscapes5.png')
 
-    jac1 = torchmetrics.JaccardIndex(num_classes=20, ignore_index=0, task='multiclass', average='macro').to(device)
-    jac2 = torchmetrics.JaccardIndex(num_classes=20, ignore_index=0, task='multiclass', average='micro').to(device)
-    jac3 = torchmetrics.JaccardIndex(num_classes=20, ignore_index=0, task='multiclass', average='none').to(device)
-    target_ori = target_ori.unsqueeze(0).to(device)
-    print(output.shape, target_ori.shape)
-    met1 = jac1(output, target_ori)
-    met2 = jac2(output, target_ori)
-    met3 = jac3(output, target_ori)
-    print(met1, met2, met3)
+    # Blur
+    img6 = v2.GaussianBlur(kernel_size=(23, 23), sigma=(0.1, 5.0))(img)
+    save_image(img6, 'cityscapes6.png')
 
-    max_i, max_val = 0, 0
-    for i in range(20):
-        val = output[0][i][0,0]
-        if val > max_val:
-            max_i = i
-            max_val = val
-
-    print(max_i, max_val)
-
-    output = output.argmax(1)
-
-    print(output[0][0,0])
-
-
-    print(output.shape)
-    target = output.squeeze(0)
-    print(target.shape)
-
-    img = img_ori.type(torch.uint8)
-
-    # Change (H,W) to (num_classes, H, W) (one-hot encoding)
-    target = torch.nn.functional.one_hot(target.long(), num_classes=dataset.get_num_classes())
-    target = target.permute(2, 0, 1)
-    target = target.type(torch.bool)
-
-    res = draw_segmentation_masks(img, target, alpha=1.0, colors=['red', 'green', 'blue', 'yellow', 'purple', 'orange', 'cyan', 'magenta', 'lime', 'pink', 'teal', 'lavender', 'brown', 'beige', 'maroon', 'coral', 'grey', 'white', 'navy', 'black'][::-1])
-
-    # Save the image
-    save_image(img_ori, 'img.png')
-    save_image(res.float(), 'mask.png')
+    # Sharpness
+    img7 = v2.RandomAdjustSharpness(sharpness_factor=8, p=1)(img)
+    save_image(img7, 'cityscapes7.png')
