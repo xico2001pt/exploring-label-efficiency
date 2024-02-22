@@ -22,13 +22,6 @@ class SVHN(torch.utils.data.Dataset):
 
         train_or_val = split in ['train', 'val']
 
-        if split == 'train':
-            transform = v2.Compose([
-                v2.RandomCrop(32, padding=4),
-                v2.RandomHorizontalFlip(),
-                transform
-            ])
-
         self.dataset = torchvision.datasets.SVHN(
             root,
             split="train" if train_or_val else "test",
