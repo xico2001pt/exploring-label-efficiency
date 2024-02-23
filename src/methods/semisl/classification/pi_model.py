@@ -6,21 +6,16 @@ from ....utils.ramps import exp_rampup
 
 
 class PiModel(SemiSLMethod):
-    def __init__(self, w_max, unsupervised_weight_rampup_length):
-        self.supervised_loss = CrossEntropyLoss(reduction='mean')
-        self.unsupervised_loss = MSELoss(reduction='mean')
+    def __init__(self, w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss):
+        self.supervised_loss = supervised_loss
+        self.unsupervised_loss = unsupervised_loss
         self.max_unsupervised_weight = w_max
         self.unsupervised_weight_fn = exp_rampup(unsupervised_weight_rampup_length)
+        self.augmentations = transform
 
     def on_start_train(self, train_data):
         self.max_unsupervised_weight *= train_data.dataset_size["labeled"] / train_data.dataset_size["total"]
         self.num_classes = train_data.num_classes
-
-        input_size = train_data.input_size[-2:]
-        self.augmentations = v2.Compose([
-            v2.RandomCrop(input_size, padding=4),
-            v2.RandomHorizontalFlip(p=0.5),
-        ])
 
     def on_start_epoch(self, epoch):
         epoch = epoch - 1
@@ -64,3 +59,22 @@ class PiModel(SemiSLMethod):
         x_1 = self.stochastic_augmentation(x)
         x_2 = self.stochastic_augmentation(x)
         return x_1, x_2
+
+
+def PiModelCIFAR10(w_max, unsupervised_weight_rampup_length):
+    transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4),
+        v2.RandomHorizontalFlip(p=0.5),
+    ])
+    supervised_loss = CrossEntropyLoss(reduction='mean')
+    unsupervised_loss = MSELoss(reduction='mean')
+    return PiModel(w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss)
+
+
+def PiModelSVHN(w_max, unsupervised_weight_rampup_length):
+    transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4),
+    ])
+    supervised_loss = CrossEntropyLoss(reduction='mean')
+    unsupervised_loss = MSELoss(reduction='mean')
+    return PiModel(w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss)

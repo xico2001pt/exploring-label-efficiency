@@ -21,22 +21,12 @@ class CityscapesSeg(torch.utils.data.Dataset):
             )
         ])
 
-        target_transform = v2.Compose([
-            v2.Lambda(lambda x: tv_tensors.Mask(x, dtype=torch.long)),
-            v2.Lambda(lambda x: x.squeeze()),
-            v2.Lambda(lambda x: tv_tensors.Mask(x)),
-        ])
+        target_transform = v2.Lambda(lambda x: tv_tensors.Mask(x, dtype=torch.long))
 
         self.transforms = v2.Compose([
             v2.Resize(int(512*1.05)),  # TODO: Make this an argument
             v2.RandomCrop(512),  # TODO: Make this an argument
         ])
-
-        if split in ['train', 'train_extra']:
-            self.transforms = v2.Compose([
-                self.transforms,
-                v2.RandomHorizontalFlip(p=0.5)
-            ])
 
         pseudo_split = split
 
@@ -70,7 +60,7 @@ class CityscapesSeg(torch.utils.data.Dataset):
         if self.transforms is not None:
             image, target = self.transforms(image, target)
 
-        return image, target
+        return image, target.squeeze()
 
     def get_input_size(self):
         return tuple(self[0][0].shape)

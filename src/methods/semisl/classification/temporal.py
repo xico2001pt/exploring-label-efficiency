@@ -1,11 +1,13 @@
 import torch
+import torchvision.transforms.v2 as v2
+from torch.nn import CrossEntropyLoss, MSELoss
 from .pi_model import PiModel
 from ....utils.structures import EMA
 
 
 class TemporalEnsembling(PiModel):
-    def __init__(self, w_max, unsupervised_weight_rampup_length, accumlation_decay):
-        super().__init__(w_max, unsupervised_weight_rampup_length)
+    def __init__(self, w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, supervised_loss, unsupervised_loss):
+        super().__init__(w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss)
         self.accumlation_decay = accumlation_decay
 
     def on_start_train(self, train_data):
@@ -44,3 +46,22 @@ class TemporalEnsembling(PiModel):
             self.update_ensemble_predictions(idx)
 
         return res
+
+
+def TemporalEnsemblingCIFAR10(w_max, unsupervised_weight_rampup_length, accumlation_decay):
+    transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4),
+        v2.RandomHorizontalFlip(p=0.5),
+    ])
+    supervised_loss = CrossEntropyLoss(reduction='mean')
+    unsupervised_loss = MSELoss(reduction='mean')
+    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, supervised_loss, unsupervised_loss)
+
+
+def TemporalEnsemblingSVHN(w_max, unsupervised_weight_rampup_length, accumlation_decay):
+    transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4),
+    ])
+    supervised_loss = CrossEntropyLoss(reduction='mean')
+    unsupervised_loss = MSELoss(reduction='mean')
+    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, supervised_loss, unsupervised_loss)
