@@ -1,8 +1,8 @@
 import torch
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms.v2 as v2
-from ..semisl_method import SemiSLMethod
-from ....utils.ramps import exp_rampup
+from .semisl_method import SemiSLMethod
+from ...utils.ramps import exp_rampup
 
 
 class PiModel(SemiSLMethod):
@@ -84,7 +84,7 @@ def PiModelCityscapesSeg(w_max, unsupervised_weight_rampup_length):
     transform = v2.Compose([
         #v2.Identity(),
         #v2.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05),
-        v2.RandomAdjustSharpness(sharpness_factor=2, p=0.5),
+        #v2.RandomAdjustSharpness(sharpness_factor=2, p=0.5),
         v2.RandomAutocontrast(p=0.5),
         #v2.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1),
         #v2.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),

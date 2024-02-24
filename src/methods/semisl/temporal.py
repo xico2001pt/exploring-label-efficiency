@@ -2,7 +2,7 @@ import torch
 import torchvision.transforms.v2 as v2
 from torch.nn import CrossEntropyLoss, MSELoss
 from .pi_model import PiModel
-from ....utils.structures import EMA
+from ...utils.structures import EMA
 
 
 class TemporalEnsembling(PiModel):
