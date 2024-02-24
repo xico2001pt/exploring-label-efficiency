@@ -1,10 +1,12 @@
 from .pi_model import PiModelCIFAR10, PiModelSVHN, PiModelCityscapesSeg
 from .temporal import TemporalEnsemblingCIFAR10, TemporalEnsemblingSVHN
+from .mixmatch import MixMatchCIFAR10
 
 classes = [
     PiModelCIFAR10,
     PiModelSVHN,
+    PiModelCityscapesSeg,
     TemporalEnsemblingCIFAR10,
     TemporalEnsemblingSVHN,
-    PiModelCityscapesSeg
+    MixMatchCIFAR10,
 ]  # Add the method classes here

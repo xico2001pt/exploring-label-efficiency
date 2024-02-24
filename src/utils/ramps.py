@@ -4,6 +4,12 @@
 import numpy as np
 
 
+def linear_rampup(rampup_length):
+    def warpper(epoch):
+        return np.clip(epoch / rampup_length, 0.0, 1.0)
+    return warpper
+
+
 def exp_rampup(rampup_length):
     """Exponential rampup from https://arxiv.org/abs/1610.02242"""
     def warpper(epoch):

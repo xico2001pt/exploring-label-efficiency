@@ -21,18 +21,6 @@ class PiModel(SemiSLMethod):
         epoch = epoch - 1
         self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.max_unsupervised_weight if epoch > 0 else 0.0
 
-    def get_predictions(self, idx, labeled, unlabeled):
-        l1, l2 = self.augment(labeled)
-        u1, u2 = self.augment(unlabeled)
-
-        branch1, branch2 = torch.cat([l1, u1]), torch.cat([l2, u2])
-
-        pred1 = self.model(branch1)
-        with torch.no_grad():
-            pred2 = self.model(branch2)
-
-        return pred1, pred2
-
     def compute_loss(self, idx, labeled, targets, unlabeled):
         pred1, pred2 = self.get_predictions(idx, labeled, unlabeled)
 
@@ -51,6 +39,18 @@ class PiModel(SemiSLMethod):
             'unsupervised_weighted': unsupervised_weighted_loss
         }
         return labeled_outputs, targets, loss
+
+    def get_predictions(self, idx, labeled, unlabeled):
+        l1, l2 = self.augment(labeled)
+        u1, u2 = self.augment(unlabeled)
+
+        branch1, branch2 = torch.cat([l1, u1]), torch.cat([l2, u2])
+
+        pred1 = self.model(branch1)
+        with torch.no_grad():
+            pred2 = self.model(branch2)
+
+        return pred1, pred2
 
     def stochastic_augmentation(self, x):
         return self.augmentations(x)
@@ -82,12 +82,7 @@ def PiModelSVHN(w_max, unsupervised_weight_rampup_length):
 
 def PiModelCityscapesSeg(w_max, unsupervised_weight_rampup_length):
     transform = v2.Compose([
-        #v2.Identity(),
-        #v2.ColorJitter(brightness=0.05, contrast=0.05, saturation=0.05),
-        #v2.RandomAdjustSharpness(sharpness_factor=2, p=0.5),
         v2.RandomAutocontrast(p=0.5),
-        #v2.ColorJitter(brightness=0.1, contrast=0.1, saturation=0.1),
-        #v2.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean', ignore_index=0)
     unsupervised_loss = MSELoss(reduction='mean')
