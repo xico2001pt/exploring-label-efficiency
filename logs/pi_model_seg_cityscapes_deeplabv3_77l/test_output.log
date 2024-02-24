@@ -1,0 +1,58 @@
+2024-02-24 18:32:43,055 - INFO - Loading configuration files...
+2024-02-24 18:32:48,505 - INFO - Loading model configuration
+args:
+  backbone: resnet101
+  num_classes: 20
+class: DeepLabV3
+
+2024-02-24 18:32:48,552 - INFO - Loading test_dataset configuration
+args:
+  mode: fine
+  root: /data/auto/cityscapes
+  train_val_split: 2475
+class: CityscapesSeg
+
+2024-02-24 18:32:48,563 - INFO - Loading loss configuration
+args:
+  ignore_index: 0
+class: CrossEntropyLoss
+
+2024-02-24 18:32:48,659 - INFO - Loading metrics configuration
+cityscapes_dice:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+  class: Dice
+cityscapes_jaccard_macro:
+  args:
+    average: macro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+cityscapes_jaccard_micro:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+
+2024-02-24 18:32:48,661 - INFO - Loading hyperparameters configuration
+batch_size: 16
+num_workers: 4
+
+2024-02-24 18:32:49,166 - INFO - Using device: cuda
+2024-02-24 18:32:51,031 - INFO - Model weights loaded successfully
+2024-02-24 18:33:15,729 - INFO - Test Stats
+Loss:
+  total: 0.34346033353358507
+Metrics:
+  cityscapes_dice: 0.8523322362452745
+  cityscapes_jaccard_macro: 0.38084503170102835
+  cityscapes_jaccard_micro: 0.8205071724951267
+
+2024-02-24 18:33:15,729 - INFO - Testing took 24.696305990219116 seconds to complete
