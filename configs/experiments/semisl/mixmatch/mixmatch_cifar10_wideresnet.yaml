@@ -5,17 +5,17 @@ model: cifar10_wideresnet28_2  # Name of model
 semisl_train:
   train_dataset: semi_supervised_cifar10  # Dataset to use for training
   val_dataset: cifar10  # Dataset to use for validation
-  optimizer: mixmatch_cifar10_adam  # Optimizer
+  optimizer: supervised_wideresnet_sgd  # Optimizer
   method: mixmatch_cifar10  # Semi-supervised method
   val_loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
-  scheduler: null  # Learning rate scheduler. Can be null
+  scheduler: supervised_wideresnet_cifar_lr  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
   hyperparameters:  # Hyperparameters for training
     epochs: 200  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
-    labeled_batch_size: 10  # Training labeled batch size
-    unlabeled_batch_size: 102  # Training unlabeled batch size
+    labeled_batch_size: 64  # Training labeled batch size
+    unlabeled_batch_size: 64  # Training unlabeled batch size
     save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
 
 test:
