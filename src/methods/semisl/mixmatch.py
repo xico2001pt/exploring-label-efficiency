@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
-from ...utils.functional import temperature_sharpening, mixup
+from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise
 from ...utils.ramps import linear_rampup
 
 
@@ -29,10 +29,15 @@ class MixMatch(SemiSLMethod):
     def compute_loss(self, idx, labeled, targets, unlabeled):
         labeled, targets, unlabeled, preds = self.pseudo_labelling(labeled, targets, unlabeled)
 
-        labeled_outputs = self.model(labeled)
+        inputs = torch.cat([labeled, unlabeled], dim=0)
+        outputs = self.model(inputs)
+        del inputs
+
+        labeled_outputs = outputs[:labeled.size(0)]
         supervised_loss = self.supervised_loss(labeled_outputs, targets)
 
-        unsupervised_loss = self.unsupervised_loss(preds, self.model(unlabeled))
+        unlabeled_outputs = outputs[labeled.size(0):].softmax(dim=-1)
+        unsupervised_loss = self.unsupervised_loss(unlabeled_outputs, preds)
         unsupervised_weighted_loss = unsupervised_loss * self.unsupervised_weight
 
         total_loss = supervised_loss + unsupervised_weighted_loss
@@ -65,7 +70,7 @@ class MixMatch(SemiSLMethod):
         all_targets = torch.cat([targets, preds], dim=0)
 
         # Shuffle (make sure to shuffle the inputs and targets in the same way)
-        indices = torch.randperm(all_inputs.size(0))
+        indices = torch.randperm(all_inputs.size(0)).to(all_inputs.device)
         all_inputs = all_inputs[indices]
         all_targets = all_targets[indices]
 
@@ -84,10 +89,13 @@ class MixMatch(SemiSLMethod):
 
 
 def MixMatchCIFAR10(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
-    transform = v2.Compose([
+    labeled_transform = v2.Compose([
         v2.RandomHorizontalFlip(),
-        v2.RandomCrop(32, padding=4),
+    ])
+    unlabeled_transform = v2.Compose([
+        v2.RandomHorizontalFlip(),
+        GaussianNoise(),
     ])
     supervised_loss = CrossEntropyLoss()
     unsupervised_loss = MSELoss()
-    return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, transform, transform, supervised_loss, unsupervised_loss)
+    return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
