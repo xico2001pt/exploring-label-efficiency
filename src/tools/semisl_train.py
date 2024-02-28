@@ -72,7 +72,7 @@ def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset
     train_labeled_dataloader = DataLoader(
         train_labeled_dataset,
         batch_size=labeled_batch_size,
-        shuffle=False,
+        shuffle=True,  # Temporal Ensemble requires the same order of the labeled and unlabeled data
         num_workers=num_workers,
         pin_memory=True,
         drop_last=True
@@ -81,7 +81,7 @@ def _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset
     train_unlabeled_dataloader = DataLoader(
         train_unlabeled_dataset,
         batch_size=unlabeled_batch_size,
-        shuffle=False,
+        shuffle=True,  # Temporal Ensemble requires the same order of the labeled and unlabeled data
         num_workers=num_workers,
         pin_memory=True,
         drop_last=True

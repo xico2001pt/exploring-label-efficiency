@@ -7,8 +7,12 @@ from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise
 from ...utils.ramps import linear_rampup
 
 
+def default_process_targets(targets, num_classes):
+    return F.one_hot(targets, num_classes).float()
+
+
 class MixMatch(SemiSLMethod):
-    def __init__(self, alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss):
+    def __init__(self, alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets=None):
         self.beta_distribution = torch.distributions.beta.Beta(alpha, alpha)
         self.max_unsupervised_weight = w_max
         self.unsupervised_weight_fn = linear_rampup(unsupervised_weight_rampup_length)
@@ -18,6 +22,9 @@ class MixMatch(SemiSLMethod):
         self.unlabeled_transform = unlabeled_transform
         self.supervised_loss = supervised_loss
         self.unsupervised_loss = unsupervised_loss
+        if process_targets is None:
+            process_targets = default_process_targets
+        self.process_targets = process_targets
 
     def on_start_train(self, train_data):
         self.num_classes = train_data.num_classes
@@ -48,13 +55,11 @@ class MixMatch(SemiSLMethod):
             'unsupervised': unsupervised_loss,
             'unsupervised_weighted': unsupervised_weighted_loss
         }
-        return labeled_outputs, targets.argmax(dim=-1), loss
+        return labeled_outputs, targets.argmax(dim=1), loss
 
     def pseudo_labelling(self, labeled, targets, unlabeled):
-        # TODO: Cast targets tv tensor
+        targets = self.process_targets(targets, self.num_classes)
         labeled, targets = self.labeled_transform(labeled, targets)
-        targets = F.one_hot(targets, self.num_classes)
-        targets = targets.float()
 
         with torch.no_grad():
             unlabeled = [self.unlabeled_transform(unlabeled) for _ in range(self.k)]
@@ -81,10 +86,8 @@ class MixMatch(SemiSLMethod):
         return labeled, targets, unlabeled, preds
 
     def mixup(self, x1, x2, y1, y2):
-        lam = self.beta_distribution.sample().item()
-
-        lam = max(lam, 1 - lam)  # MixMatch needs more weight on the first sample
-
+        lam = self.beta_distribution.sample(x1.shape[0])
+        lam[lam < 0.5] = 1 - lam[lam < 0.5]  # MixMatch needs more weight on the first sample
         return mixup(x1, x2, y1, y2, lam)
 
 
@@ -112,3 +115,21 @@ def MixMatchSVHN(alpha, w_max, unsupervised_weight_rampup_length, temperature, k
     supervised_loss = CrossEntropyLoss()
     unsupervised_loss = MSELoss()
     return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
+
+
+def MixMatchCityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
+    labeled_transform = v2.Compose([
+        v2.RandomAutocontrast(p=0.5),
+    ])
+    unlabeled_transform = v2.Compose([
+        v2.RandomAutocontrast(p=0.5),
+        GaussianNoise(),
+    ])
+    supervised_loss = CrossEntropyLoss()
+    unsupervised_loss = MSELoss()
+
+    def process_targets(targets, num_classes):
+        # TODO: Convert to tv tensor
+        targets = F.one_hot(targets, num_classes).float()
+        return targets.permute(0, 3, 1, 2)
+    return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
