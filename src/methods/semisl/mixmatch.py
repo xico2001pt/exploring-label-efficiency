@@ -86,7 +86,7 @@ class MixMatch(SemiSLMethod):
         return labeled, targets, unlabeled, preds
 
     def mixup(self, x1, x2, y1, y2):
-        lam = self.beta_distribution.sample(x1.shape[0])
+        lam = self.beta_distribution.sample((x1.size(0),)).to(x1.device)
         lam[lam < 0.5] = 1 - lam[lam < 0.5]  # MixMatch needs more weight on the first sample
         return mixup(x1, x2, y1, y2, lam)
 
@@ -96,6 +96,7 @@ def MixMatchCIFAR10(alpha, w_max, unsupervised_weight_rampup_length, temperature
         v2.RandomHorizontalFlip(),
     ])
     unlabeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4),
         v2.RandomHorizontalFlip(),
         GaussianNoise(),
     ])

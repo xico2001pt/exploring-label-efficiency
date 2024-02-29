@@ -1,5 +1,4 @@
 import torch
-import numpy as np
 
 
 def temperature_sharpening(logits, temperature):
@@ -8,8 +7,8 @@ def temperature_sharpening(logits, temperature):
 
 
 def mixup(x1, x2, y1, y2, lam):
-    x = lam * x1 + (1 - lam) * x2
-    y = lam * y1 + (1 - lam) * y2
+    x = lam.view(-1, 1, 1, 1) * x1 + (1 - lam.view(-1, 1, 1, 1)) * x2
+    y = lam.view(-1, 1) * y1 + (1 - lam.view(-1, 1)) * y2
     return x, y
 
 
