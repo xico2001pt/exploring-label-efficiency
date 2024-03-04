@@ -8,7 +8,9 @@ def temperature_sharpening(logits, temperature):
 
 def mixup(x1, x2, y1, y2, lam):
     x = lam.view(-1, 1, 1, 1) * x1 + (1 - lam.view(-1, 1, 1, 1)) * x2
-    y = lam.view(-1, 1) * y1 + (1 - lam.view(-1, 1)) * y2
+    y = lam.view(-1, 1) * y1 + (1 - lam.view(-1, 1)) * y2  # For classification
+    #y = lam.view(-1, 1, 1, 1) * y1 + (1 - lam.view(-1, 1, 1, 1)) * y2  # For segmentation
+    # TODO: Should adapt to the shape of y
     return x, y
 
 

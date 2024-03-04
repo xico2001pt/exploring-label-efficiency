@@ -130,7 +130,7 @@ def MixMatchCityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, tempe
     unsupervised_loss = MSELoss()
 
     def process_targets(targets, num_classes):
-        # TODO: Convert to tv tensor
+        # TODO: Convert to tv tensor: no need if transforms do not change mask
         targets = F.one_hot(targets, num_classes).float()
         return targets.permute(0, 3, 1, 2)
     return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
