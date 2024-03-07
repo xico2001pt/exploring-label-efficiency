@@ -1,4 +1,4 @@
-from .losses import CrossEntropyLoss, DiceLoss
+from .losses import CrossEntropyLoss
 from torchmetrics import Accuracy, Dice, JaccardIndex
 from torch.optim import Adam, SGD
 from torch.optim.lr_scheduler import ExponentialLR, MultiStepLR, PolynomialLR, CosineAnnealingLR
