@@ -110,13 +110,13 @@ def MixMatchCIFAR10(alpha, w_max, unsupervised_weight_rampup_length, temperature
 
 def MixMatchSVHN(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
     labeled_transform = v2.Compose([
-        v2.RandomCrop((32, 32), padding=4),
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
     ])
     unlabeled_transform = v2.Compose([
-        v2.RandomCrop((32, 32), padding=4),
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         GaussianNoise(),
     ])
-    supervised_loss = CrossEntropyLoss()
+    supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = MSELoss()
     return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
 
