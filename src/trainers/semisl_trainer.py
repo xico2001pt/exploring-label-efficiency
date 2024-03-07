@@ -42,6 +42,8 @@ class SemiSLTrainer(Trainer):
 
             loss['total'].backward()
             optimizer.step()
+            if self.ema_model:
+                self.ema_model.update_parameters(self.model)
 
             for loss_term in loss:
                 total_loss[loss_term] = total_loss.get(loss_term, 0.0) + loss[loss_term].item()

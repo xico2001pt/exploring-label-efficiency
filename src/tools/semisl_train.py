@@ -134,7 +134,7 @@ def main(args):
 
         train_labeled_dataset, train_unlabeled_dataset = train_dataset
 
-        epochs, num_workers, labeled_batch_size, unlabeled_batch_size, save_freq = hyperparameters.values()
+        epochs, num_workers, labeled_batch_size, unlabeled_batch_size, save_freq, ema_decay = hyperparameters.values()
 
         train_labeled_loader, train_unlabeled_loader, validation_loader = _get_dataloaders(train_labeled_dataset, train_unlabeled_dataset, val_dataset, labeled_batch_size, unlabeled_batch_size, num_workers)
 
@@ -174,6 +174,7 @@ def main(args):
             scheduler=scheduler,
             stop_condition=stop_condition,
             metrics=metrics,
+            ema_decay=ema_decay,
             save_freq=save_freq,
         )
 

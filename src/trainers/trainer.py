@@ -4,11 +4,13 @@ import numpy as np
 from tqdm import tqdm
 from ..utils.train import TrainData
 from ..utils.constants import Constants as c
+import torch.optim.swa_utils as swa_utils
 
 
 class Trainer:
     def __init__(self, model, device, logger, loss_fn):
         self.model = model
+        self.ema_model = None
         self.device = device
         self.logger = logger
         self.loss_fn = loss_fn
@@ -22,8 +24,9 @@ class Trainer:
         self.logger.log_yaml(f"{split_name} Stats", yaml_dict)
 
     def _save_checkpoint(self, filename: str, optimizer, epoch: int):
+        model = self.ema_model if self.ema_model else self.model
         save_dict = {
-            "model": self.model.state_dict(),
+            "model": model.state_dict(),
             "optimizer": optimizer.state_dict(),
             "epoch": epoch,
         }
@@ -32,23 +35,27 @@ class Trainer:
     def _save_stats(self, loss_history, metrics_history, name):
         self.logger.add_log_entry(f"{name}_history", {"loss": loss_history, "metrics": metrics_history})
 
-    def _compute_loss(self, inputs, targets):
-        outputs = self.model(inputs)
+    def _compute_loss(self, model, inputs, targets):
+        outputs = model(inputs)
         loss = self.loss_fn(outputs, targets)
         return outputs, loss
 
     def _batch_iteration(self, dataloader, is_train, optimizer, metrics, total_loss, total_metrics, description):
+        model = self.ema_model if not is_train and self.ema_model else self.model
+        
         for inputs, targets in tqdm(dataloader, desc=description):
             inputs, targets = inputs.to(self.device), targets.to(self.device)
 
             if is_train:
                 optimizer.zero_grad()
 
-            outputs, loss = self._compute_loss(inputs, targets)
+            outputs, loss = self._compute_loss(model, inputs, targets)
 
             if is_train:
                 loss['total'].backward()
                 optimizer.step()
+                if self.ema_model:
+                    self.ema_model.update_parameters(self.model)
 
             for loss_term in loss:
                 total_loss[loss_term] = total_loss.get(loss_term, 0.0) + loss[loss_term].item()
@@ -111,6 +118,7 @@ class Trainer:
         scheduler=None,
         stop_condition=None,
         metrics={},
+        ema_decay=0.0,
         start_epoch=1,
         save_freq=1,
     ):
@@ -122,6 +130,8 @@ class Trainer:
 
         if self.train_data:
             self.on_start_train(self.train_data)
+
+        self.ema_model = swa_utils.AveragedModel(self.model, multi_avg_fn=swa_utils.get_ema_multi_avg_fn(ema_decay)) if ema_decay is not None and ema_decay > 0.0 else None
 
         for epoch in range(start_epoch, num_epochs + 1):
             self.logger.info(f"Epoch {epoch}/{num_epochs}")
@@ -176,6 +186,10 @@ class Trainer:
 
             if scheduler:
                 scheduler.step()
+
+        if self.ema_model:
+            dt = train_dataloader if isinstance(train_dataloader, torch.utils.data.DataLoader) else train_dataloader[0]
+            swa_utils.update_bn(dt, self.ema_model, device=self.device)
 
         if self.train_data:
             self.on_end_train(self.train_data)

@@ -3,6 +3,7 @@ import torch.nn.functional as F
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
+from ...core.losses import CrossEntropyWithLogitsLoss
 from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise
 from ...utils.ramps import linear_rampup
 
@@ -43,7 +44,7 @@ class MixMatch(SemiSLMethod):
         labeled_outputs = outputs[:labeled.size(0)]
         supervised_loss = self.supervised_loss(labeled_outputs, targets)
 
-        unlabeled_outputs = outputs[labeled.size(0):].softmax(dim=-1)
+        unlabeled_outputs = outputs[labeled.size(0):].softmax(dim=1)
         unsupervised_loss = self.unsupervised_loss(unlabeled_outputs, preds)
         unsupervised_weighted_loss = unsupervised_loss * self.unsupervised_weight
 
@@ -61,46 +62,48 @@ class MixMatch(SemiSLMethod):
         targets = self.process_targets(targets, self.num_classes)
         labeled, targets = self.labeled_transform(labeled, targets)
 
-        with torch.no_grad():
-            unlabeled = [self.unlabeled_transform(unlabeled) for _ in range(self.k)]
+        unlabeled = [self.unlabeled_transform(unlabeled) for _ in range(self.k)]
 
-            preds = [self.model(unlabeled[k]).softmax(dim=-1) for k in range(self.k)]
+        with torch.no_grad():
+            preds = [self.model(unlabeled[k]).softmax(dim=1) for k in range(self.k)]
             preds = temperature_sharpening(sum(preds) / self.k, self.temperature)
             preds = preds.detach()
 
-            unlabeled = torch.cat(unlabeled)
-            preds = torch.cat([preds] * self.k)
+        all_inputs = torch.cat([labeled] + unlabeled, dim=0)
+        all_targets = torch.cat([targets] + [preds] * self.k, dim=0)
 
-        all_inputs = torch.cat([labeled, unlabeled], dim=0)
-        all_targets = torch.cat([targets, preds], dim=0)
-
-        # Shuffle (make sure to shuffle the inputs and targets in the same way)
-        indices = torch.randperm(all_inputs.size(0)).to(all_inputs.device)
-        all_inputs = all_inputs[indices]
-        all_targets = all_targets[indices]
+        mixed_inputs, mixed_targets = self.mixup(all_inputs, all_targets)
 
         sep_idx = labeled.size(0)
-        labeled, targets = self.mixup(labeled, all_inputs[:sep_idx], targets, all_targets[:sep_idx])
-        unlabeled, preds = self.mixup(unlabeled, all_inputs[sep_idx:], preds, all_targets[sep_idx:])
+        labeled = mixed_inputs[:sep_idx]
+        targets = mixed_targets[:sep_idx]
+        unlabeled = mixed_inputs[sep_idx:]
+        preds = mixed_targets[sep_idx:]
 
         return labeled, targets, unlabeled, preds
 
-    def mixup(self, x1, x2, y1, y2):
-        lam = self.beta_distribution.sample((x1.size(0),)).to(x1.device)
-        lam[lam < 0.5] = 1 - lam[lam < 0.5]  # MixMatch needs more weight on the first sample
-        return mixup(x1, x2, y1, y2, lam)
+    def mixup(self, all_inputs, all_targets):
+        lam = self.beta_distribution.sample().item()
+        lam = max(lam, 1 - lam)
+
+        indices = torch.randperm(all_inputs.size(0)).to(all_inputs.device)
+        input_a, input_b = all_inputs, all_inputs[indices]
+        target_a, target_b = all_targets, all_targets[indices]
+
+        return mixup(input_a, input_b, target_a, target_b, lam)
 
 
 def MixMatchCIFAR10(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
     labeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(),
     ])
     unlabeled_transform = v2.Compose([
-        v2.RandomCrop((32, 32), padding=4),
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(),
         GaussianNoise(),
     ])
-    supervised_loss = CrossEntropyLoss()
+    supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = MSELoss()
     return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
 

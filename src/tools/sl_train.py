@@ -112,7 +112,7 @@ def main(args):
             hyperparameters,
         ) = data.values()
 
-        epochs, num_workers, batch_size, save_freq = hyperparameters.values()
+        epochs, num_workers, batch_size, save_freq, ema_decay = hyperparameters.values()
 
         train_loader, validation_loader = _get_dataloaders(train_dataset, val_dataset, batch_size, num_workers)
 
@@ -134,6 +134,7 @@ def main(args):
             scheduler=scheduler,
             stop_condition=stop_condition,
             metrics=metrics,
+            ema_decay=ema_decay,
             save_freq=save_freq,
         )
 
