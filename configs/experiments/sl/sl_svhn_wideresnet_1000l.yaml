@@ -11,10 +11,11 @@ sl_train:
   scheduler: supervised_wideresnet_svhn_lr  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
   hyperparameters:  # Hyperparameters for training
-    epochs: 200  # Number of training epochs
+    epochs: 300  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
     batch_size: 128  # Training batch size
     save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: 0.0  # Exponential moving average decay
 
 test:
   test_dataset: svhn  # Dataset to use for testing
@@ -24,3 +25,4 @@ test:
   hyperparameters:  # Hyperparameters for testing
     num_workers: 4  # Number of workers for data loading
     batch_size: 128  # Test batch size
+    ema_decay: False  # EMA was used during training
