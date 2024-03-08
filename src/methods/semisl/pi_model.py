@@ -63,7 +63,7 @@ class PiModel(SemiSLMethod):
 
 def PiModelCIFAR10(w_max, unsupervised_weight_rampup_length):
     transform = v2.Compose([
-        v2.RandomCrop((32, 32), padding=4),
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(p=0.5),
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
@@ -73,7 +73,7 @@ def PiModelCIFAR10(w_max, unsupervised_weight_rampup_length):
 
 def PiModelSVHN(w_max, unsupervised_weight_rampup_length):
     transform = v2.Compose([
-        v2.RandomCrop((32, 32), padding=4),
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
     unsupervised_loss = MSELoss(reduction='mean')
