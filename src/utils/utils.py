@@ -56,3 +56,8 @@ def split_train_val_data(dataset, train_val_split):
 
     val_samples = len(dataset) - train_samples
     return random_split(dataset, [train_samples, val_samples], generator=generator)
+
+
+def classes_mean(input, class_dim=1):
+    dims = tuple(i for i in range(len(input.shape)) if i != class_dim)
+    return input.mean(dim=dims)

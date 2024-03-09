@@ -4,8 +4,10 @@ from torch.nn import CrossEntropyLoss
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
 from ...core.losses import CrossEntropyWithLogitsLoss
+from ...utils.structures import TensorMovingAverage
 from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise
 from ...utils.ramps import linear_rampup
+from ...utils.utils import classes_mean
 
 
 def default_process_targets(targets, num_classes):
@@ -17,7 +19,7 @@ def normalize(x):
 
 
 class ReMixMatch(SemiSLMethod):
-    def __init__(self, alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets=default_process_targets):
+    def __init__(self, alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets=default_process_targets):
         self.beta_distribution = torch.distributions.beta.Beta(alpha, alpha)
         self.wu_max = wu_max
         self.wu1_max = wu1_max
@@ -25,6 +27,7 @@ class ReMixMatch(SemiSLMethod):
         self.unsupervised_weight_fn = linear_rampup(unsupervised_weight_rampup_length)
         self.temperature = temperature
         self.k = k
+        self.gt_labels = gt_labels
         self.labeled_transform = labeled_transform
         self.weak_unlabeled_transform = weak_unlabeled_transform
         self.strong_unlabeled_transform = strong_unlabeled_transform
@@ -52,6 +55,7 @@ class ReMixMatch(SemiSLMethod):
 
     def on_start_train(self, train_data):
         self.num_classes = train_data.num_classes
+        self.preds_moving_average = TensorMovingAverage(128, self.num_classes, train_data.device)
 
     def on_start_epoch(self, epoch):
         epoch = epoch - 1
@@ -77,7 +81,7 @@ class ReMixMatch(SemiSLMethod):
 
         unlabeled1_outputs = outputs[unlabeled1_idx:].softmax(dim=1)
         unsupervised1_loss = self.unsupervised_loss(unlabeled1_outputs, preds[0])
-        unsupervised1_weighted_loss = unsupervised_loss * self.unsupervised1_weight
+        unsupervised1_weighted_loss = unsupervised1_loss * self.unsupervised1_weight
 
         # TODO: rotation_loss
 
@@ -103,7 +107,11 @@ class ReMixMatch(SemiSLMethod):
             weak_unlabeled = self.weak_unlabeled_transform(unlabeled)
 
             preds = self.model(weak_unlabeled).softmax(dim=1)
-            # TODO: preds = normalize(preds * p(y) / p~(y))
+
+            # Distribution alignment
+            gt_labels = self.gt_labels if self.gt_labels is not None else classes_mean(targets)
+            preds = normalize(self.apply_distribution_alignment(gt_labels, preds))
+
             preds = normalize(temperature_sharpening(preds, self.temperature))
             preds = preds.detach()
 
@@ -125,6 +133,12 @@ class ReMixMatch(SemiSLMethod):
 
         return labeled, targets, unlabeled, unlabeled1, preds
 
+    def apply_distribution_alignment(self, gt_labels, preds):
+        ratio = (1e-6 + gt_labels) / (1e-6 + self.preds_moving_average.get_value())
+        preds = preds * ratio
+        self.preds_moving_average.update(preds)
+        return preds
+
     def mixup(self, all_inputs, all_targets):
         lam = self.beta_distribution.sample().item()
         lam = max(lam, 1 - lam)
@@ -137,6 +151,7 @@ class ReMixMatch(SemiSLMethod):
 
 
 def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
+    gt_labels = torch.ones(10).to('cuda') / 10
     labeled_transform = v2.Compose([
         #v2.Identity(),
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
@@ -152,4 +167,4 @@ def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_len
     supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     rotation_loss = CrossEntropyLoss()
-    return ReMixMatch(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss)
+    return ReMixMatch(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss)
