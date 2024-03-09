@@ -17,10 +17,12 @@ def normalize(x):
 
 
 class ReMixMatch(SemiSLMethod):
-    def __init__(self, alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets=default_process_targets):
-        self.alpha = alpha
-        self.w_max = w_max
-        self.unsupervised_weight_rampup_length = unsupervised_weight_rampup_length
+    def __init__(self, alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets=default_process_targets):
+        self.beta_distribution = torch.distributions.beta.Beta(alpha, alpha)
+        self.wu_max = wu_max
+        self.wu1_max = wu1_max
+        self.wr = wr
+        self.unsupervised_weight_fn = linear_rampup(unsupervised_weight_rampup_length)
         self.temperature = temperature
         self.k = k
         self.labeled_transform = labeled_transform
@@ -33,12 +35,28 @@ class ReMixMatch(SemiSLMethod):
             process_targets = default_process_targets
         self.process_targets = process_targets
 
+    def set_model(self, model):
+        super().set_model(model)
+        # TODO: SelfSL model
+        #def hook(m, inputs, output):
+        #    if len(output.shape) > 2:
+        #        output = output.mean([2, 3])
+        #    self.embeddings = output
+        #self.model.register_forward_hook(hook)
+
+        # if 'backbone' in model._modules:
+        #     backbone = model.backbone
+        # elif 'layer4' in model._modules:
+        #     backbone = model.backbone
+        # backbone.register_forward_hook(lambda m, inputs, output: self.on_forward(m, inputs, output))
+
     def on_start_train(self, train_data):
         self.num_classes = train_data.num_classes
 
     def on_start_epoch(self, epoch):
         epoch = epoch - 1
-        self.unsupervised_weight = linear_rampup(epoch, self.unsupervised_weight_rampup_length) * self.w_max
+        self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.wu_max
+        self.unsupervised1_weight = self.unsupervised_weight_fn(epoch) * self.wu1_max
 
     def compute_loss(self, idx, labeled, targets, unlabeled):
         labeled, targets, unlabeled, unlabeled1, preds = self.pseudo_labelling(labeled, targets, unlabeled)
@@ -53,19 +71,25 @@ class ReMixMatch(SemiSLMethod):
         labeled_outputs = outputs[:unlabeled_idx]
         supervised_loss = self.supervised_loss(labeled_outputs, targets)
 
-        unlabeled_outputs = outputs[unlabeled_idx:unlabeled1_idx].softmax(dim=-1)
+        unlabeled_outputs = outputs[unlabeled_idx:unlabeled1_idx].softmax(dim=1)
         unsupervised_loss = self.unsupervised_loss(unlabeled_outputs, preds)
         unsupervised_weighted_loss = unsupervised_loss * self.unsupervised_weight
 
-        # TODO: unsupervised1_loss and rotation_loss
+        unlabeled1_outputs = outputs[unlabeled1_idx:].softmax(dim=1)
+        unsupervised1_loss = self.unsupervised_loss(unlabeled1_outputs, preds[0])
+        unsupervised1_weighted_loss = unsupervised_loss * self.unsupervised1_weight
 
-        total_loss = supervised_loss + unsupervised_weighted_loss
+        # TODO: rotation_loss
+
+        total_loss = supervised_loss + unsupervised_weighted_loss + unsupervised1_weighted_loss
 
         loss = {
             'total': total_loss,
             'supervised': supervised_loss,
             'unsupervised': unsupervised_loss,
-            'unsupervised_weighted': unsupervised_weighted_loss
+            'unsupervised_weighted': unsupervised_weighted_loss,
+            'unsupervised1': unsupervised1_loss,
+            'unsupervised1_weighted': unsupervised1_weighted_loss
         }
 
         return labeled_outputs, targets.argmax(dim=1), loss
@@ -78,7 +102,7 @@ class ReMixMatch(SemiSLMethod):
             strong_unlabeled = [self.strong_unlabeled_transform(unlabeled) for _ in range(self.k)]
             weak_unlabeled = self.weak_unlabeled_transform(unlabeled)
 
-            preds = self.model(weak_unlabeled).softmax(dim=-1)
+            preds = self.model(weak_unlabeled).softmax(dim=1)
             # TODO: preds = normalize(preds * p(y) / p~(y))
             preds = normalize(temperature_sharpening(preds, self.temperature))
             preds = preds.detach()
@@ -89,7 +113,7 @@ class ReMixMatch(SemiSLMethod):
         all_inputs = torch.cat([labeled, unlabeled], dim=0)
         all_targets = torch.cat([targets, preds], dim=0)
 
-        unlabeled1 = None  # TODO: get unlabeled1
+        unlabeled1 = strong_unlabeled[0]
 
         mixed_inputs, mixed_targets = self.mixup(all_inputs, all_targets)
 
@@ -112,14 +136,20 @@ class ReMixMatch(SemiSLMethod):
         return mixup(input_a, input_b, target_a, target_b, lam)
 
 
-def ReMixMatchCIFAR10(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
-    labeled_transform = v2.Identity()  # TODO
+def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
+    labeled_transform = v2.Compose([
+        #v2.Identity(),
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+    ])  # TODO
     weak_unlabeled_transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(),
     ])
-    strong_unlabeled_transform = v2.Identity()  # TODO
+    strong_unlabeled_transform = v2.Compose([
+        v2.Identity(),
+        #v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+    ])  # TODO
     supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     rotation_loss = CrossEntropyLoss()
-    return ReMixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss)
+    return ReMixMatch(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss)
