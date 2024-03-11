@@ -55,8 +55,9 @@ class ReMixMatch(SemiSLMethod):
 
     def on_start_train(self, train_data):
         self.num_classes = train_data.num_classes
-        self.gt_labels = self.gt_labels.to(train_data.device)
         self.preds_moving_average = TensorMovingAverage(128, self.num_classes, train_data.device)
+        if self.gt_labels is not None:
+            self.gt_labels = self.gt_labels.to(train_data.device)
 
     def on_start_epoch(self, epoch):
         epoch = epoch - 1
@@ -168,6 +169,24 @@ def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_len
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(),
         v2.RandAugment(2, 10),
+    ])
+    supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
+    unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
+    rotation_loss = CrossEntropyLoss()
+    return ReMixMatch(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss)
+
+
+def ReMixMatchSVHN(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
+    gt_labels = None
+    labeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+    ])
+    weak_unlabeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+    ])
+    strong_unlabeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+        v2.RandAugment(3, 9),
     ])
     supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
