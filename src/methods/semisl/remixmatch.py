@@ -159,7 +159,6 @@ def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_len
     labeled_transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(),
-        v2.RandAugment(2, 10),
     ])
     weak_unlabeled_transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
