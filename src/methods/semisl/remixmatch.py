@@ -177,7 +177,7 @@ def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_len
 
 
 def ReMixMatchSVHN(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
-    gt_labels = None
+    gt_labels = torch.ones(10) / 10
     labeled_transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
     ])
@@ -186,7 +186,7 @@ def ReMixMatchSVHN(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length
     ])
     strong_unlabeled_transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
-        v2.RandAugment(3, 9),
+        v2.RandAugment(2, 10),
     ])
     supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
