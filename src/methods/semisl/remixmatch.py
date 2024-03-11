@@ -55,6 +55,7 @@ class ReMixMatch(SemiSLMethod):
 
     def on_start_train(self, train_data):
         self.num_classes = train_data.num_classes
+        self.gt_labels = self.gt_labels.to(train_data.device)
         self.preds_moving_average = TensorMovingAverage(128, self.num_classes, train_data.device)
 
     def on_start_epoch(self, epoch):
@@ -75,12 +76,12 @@ class ReMixMatch(SemiSLMethod):
         labeled_outputs = outputs[:unlabeled_idx]
         supervised_loss = self.supervised_loss(labeled_outputs, targets)
 
-        unlabeled_outputs = outputs[unlabeled_idx:unlabeled1_idx].softmax(dim=1)
+        unlabeled_outputs = outputs[unlabeled_idx:unlabeled1_idx]#.softmax(dim=1)
         unsupervised_loss = self.unsupervised_loss(unlabeled_outputs, preds)
         unsupervised_weighted_loss = unsupervised_loss * self.unsupervised_weight
 
-        unlabeled1_outputs = outputs[unlabeled1_idx:].softmax(dim=1)
-        unsupervised1_loss = self.unsupervised_loss(unlabeled1_outputs, preds[0])
+        unlabeled1_outputs = outputs[unlabeled1_idx:]#.softmax(dim=1)
+        unsupervised1_loss = self.unsupervised_loss(unlabeled1_outputs, preds[:unlabeled1_outputs.size(0)])
         unsupervised1_weighted_loss = unsupervised1_loss * self.unsupervised1_weight
 
         # TODO: rotation_loss
@@ -108,9 +109,10 @@ class ReMixMatch(SemiSLMethod):
 
             preds = self.model(weak_unlabeled).softmax(dim=1)
 
-            # Distribution alignment
+            # Distribution alignment #
             gt_labels = self.gt_labels if self.gt_labels is not None else classes_mean(targets)
             preds = normalize(self.apply_distribution_alignment(gt_labels, preds))
+            ##########################
 
             preds = normalize(temperature_sharpening(preds, self.temperature))
             preds = preds.detach()
@@ -149,21 +151,25 @@ class ReMixMatch(SemiSLMethod):
 
         return mixup(input_a, input_b, target_a, target_b, lam)
 
+# TODO: Apply CTAugment
+
 
 def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
-    gt_labels = torch.ones(10).to('cuda') / 10
+    gt_labels = torch.ones(10) / 10
     labeled_transform = v2.Compose([
-        #v2.Identity(),
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
-    ])  # TODO
+        v2.RandomHorizontalFlip(),
+        v2.RandAugment(2, 10),
+    ])
     weak_unlabeled_transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(),
     ])
     strong_unlabeled_transform = v2.Compose([
-        v2.Identity(),
-        #v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
-    ])  # TODO
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+        v2.RandomHorizontalFlip(),
+        v2.RandAugment(2, 10),
+    ])
     supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     rotation_loss = CrossEntropyLoss()
