@@ -90,3 +90,19 @@ def FixMatchCIFAR10(wu, confidence):
     supervised_loss = CrossEntropyLoss()
     unsupervised_loss = CrossEntropyLoss(reduction='none')  # Important not to have reduction here
     return FixMatch(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss)
+
+
+def FixMatchSVHN(wu, confidence):
+    labeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+    ])
+    weak_unlabeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+    ])
+    strong_unlabeled_transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+        v2.RandAugment(2, 10),
+    ])
+    supervised_loss = CrossEntropyLoss()
+    unsupervised_loss = CrossEntropyLoss(reduction='none')  # Important not to have reduction here
+    return FixMatch(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss)
