@@ -61,3 +61,11 @@ def split_train_val_data(dataset, train_val_split):
 def classes_mean(input, class_dim=1):
     dims = tuple(i for i in range(len(input.shape)) if i != class_dim)
     return input.mean(dim=dims)
+
+
+def backbone_getter(model):
+    if 'backbone' in model._modules:
+        return model._modules['backbone']
+    elif 'layer4' in model._modules:
+        return model._modules['layer4']
+    return None

@@ -7,7 +7,7 @@ from ...core.losses import CrossEntropyWithLogitsLoss
 from ...utils.structures import TensorMovingAverage
 from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise
 from ...utils.ramps import linear_rampup
-from ...utils.utils import classes_mean
+from ...utils.utils import classes_mean, backbone_getter
 
 
 def default_process_targets(targets, num_classes):
@@ -34,35 +34,71 @@ class ReMixMatch(SemiSLMethod):
         self.supervised_loss = supervised_loss
         self.unsupervised_loss = unsupervised_loss
         self.rotation_loss = rotation_loss
+        self.rotation_classifier = None
         if process_targets is None:
             process_targets = default_process_targets
         self.process_targets = process_targets
 
     def set_model(self, model):
         super().set_model(model)
-        # TODO: SelfSL model
-        #def hook(m, inputs, output):
-        #    if len(output.shape) > 2:
-        #        output = output.mean([2, 3])
-        #    self.embeddings = output
-        #self.model.register_forward_hook(hook)
 
-        # if 'backbone' in model._modules:
-        #     backbone = model.backbone
-        # elif 'layer4' in model._modules:
-        #     backbone = model.backbone
-        # backbone.register_forward_hook(lambda m, inputs, output: self.on_forward(m, inputs, output))
+        if self.wr <= 0:
+            return
+
+        def on_forward(m, inputs, output):
+            if self.rotation_classifier is None:
+                self.init_rotation_classifier(output.size(1))
+
+            if len(output.shape) > 2:  # TODO: Why is this necessary?
+                output = output.mean([2, 3])
+
+            self.embeddings = output
+
+        backbone = backbone_getter(model)
+        self.rot_hook = backbone.register_forward_hook(on_forward)
 
     def on_start_train(self, train_data):
         self.num_classes = train_data.num_classes
         self.preds_moving_average = TensorMovingAverage(128, self.num_classes, train_data.device)
         if self.gt_labels is not None:
             self.gt_labels = self.gt_labels.to(train_data.device)
+        if self.wr > 0:
+            self.device = train_data.device
+            self.optimizer = train_data.optimizer
 
     def on_start_epoch(self, epoch):
         epoch = epoch - 1
         self.unsupervised_weight = self.unsupervised_weight_fn(epoch) * self.wu_max
         self.unsupervised1_weight = self.unsupervised_weight_fn(epoch) * self.wu1_max
+
+    def on_end_train(self, train_data):
+        if self.wr <= 0:
+            return
+
+        # Delete param group
+        self.optimizer.param_groups = self.optimizer.param_groups[:-1]
+
+        # Delete hook
+        self.rot_hook.remove()
+
+    def init_rotation_classifier(self, num_features):
+        self.rotation_classifier = torch.nn.Linear(num_features, 4).to(self.device)
+        self.optimizer.add_param_group({'params': self.rotation_classifier.parameters()})
+        self.rotation_classifier.train()
+
+    def create_rotation_task(self, inputs):
+        split = inputs.size(0) // 4
+        x1, x2, x3, x4 = inputs[:split], inputs[split:2*split], inputs[2*split:3*split], inputs[3*split:]
+        x1 = x1.rot90(1, [2, 3])
+        x2 = x2.rot90(2, [2, 3])
+        x3 = x3.rot90(3, [2, 3])
+
+        targets = torch.zeros(split, dtype=torch.long)
+        targets = torch.cat([targets, targets + 1, targets + 2, targets + 3])
+        targets = targets.to(inputs.device)
+
+        inputs = torch.cat([x1, x2, x3, x4], dim=0)
+        return inputs, targets
 
     def compute_loss(self, idx, labeled, targets, unlabeled):
         labeled, targets, unlabeled, unlabeled1, preds = self.pseudo_labelling(labeled, targets, unlabeled)
@@ -85,8 +121,6 @@ class ReMixMatch(SemiSLMethod):
         unsupervised1_loss = self.unsupervised_loss(unlabeled1_outputs, preds[:unlabeled1_outputs.size(0)])
         unsupervised1_weighted_loss = unsupervised1_loss * self.unsupervised1_weight
 
-        # TODO: rotation_loss
-
         total_loss = supervised_loss + unsupervised_weighted_loss + unsupervised1_weighted_loss
 
         loss = {
@@ -95,8 +129,21 @@ class ReMixMatch(SemiSLMethod):
             'unsupervised': unsupervised_loss,
             'unsupervised_weighted': unsupervised_weighted_loss,
             'unsupervised1': unsupervised1_loss,
-            'unsupervised1_weighted': unsupervised1_weighted_loss
+            'unsupervised1_weighted': unsupervised1_weighted_loss,
         }
+
+        if self.wr > 0:
+            rot_inputs, rot_targets = self.create_rotation_task(unlabeled1)
+            self.model(rot_inputs)  # Collect the embeddings
+            rot_outputs = self.rotation_classifier(self.embeddings)
+            rotation_loss = self.rotation_loss(rot_outputs, rot_targets)
+            rotation_weighted_loss = rotation_loss * self.wr
+
+            total_loss += rotation_weighted_loss
+
+            loss['total'] = total_loss
+            loss['rotation'] = rotation_loss
+            loss['rotation_weighted'] = rotation_weighted_loss
 
         return labeled_outputs, targets.argmax(dim=1), loss
 
@@ -151,8 +198,6 @@ class ReMixMatch(SemiSLMethod):
         target_a, target_b = all_targets, all_targets[indices]
 
         return mixup(input_a, input_b, target_a, target_b, lam)
-
-# TODO: Apply CTAugment
 
 
 def ReMixMatchCIFAR10(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):

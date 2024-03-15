@@ -51,9 +51,9 @@ class NetworkBlock(nn.Module):
         return self.layer(x)
 
 
-class WideResNet(nn.Module):
-    def __init__(self, num_classes, depth=28, width=2, dropRate=0.0, large=False):
-        super(WideResNet, self).__init__()
+class WideResNetBackbone(nn.Module):
+    def __init__(self, depth=28, width=2, dropRate=0.0, large=False):
+        super(WideResNetBackbone, self).__init__()
         if large:
             nChannels = [16, 135, 135*width, 270*width]
         else:
@@ -73,8 +73,23 @@ class WideResNet(nn.Module):
         # global average pooling and classifier
         self.bn1 = nn.BatchNorm2d(nChannels[3], momentum=0.001)
         self.relu = nn.LeakyReLU(negative_slope=0.1, inplace=True)
-        self.fc = nn.Linear(nChannels[3], num_classes)
         self.nChannels = nChannels[3]
+
+    def forward(self, x):
+        out = self.conv1(x)
+        out = self.block1(out)
+        out = self.block2(out)
+        out = self.block3(out)
+        out = self.relu(self.bn1(out))
+        out = F.avg_pool2d(out, 8)
+        return out.view(-1, self.nChannels)
+
+
+class WideResNet(nn.Module):
+    def __init__(self, num_classes, depth=28, width=2, dropRate=0.0, large=False):
+        super(WideResNet, self).__init__()
+        self.backbone = WideResNetBackbone(depth, width, dropRate, large)
+        self.fc = nn.Linear(self.backbone.nChannels, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -88,11 +103,5 @@ class WideResNet(nn.Module):
                 m.bias.data.zero_()
 
     def forward(self, x):
-        out = self.conv1(x)
-        out = self.block1(out)
-        out = self.block2(out)
-        out = self.block3(out)
-        out = self.relu(self.bn1(out))
-        out = F.avg_pool2d(out, 8)
-        out = out.view(-1, self.nChannels)
+        out = self.backbone(x)
         return self.fc(out)

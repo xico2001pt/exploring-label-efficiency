@@ -151,6 +151,7 @@ def main(args):
         def generate_train_data():
             train_data = TrainData()
             train_data.logger = logger
+            train_data.optimizer = optimizer
             train_data.device = device
             train_data.input_size = train_labeled_dataset.get_input_size()
             train_data.num_classes = train_labeled_dataset.get_num_classes()
