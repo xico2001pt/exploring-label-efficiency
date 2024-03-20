@@ -12,7 +12,7 @@ class SVHNDataset(torch.utils.data.Dataset):
 
         root = process_data_path(root)
 
-        transform = [
+        transforms = [
             v2.ToTensor(),
             v2.Normalize(
                 (0.4377, 0.4438, 0.4728),
@@ -21,9 +21,9 @@ class SVHNDataset(torch.utils.data.Dataset):
         ]
 
         if transform is not None:
-            transform.append(transform)
+            transforms.append(transform)
 
-        transform = v2.Compose(transform)
+        transform = v2.Compose(transforms)
 
         train_or_val = split in ['train', 'val']
 
@@ -52,8 +52,8 @@ class SVHNDataset(torch.utils.data.Dataset):
 
 
 class SemiSupervisedSVHNDataset(SemiSupervisedDataset):
-    def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=1000):
-        dataset = SVHNDataset(root, split='train', train_val_split=train_val_split)
+    def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=1000, transform=None):
+        dataset = SVHNDataset(root, split='train', train_val_split=train_val_split, transform=transform)
         super().__init__(dataset, split=split, num_labeled=num_labeled)
 
 

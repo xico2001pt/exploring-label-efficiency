@@ -26,15 +26,21 @@ class SemiSLTrainer(Trainer):
         return labeled_outputs, targets, loss
 
     def _semisl_batch_iteration(self, num_batches, labeled_dataloader, unlabeled_dataloader, optimizer, metrics, total_loss, loss_counter, total_metrics, description):
-        labeled_dataloader_iter = iter(labeled_dataloader)
-        unlabeled_dataloader_iter = iter(unlabeled_dataloader)
-
         for idx in tqdm(range(num_batches), desc=description):
-            labeled, targets = next(labeled_dataloader_iter)
-            unlabeled = next(unlabeled_dataloader_iter)
+            try:
+                labeled, targets = next(self.labeled_dataloader_iter)
+            except:
+                self.labeled_dataloader_iter = iter(labeled_dataloader)
+                labeled, targets = next(self.labeled_dataloader_iter)
 
-            unlabeled = unlabeled.to(self.device)
+            try:
+                unlabeled = next(self.unlabeled_dataloader_iter)
+            except:
+                self.unlabeled_dataloader_iter = iter(unlabeled_dataloader)
+                unlabeled = next(self.unlabeled_dataloader_iter)
+
             labeled, targets = labeled.to(self.device), targets.to(self.device)
+            unlabeled = unlabeled.to(self.device)
 
             optimizer.zero_grad()
 
