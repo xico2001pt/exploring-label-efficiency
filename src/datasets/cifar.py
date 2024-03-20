@@ -2,32 +2,30 @@ import torch
 import torchvision
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
-from ..utils.utils import process_data_path, split_train_val_data
+from ..utils.utils import process_data_path, split_train_val_data, dataset_transform_filter
 
 
-class CIFAR10(torch.utils.data.Dataset):
-    def __init__(self, root, split='train', train_val_split=0.9):
+class CIFAR10Dataset(torch.utils.data.Dataset):
+    def __init__(self, root, split='train', train_val_split=0.9, transform=None):
         if split not in ['train', 'val', 'test']:
             raise ValueError("split must be either 'train', 'val' or 'test'")
 
         root = process_data_path(root)
 
-        transform = v2.Compose([
+        transforms = [
             v2.ToTensor(),
             v2.Normalize(
                 (0.49139968, 0.48215827, 0.44653124),
                 (0.24703233, 0.24348505, 0.26158768)
             )
-        ])
+        ]
+
+        if transform is not None:
+            transforms.append(transform)
+
+        transform = v2.Compose(transforms)
 
         train_or_val = split in ['train', 'val']
-
-        if split == 'train':
-            transform = v2.Compose([
-                v2.RandomCrop(32, padding=4),
-                v2.RandomHorizontalFlip(),
-                transform
-            ])
 
         self.dataset = torchvision.datasets.CIFAR10(
             root,
@@ -53,9 +51,27 @@ class CIFAR10(torch.utils.data.Dataset):
         return 10
 
 
-class SemiSupervisedCIFAR10(SemiSupervisedDataset):
-    def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=4000):
-        dataset = CIFAR10(root, split='train', train_val_split=train_val_split)
+class SemiSupervisedCIFAR10Dataset(SemiSupervisedDataset):
+    def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=4000, transform=None):
+        dataset = CIFAR10Dataset(root, split='train', train_val_split=train_val_split, transform=transform)
         super().__init__(dataset, split=split, num_labeled=num_labeled)
 
-# TODO: Add CIFAR100
+
+def CIFAR10(root, split='train', train_val_split=0.9):
+    transform = v2.Compose([
+        v2.RandomCrop(32, padding=4),
+        v2.RandomHorizontalFlip(),
+    ])
+    transform = dataset_transform_filter(split, transform)
+    return CIFAR10Dataset(root, split=split, train_val_split=train_val_split, transform=transform)
+
+
+def SemiSupervisedCIFAR10(root, split='labeled', train_val_split=0.9, num_labeled=4000, force_transform=False):
+    transform = None
+    if force_transform:
+        transform = v2.Compose([
+            v2.RandomCrop(32, padding=4),
+            v2.RandomHorizontalFlip(),
+        ])
+    transform = dataset_transform_filter(split, transform)
+    return SemiSupervisedCIFAR10Dataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)

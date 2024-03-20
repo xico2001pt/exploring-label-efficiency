@@ -69,3 +69,9 @@ def backbone_getter(model):
     elif 'layer4' in model._modules:
         return model._modules['layer4']
     return None
+
+
+def dataset_transform_filter(split, transform):
+    if split in ['val', 'test']:
+        return None
+    return transform

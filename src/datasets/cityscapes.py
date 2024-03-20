@@ -6,13 +6,12 @@ from .semi_supervised import SemiSupervisedDataset
 from ..utils.utils import process_data_path, split_train_val_data
 
 
-class CityscapesSeg(torch.utils.data.Dataset):
-    def __init__(self, root, split='train', mode='fine', train_val_split=2475):
+class CityscapesSegDataset(torch.utils.data.Dataset):
+    def __init__(self, root, split='train', mode='fine', train_val_split=2475, transform=None):
         root = process_data_path(root)
         self.ignore_index = 0
         self.valid_classes = [7, 8, 11, 12, 13, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 31, 32, 33]
 
-        # TODO: Transformations as arguments
         image_transform = v2.Compose([
             v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
             v2.Normalize(
@@ -23,10 +22,7 @@ class CityscapesSeg(torch.utils.data.Dataset):
 
         target_transform = v2.Lambda(lambda x: tv_tensors.Mask(x, dtype=torch.long))
 
-        self.transforms = v2.Compose([
-            v2.Resize(int(512*1.05)),  # TODO: Make this an argument
-            v2.RandomCrop(512),  # TODO: Make this an argument
-        ])
+        self.transform = transform
 
         pseudo_split = split
 
@@ -57,8 +53,8 @@ class CityscapesSeg(torch.utils.data.Dataset):
         image, target = self.dataset[index]
         target = self._convert_target(target)
 
-        if self.transforms is not None:
-            image, target = self.transforms(image, target)
+        if self.transform is not None:
+            image, target = self.transform(image, target)
 
         return image, target.squeeze()
 
@@ -69,23 +65,39 @@ class CityscapesSeg(torch.utils.data.Dataset):
         return len(self.valid_classes) + 1  # +1 for the ignore index
 
 
-class SemiSupervisedCityscapesSeg(SemiSupervisedDataset):
-    def __init__(self, root, split='labeled', train_val_split=2475, num_labeled=372):
+class SemiSupervisedCityscapesSegDataset(SemiSupervisedDataset):
+    def __init__(self, root, split='labeled', train_val_split=2475, num_labeled=372, transform=None):
         if split == 'train':
             split = 'labeled'
 
         if split == 'labeled':
-            dataset = CityscapesSeg(root, split='train', mode='fine', train_val_split=train_val_split)
+            dataset = CityscapesSegDataset(root, split='train', mode='fine', train_val_split=train_val_split, transform=transform)
         else:
-            dataset = CityscapesSeg(root, split='train_extra', mode='coarse', train_val_split=train_val_split)
+            dataset = CityscapesSegDataset(root, split='train_extra', mode='coarse', train_val_split=train_val_split, transform=transform)
             num_labeled = 0
 
         super().__init__(dataset, split, num_labeled)
 
 
+def CityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
+    transform = v2.Compose([
+        v2.Resize(int(512*1.05)),
+        v2.RandomCrop(512),
+    ])
+    return CityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
+
+
+def SemiSupervisedCityscapesSeg(root, split='labeled', mode='fine', train_val_split=2475, num_labeled=372):
+    transform = v2.Compose([
+        v2.Resize(int(512*1.05)),
+        v2.RandomCrop(512),
+    ])
+    return SemiSupervisedCityscapesSeg(root, split=split, mode=mode, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+
+
 if __name__ == "__main__":
     ############  DEBUGGING  ############
-    dataset = CityscapesSeg(root='/data/auto/cityscapes', split='train')
+    dataset = CityscapesSegDataset(root='/data/auto/cityscapes', split='train')
 
     from torchvision.utils import save_image
     from ..utils.utils import set_reproducibility

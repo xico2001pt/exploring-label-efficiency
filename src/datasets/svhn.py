@@ -2,23 +2,28 @@ import torch
 import torchvision
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
-from ..utils.utils import process_data_path, split_train_val_data
+from ..utils.utils import process_data_path, split_train_val_data, dataset_transform_filter
 
 
-class SVHN(torch.utils.data.Dataset):
-    def __init__(self, root, split='train', train_val_split=0.9):
+class SVHNDataset(torch.utils.data.Dataset):
+    def __init__(self, root, split='train', train_val_split=0.9, transform=None):
         if split not in ['train', 'val', 'test']:
             raise ValueError("split must be either 'train', 'val' or 'test'")
 
         root = process_data_path(root)
 
-        transform = v2.Compose([
+        transform = [
             v2.ToTensor(),
             v2.Normalize(
                 (0.4377, 0.4438, 0.4728),
                 (0.1980, 0.2010, 0.1970)
             )
-        ])
+        ]
+
+        if transform is not None:
+            transform.append(transform)
+
+        transform = v2.Compose(transform)
 
         train_or_val = split in ['train', 'val']
 
@@ -46,7 +51,21 @@ class SVHN(torch.utils.data.Dataset):
         return 10
 
 
-class SemiSupervisedSVHN(SemiSupervisedDataset):
+class SemiSupervisedSVHNDataset(SemiSupervisedDataset):
     def __init__(self, root, split='labeled', train_val_split=0.9, num_labeled=1000):
-        dataset = SVHN(root, split='train', train_val_split=train_val_split)
+        dataset = SVHNDataset(root, split='train', train_val_split=train_val_split)
         super().__init__(dataset, split=split, num_labeled=num_labeled)
+
+
+def SVHN(root, split='train', train_val_split=0.9):
+    transform = None  # TODO: Add transform
+    transform = dataset_transform_filter(split, transform)
+    return SVHNDataset(root, split=split, train_val_split=train_val_split, transform=transform)
+
+
+def SemiSupervisedSVHN(root, split='labeled', train_val_split=0.9, num_labeled=1000, force_transform=False):
+    transform = None
+    if force_transform:
+        transform = None  # TODO: Add transform
+    transform = dataset_transform_filter(split, transform)
+    return SemiSupervisedSVHNDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
