@@ -1,6 +1,7 @@
 import torch
 from .utils import classes_mean
 
+
 class EMA:  # Exponential Moving Average
     def __init__(self, decay, initial):
         self.decay = decay
