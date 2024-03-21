@@ -146,11 +146,9 @@ def main(args):
 
         trainer = SemiSLTrainer(model, device, logger, val_loss, method)
 
-        def generate_train_data():
-            labeled_size = len(train_labeled_loader) * labeled_batch_size
-            unlabeled_size = len(train_unlabeled_loader) * unlabeled_batch_size
-            total_size = labeled_size + unlabeled_size
+        batches_per_epoch = min(len(train_labeled_loader), len(train_unlabeled_loader))
 
+        def generate_train_data():
             train_data = TrainData()
             train_data.logger = logger
             train_data.optimizer = optimizer
@@ -158,10 +156,11 @@ def main(args):
             train_data.input_size = train_labeled_dataset.get_input_size()
             train_data.num_classes = train_labeled_dataset.get_num_classes()
             train_data.dataset_size = {
-                "labeled": labeled_size,
-                "unlabeled": unlabeled_size,
-                "total": total_size,
+                "labeled": batches_per_epoch * labeled_batch_size,
+                "unlabeled": batches_per_epoch * unlabeled_batch_size,
+                "total": batches_per_epoch * (labeled_batch_size + unlabeled_batch_size),
             }
+            train_data.batches_per_epoch = batches_per_epoch
             return train_data
 
         trainer.set_train_data(generate_train_data())
