@@ -87,12 +87,12 @@ def CityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
     return CityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
 
 
-def SemiSupervisedCityscapesSeg(root, split='labeled', mode='fine', train_val_split=2475, num_labeled=372):
+def SemiSupervisedCityscapesSeg(root, split='labeled', train_val_split=2475, num_labeled=372):
     transform = v2.Compose([
         v2.Resize(int(512*1.05)),
         v2.RandomCrop(512),
     ])
-    return SemiSupervisedCityscapesSeg(root, split=split, mode=mode, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+    return SemiSupervisedCityscapesSegDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
 
 
 if __name__ == "__main__":

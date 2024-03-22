@@ -1,4 +1,6 @@
 import torch
+import torchvision
+import torchvision.transforms.v2 as v2
 
 
 def temperature_sharpening(logits, temperature):
@@ -28,3 +30,19 @@ class GaussianNoise(torch.nn.Module):
         if len(inputs) == 1:
             return img + noise
         return img + noise, *inputs[1:]
+
+
+class InvariantRandAugment(v2.RandAugment):
+    _AUGMENTATION_SPACE = {
+        "Identity": (lambda num_bins, height, width: None, False),
+        "Brightness": (lambda num_bins, height, width: torch.linspace(0.0, 0.9, num_bins), True),
+        "Color": (lambda num_bins, height, width: torch.linspace(0.0, 0.9, num_bins), True),
+        "Contrast": (lambda num_bins, height, width: torch.linspace(0.0, 0.9, num_bins), True),
+        "Posterize": (
+            lambda num_bins, height, width: (8 - (torch.arange(num_bins) / ((num_bins - 1) / 4))).round().int(),
+            False,
+        ),
+        "Solarize": (lambda num_bins, height, width: torch.linspace(1.0, 0.0, num_bins), False),
+        "AutoContrast": (lambda num_bins, height, width: None, False),
+        "Equalize": (lambda num_bins, height, width: None, False),
+    }

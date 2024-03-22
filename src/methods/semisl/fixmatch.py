@@ -4,6 +4,7 @@ from torch.nn import CrossEntropyLoss
 from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
+from ...utils.transforms import InvariantRandAugment
 
 
 def default_process_targets(targets, num_classes):
@@ -118,10 +119,7 @@ def FixMatchCityscapesSeg(wu, confidence):
     weak_unlabeled_transform = v2.Identity()
 
     strong_unlabeled_transform = v2.Compose([
-        v2.ColorJitter(brightness=0.5),
-        v2.RandomAutocontrast(p=0.5),
-        v2.RandomEqualize(p=0.5),
-        v2.RandomErasing(scale=(0.1, 0.1), ratio=(1, 1), value=0.5, p=1.0),
+        InvariantRandAugment(2, 10),
     ])
 
     supervised_loss = CrossEntropyLoss()
