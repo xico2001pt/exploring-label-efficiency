@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torch.nn import CrossEntropyLoss
+from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
 
@@ -102,7 +103,32 @@ def FixMatchSVHN(wu, confidence):
     strong_unlabeled_transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandAugment(2, 10),
+        v2.RandomErasing(scale=(0.1, 0.3), ratio=(1, 1), value=0.5, p=1.0),
     ])
     supervised_loss = CrossEntropyLoss()
     unsupervised_loss = CrossEntropyLoss(reduction='none')  # Important not to have reduction here
     return FixMatch(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss)
+
+
+def FixMatchCityscapesSeg(wu, confidence):
+    labeled_transform = v2.Compose([
+        v2.RandomCrop((512, 512), padding=64, padding_mode='reflect'),
+        v2.RandomHorizontalFlip(),
+    ])
+    weak_unlabeled_transform = v2.Identity()
+
+    strong_unlabeled_transform = v2.Compose([
+        v2.ColorJitter(brightness=0.5),
+        v2.RandomAutocontrast(p=0.5),
+        v2.RandomEqualize(p=0.5),
+        v2.RandomErasing(scale=(0.1, 0.1), ratio=(1, 1), value=0.5, p=1.0),
+    ])
+
+    supervised_loss = CrossEntropyLoss()
+    unsupervised_loss = CrossEntropyLoss(reduction='none')  # Important not to have reduction here
+
+    def process_targets(targets, num_classes):
+        targets = F.one_hot(targets, num_classes).float()
+        targets = targets.permute(0, 3, 1, 2)
+        return tv_tensors.Mask(targets)
+    return FixMatch(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
