@@ -24,7 +24,7 @@ class Trainer:
         self.logger.log_yaml(f"{split_name} Stats", yaml_dict)
 
     def _save_checkpoint(self, filename: str, optimizer, epoch: int):
-        model = self.ema_model if self.ema_model else self.model
+        model = self.ema_model.module if self.ema_model else self.model
         save_dict = {
             "model": model.state_dict(),
             "optimizer": optimizer.state_dict(),
@@ -42,7 +42,7 @@ class Trainer:
 
     def _batch_iteration(self, dataloader, is_train, optimizer, metrics, total_loss, total_metrics, description):
         model = self.ema_model if not is_train and self.ema_model else self.model
-        
+
         for inputs, targets in tqdm(dataloader, desc=description):
             inputs, targets = inputs.to(self.device), targets.to(self.device)
 

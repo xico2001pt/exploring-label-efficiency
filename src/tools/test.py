@@ -91,7 +91,7 @@ def main(args):
             hyperparameters,
         ) = data.values()
 
-        num_workers, batch_size, ema_decay = hyperparameters.values()
+        num_workers, batch_size = hyperparameters.values()
 
         test_loader = _get_dataloader(dataset, batch_size, num_workers)
 
@@ -100,9 +100,6 @@ def main(args):
         model.to(device)
 
         metrics = {metric_name: metric.to(device) for metric_name, metric in metrics.items()}
-
-        if ema_decay:
-            model = swa_utils.AveragedModel(model)
 
         _load_model_weights(model, model_weights_path, logger)
 
