@@ -9,13 +9,13 @@ semisl_train:
   method: fixmatch_cityscapes_seg  # Semi-supervised method
   val_loss: cityscapes_cross_entropy  # Loss function
   metrics: [cityscapes_jaccard_macro, cityscapes_jaccard_micro, cityscapes_dice]  # Metrics to evaluate
-  scheduler: fixmatch_seg_polynomial_lr  # Learning rate scheduler. Can be null
+  scheduler: fixmatch_seg_cosine_lr  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
   hyperparameters:  # Hyperparameters for training
-    epochs: 240  # Number of training epochs
+    epochs: 120  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
-    labeled_batch_size: 2  # Training labeled batch size
-    unlabeled_batch_size: 6  # Training unlabeled batch size
+    labeled_batch_size: 1  # Training labeled batch size
+    unlabeled_batch_size: 3  # Training unlabeled batch size
     save_freq: 10  # Save model every save_freq epochs. If 0, only the best model is saved
     ema_decay: 0.99  # Exponential moving average decay
 
