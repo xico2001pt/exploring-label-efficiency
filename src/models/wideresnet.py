@@ -1,107 +1,100 @@
-# Code source:
-# https://github.com/Jeffkang-94/Mixmatch-pytorch-SSL/blob/develop/model/wideresnet.py
+# Code source: https://github.com/weiaicunzai/pytorch-cifar100/blob/master/models/wideresidual.py
 
-import math
-import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
-class BasicBlock(nn.Module):
-    def __init__(self, in_planes, out_planes, stride, dropRate=0.0, activate_before_residual=False):
-        super(BasicBlock, self).__init__()
-        self.bn1 = nn.BatchNorm2d(in_planes, momentum=0.001)
-        self.relu1 = nn.LeakyReLU(negative_slope=0.1, inplace=True)
-        self.conv1 = nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
-                               padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(out_planes, momentum=0.001)
-        self.relu2 = nn.LeakyReLU(negative_slope=0.1, inplace=True)
-        self.conv2 = nn.Conv2d(out_planes, out_planes, kernel_size=3, stride=1,
-                               padding=1, bias=False)
-        self.droprate = dropRate
-        self.equalInOut = (in_planes == out_planes)
-        self.convShortcut = (not self.equalInOut) and nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride,
-                               padding=0, bias=False) or None
-        self.activate_before_residual = activate_before_residual
+class WideBasic(nn.Module):
+    def __init__(self, in_channels, out_channels, stride=1):
+        super().__init__()
+        self.residual = nn.Sequential(
+            nn.BatchNorm2d(in_channels),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(
+                in_channels,
+                out_channels,
+                kernel_size=3,
+                stride=stride,
+                padding=1
+            ),
+            nn.BatchNorm2d(out_channels),
+            nn.ReLU(inplace=True),
+            nn.Dropout(),
+            nn.Conv2d(
+                out_channels,
+                out_channels,
+                kernel_size=3,
+                stride=1,
+                padding=1
+            )
+        )
 
-    def forward(self, x):
-        if not self.equalInOut and self.activate_before_residual == True:
-            x = self.relu1(self.bn1(x))
-        else:
-            out = self.relu1(self.bn1(x))
-        out = self.relu2(self.bn2(self.conv1(out if self.equalInOut else x)))
-        if self.droprate > 0:
-            out = F.dropout(out, p=self.droprate, training=self.training)
-        out = self.conv2(out)
-        return torch.add(x if self.equalInOut else self.convShortcut(x), out)
+        self.shortcut = nn.Sequential()
 
-
-class NetworkBlock(nn.Module):
-    def __init__(self, nb_layers, in_planes, out_planes, block, stride, dropRate=0.0, activate_before_residual=False):
-        super(NetworkBlock, self).__init__()
-        self.layer = self._make_layer(block, in_planes, out_planes, nb_layers, stride, dropRate, activate_before_residual)
-
-    def _make_layer(self, block, in_planes, out_planes, nb_layers, stride, dropRate, activate_before_residual):
-        layers = []
-        for i in range(int(nb_layers)):
-            layers.append(block(i == 0 and in_planes or out_planes, out_planes, i == 0 and stride or 1, dropRate, activate_before_residual))
-        return nn.Sequential(*layers)
+        if in_channels != out_channels or stride != 1:
+            self.shortcut = nn.Sequential(
+                nn.Conv2d(in_channels, out_channels, 1, stride=stride)
+            )
 
     def forward(self, x):
-        return self.layer(x)
 
+        residual = self.residual(x)
+        shortcut = self.shortcut(x)
 
-class WideResNetBackbone(nn.Module):
-    def __init__(self, depth=28, width=2, dropRate=0.0, large=False):
-        super(WideResNetBackbone, self).__init__()
-        if large:
-            nChannels = [16, 135, 135*width, 270*width]
-        else:
-            nChannels = [16, 16*width, 32*width, 64*width]
-        assert ((depth - 4) % 6 == 0)
-        n = (depth - 4) / 6
-        block = BasicBlock
-        # 1st conv before any network block
-        self.conv1 = nn.Conv2d(3, nChannels[0], kernel_size=3, stride=1,
-                               padding=1, bias=False)
-        # 1st block
-        self.block1 = NetworkBlock(n, nChannels[0], nChannels[1], block, 1, dropRate, activate_before_residual=True)
-        # 2nd block
-        self.block2 = NetworkBlock(n, nChannels[1], nChannels[2], block, 2, dropRate)
-        # 3rd block
-        self.block3 = NetworkBlock(n, nChannels[2], nChannels[3], block, 2, dropRate)
-        # global average pooling and classifier
-        self.bn1 = nn.BatchNorm2d(nChannels[3], momentum=0.001)
-        self.relu = nn.LeakyReLU(negative_slope=0.1, inplace=True)
-        self.nChannels = nChannels[3]
-
-    def forward(self, x):
-        out = self.conv1(x)
-        out = self.block1(out)
-        out = self.block2(out)
-        out = self.block3(out)
-        out = self.relu(self.bn1(out))
-        out = F.avg_pool2d(out, 8)
-        return out.view(-1, self.nChannels)
-
+        return residual + shortcut
 
 class WideResNet(nn.Module):
-    def __init__(self, num_classes, depth=28, width=2, dropRate=0.0, large=False):
-        super(WideResNet, self).__init__()
-        self.backbone = WideResNetBackbone(depth, width, dropRate, large)
-        self.fc = nn.Linear(self.backbone.nChannels, num_classes)
+    def __init__(self, num_classes, depth=28, width=2):
+        super().__init__()
 
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                m.weight.data.normal_(0, math.sqrt(2. / n))
-            elif isinstance(m, nn.BatchNorm2d):
-                m.weight.data.fill_(1)
-                m.bias.data.zero_()
-            elif isinstance(m, nn.Linear):
-                nn.init.xavier_normal_(m.weight.data)
-                m.bias.data.zero_()
+        block = WideBasic
+
+        self.depth = depth
+        k = width
+        l = int((depth - 4) / 6)
+        self.in_channels = 16
+        self.init_conv = nn.Conv2d(3, self.in_channels, 3, 1, padding=1)
+        self.conv2 = self._make_layer(block, 16 * k, l, 1)
+        self.conv3 = self._make_layer(block, 32 * k, l, 2)
+        self.conv4 = self._make_layer(block, 64 * k, l, 2)
+        self.bn = nn.BatchNorm2d(64 * k)
+        self.relu = nn.ReLU(inplace=True)
+        self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
+        self.linear = nn.Linear(64 * k, num_classes)
 
     def forward(self, x):
-        out = self.backbone(x)
-        return self.fc(out)
+        x = self.init_conv(x)
+        x = self.conv2(x)
+        x = self.conv3(x)
+        x = self.conv4(x)
+        x = self.bn(x)
+        x = self.relu(x)
+        x = self.avg_pool(x)
+        x = x.view(x.size(0), -1)
+        x = self.linear(x)
+
+        return x
+
+    def _make_layer(self, block, out_channels, num_blocks, stride):
+        """make resnet layers(by layer i didnt mean this 'layer' was the
+        same as a neuron netowork layer, ex. conv layer), one layer may
+        contain more than one residual block
+
+        Args:
+            block: block type, basic block or bottle neck block
+            out_channels: output depth channel number of this layer
+            num_blocks: how many blocks per layer
+            stride: the stride of the first block of this layer
+
+        Return:
+            return a resnet layer
+        """
+
+        # we have num_block blocks per layer, the first block
+        # could be 1 or 2, other blocks would always be 1
+        strides = [stride] + [1] * (num_blocks - 1)
+        layers = []
+        for stride in strides:
+            layers.append(block(self.in_channels, out_channels, stride))
+            self.in_channels = out_channels
+
+        return nn.Sequential(*layers)
