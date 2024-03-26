@@ -58,7 +58,9 @@ class SemiSupervisedSVHNDataset(SemiSupervisedDataset):
 
 
 def SVHN(root, split='train', train_val_split=0.9):
-    transform = None  # TODO: Add transform
+    transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+    ])
     transform = dataset_transform_filter(split, transform)
     return SVHNDataset(root, split=split, train_val_split=train_val_split, transform=transform)
 
@@ -66,6 +68,8 @@ def SVHN(root, split='train', train_val_split=0.9):
 def SemiSupervisedSVHN(root, split='labeled', train_val_split=0.9, num_labeled=1000, force_transform=False):
     transform = None
     if force_transform:
-        transform = None  # TODO: Add transform
+        transform = v2.Compose([
+            v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+        ])
     transform = dataset_transform_filter(split, transform)
     return SemiSupervisedSVHNDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
