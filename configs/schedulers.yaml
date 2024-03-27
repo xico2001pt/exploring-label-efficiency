@@ -8,7 +8,7 @@ supervised_wideresnet_svhn_lr:
   class: MultiStepLR
   args:
     milestones: [80, 120]
-    gamma: 0.1
+    gamma: 0.2
 
 cityscapes_polynomial_lr:
   class: PolynomialLR
@@ -59,8 +59,23 @@ mixmatch_seg_polynomial_lr:
     total_iters: 120
     power: 0.9
 
+mixmatch_seg_cosine_lr:
+  class: CosineAnnealingLR
+  args:
+    T_max: 120
+
+remixmatch_seg_cosine_lr:
+  class: CosineAnnealingLR
+  args:
+    T_max: 120
+
 fixmatch_seg_polynomial_lr:
   class: Polynomial
   args:
-    total_iters: 240
+    total_iters: 120
     power: 0.9
+
+fixmatch_seg_cosine_lr:
+  class: CosineAnnealingLR
+  args:
+    T_max: 120
