@@ -148,7 +148,7 @@ class WideResnetBackbone(nn.Module):
 
         feat4 = self.bn_last(feat4)
         feat4 = self.relu_last(feat4)
-        return feat2, feat4
+        return feat4
 
     def init_weight(self):
         for _, child in self.named_children():
@@ -170,7 +170,7 @@ class WideResNet(nn.Module):
         self.classifier = nn.Linear(64 * self.k, num_classes, bias=True)
 
     def forward(self, x):
-        feat = self.backbone(x)[-1]
+        feat = self.backbone(x)
         feat = torch.mean(feat, dim=(2, 3))
         feat = self.classifier(feat)
         return feat
