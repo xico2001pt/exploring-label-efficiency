@@ -21,7 +21,7 @@ temporal_ensembling_svhn:
   class: TemporalEnsemblingSVHN
   args:
     w_max: 30.0
-    unsupervised_weight_rampup_length: 240
+    unsupervised_weight_rampup_length: 480
     accumlation_decay: 0.6
 
 mixmatch_cifar10:
@@ -33,12 +33,30 @@ mixmatch_cifar10:
     temperature: 0.5
     k: 2
 
-mixmatch_svhn:
+mixmatch_svhn_1000l:
   class: MixMatchSVHN
   args:
     alpha: 0.75
     w_max: 250.0
     unsupervised_weight_rampup_length: 240
+    temperature: 0.5
+    k: 2
+
+mixmatch_svhn_500l:
+  class: MixMatchSVHN
+  args:
+    alpha: 0.75
+    w_max: 250.0
+    unsupervised_weight_rampup_length: 480
+    temperature: 0.5
+    k: 2
+
+mixmatch_svhn_250l:
+  class: MixMatchSVHN
+  args:
+    alpha: 0.75
+    w_max: 250.0
+    unsupervised_weight_rampup_length: 1000
     temperature: 0.5
     k: 2
 
@@ -64,6 +82,17 @@ remixmatch_svhn:
     temperature: 0.5
     k: 8
 
+remixmatch_svhn_250l:
+  class: ReMixMatchSVHN
+  args:
+    alpha: 0.75
+    wu_max: 1.5
+    wu1_max: 0.5
+    wr: 0.5
+    unsupervised_weight_rampup_length: 500
+    temperature: 0.5
+    k: 8
+
 fixmatch_cifar10:
   class: FixMatchCIFAR10
   args:
@@ -80,14 +109,25 @@ pi_model_cityscapes_seg:
   class: PiModelCityscapesSeg
   args:
     w_max: 50.0
-    unsupervised_weight_rampup_length: 80
+    unsupervised_weight_rampup_length: 40
 
 mixmatch_cityscapes_seg:
   class: MixMatchCityscapesSeg
   args:
     alpha: 0.75
-    w_max: 75.0
-    unsupervised_weight_rampup_length: 80
+    w_max: 1.0
+    unsupervised_weight_rampup_length: 40
+    temperature: 0.5
+    k: 2
+
+remixmatch_cityscapes_seg:
+  class: ReMixMatchCityscapesSeg
+  args:
+    alpha: 0.75
+    wu_max: 0.75
+    wu1_max: 0.25
+    wr: 0.5
+    unsupervised_weight_rampup_length: 40
     temperature: 0.5
     k: 2
 
