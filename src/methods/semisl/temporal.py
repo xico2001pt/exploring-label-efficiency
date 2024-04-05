@@ -6,8 +6,8 @@ from ...utils.structures import EMA
 
 
 class TemporalEnsembling(PiModel):
-    def __init__(self, w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, supervised_loss, unsupervised_loss):
-        super().__init__(w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss)
+    def __init__(self, w_max, unsupervised_weight_rampup_length, accumlation_decay, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss):
+        super().__init__(w_max, unsupervised_weight_rampup_length, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
         self.accumlation_decay = accumlation_decay
 
     def on_start_train(self, train_data):
@@ -24,8 +24,8 @@ class TemporalEnsembling(PiModel):
             self.ensemble_predictions = self.ema.get_value().detach().clone() / (1 - self.accumlation_decay ** epoch)
 
     def get_predictions(self, idx, labeled, unlabeled):
-        l1 = self.stochastic_augmentation(labeled)
-        u1 = self.stochastic_augmentation(unlabeled)
+        l1 = self.labeled_augmentation(labeled)
+        u1 = self.unlabeled_augmentation(unlabeled)
 
         branch1 = torch.cat([l1, u1])
 
@@ -55,7 +55,7 @@ def TemporalEnsemblingCIFAR10(w_max, unsupervised_weight_rampup_length, accumlat
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
     unsupervised_loss = MSELoss(reduction='mean')
-    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, supervised_loss, unsupervised_loss)
+    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, transform, supervised_loss, unsupervised_loss)
 
 
 def TemporalEnsemblingSVHN(w_max, unsupervised_weight_rampup_length, accumlation_decay):
@@ -64,4 +64,4 @@ def TemporalEnsemblingSVHN(w_max, unsupervised_weight_rampup_length, accumlation
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
     unsupervised_loss = MSELoss(reduction='mean')
-    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, supervised_loss, unsupervised_loss)
+    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, transform, supervised_loss, unsupervised_loss)

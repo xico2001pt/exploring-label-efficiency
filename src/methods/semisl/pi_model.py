@@ -1,17 +1,20 @@
 import torch
+import torch.nn.functional as F
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
 from ...utils.ramps import exp_rampup
+from ...utils.transforms import InvariantRandAugment
 
 
 class PiModel(SemiSLMethod):
-    def __init__(self, w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss):
+    def __init__(self, w_max, unsupervised_weight_rampup_length, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss):
         self.supervised_loss = supervised_loss
         self.unsupervised_loss = unsupervised_loss
         self.max_unsupervised_weight = w_max
         self.unsupervised_weight_fn = exp_rampup(unsupervised_weight_rampup_length)
-        self.augmentations = transform
+        self.labeled_transform = labeled_transform
+        self.unlabeled_transform = unlabeled_transform
 
     def on_start_train(self, train_data):
         self.max_unsupervised_weight *= train_data.dataset_size["labeled"] / train_data.dataset_size["total"]
@@ -41,8 +44,8 @@ class PiModel(SemiSLMethod):
         return labeled_outputs, targets, loss
 
     def get_predictions(self, idx, labeled, unlabeled):
-        l1, l2 = self.augment(labeled)
-        u1, u2 = self.augment(unlabeled)
+        l1, l2 = self.augment(labeled, True)
+        u1, u2 = self.augment(unlabeled, False)
 
         branch1, branch2 = torch.cat([l1, u1]), torch.cat([l2, u2])
 
@@ -50,14 +53,18 @@ class PiModel(SemiSLMethod):
         with torch.no_grad():
             pred2 = self.model(branch2)
 
-        return pred1, pred2
+        return pred1.softmax(dim=1), pred2.softmax(dim=1)
 
-    def stochastic_augmentation(self, x):
-        return self.augmentations(x)
+    def labeled_augmentation(self, x):
+        return self.labeled_transform(x)
 
-    def augment(self, x):
-        x_1 = self.stochastic_augmentation(x)
-        x_2 = self.stochastic_augmentation(x)
+    def unlabeled_augmentation(self, x):
+        return self.unlabeled_transform(x)
+
+    def augment(self, x, labeled=True):
+        aug_fn = self.labeled_augmentation if labeled else self.unlabeled_augmentation
+        x_1 = aug_fn(x)
+        x_2 = aug_fn(x)
         return x_1, x_2
 
 
@@ -68,7 +75,7 @@ def PiModelCIFAR10(w_max, unsupervised_weight_rampup_length):
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
     unsupervised_loss = MSELoss(reduction='mean')
-    return PiModel(w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss)
+    return PiModel(w_max, unsupervised_weight_rampup_length, transform, transform, supervised_loss, unsupervised_loss)
 
 
 def PiModelSVHN(w_max, unsupervised_weight_rampup_length):
@@ -77,13 +84,15 @@ def PiModelSVHN(w_max, unsupervised_weight_rampup_length):
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
     unsupervised_loss = MSELoss(reduction='mean')
-    return PiModel(w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss)
+    return PiModel(w_max, unsupervised_weight_rampup_length, transform, transform, supervised_loss, unsupervised_loss)
 
 
 def PiModelCityscapesSeg(w_max, unsupervised_weight_rampup_length):
-    transform = v2.Compose([
-        v2.RandomAutocontrast(p=0.5),
+    labeled_transform = v2.Identity()
+    unlabeled_transform = v2.Compose([
+        InvariantRandAugment(2, 10),
     ])
-    supervised_loss = CrossEntropyLoss(reduction='mean', ignore_index=0)
-    unsupervised_loss = MSELoss(reduction='mean')
-    return PiModel(w_max, unsupervised_weight_rampup_length, transform, supervised_loss, unsupervised_loss)
+    supervised_loss = CrossEntropyLoss(reduction='mean')
+    unsupervised_loss = CrossEntropyLoss(reduction='mean')
+
+    return PiModel(w_max, unsupervised_weight_rampup_length, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
