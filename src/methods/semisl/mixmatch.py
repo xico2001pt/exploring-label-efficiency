@@ -2,9 +2,10 @@ import torch
 import torch.nn.functional as F
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms.v2 as v2
+from torchvision import tv_tensors
 from .semisl_method import SemiSLMethod
 from ...core.losses import CrossEntropyWithLogitsLoss
-from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise
+from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise, InvariantRandAugment
 from ...utils.ramps import linear_rampup
 
 
@@ -123,17 +124,15 @@ def MixMatchSVHN(alpha, w_max, unsupervised_weight_rampup_length, temperature, k
 
 def MixMatchCityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
     labeled_transform = v2.Compose([
-        v2.RandomAutocontrast(p=0.5),
+        v2.RandomCrop((512, 512), padding=64, padding_mode='reflect'),
+        v2.RandomHorizontalFlip(),
     ])
-    unlabeled_transform = v2.Compose([
-        v2.RandomAutocontrast(p=0.5),
-        GaussianNoise(),
-    ])
+    unlabeled_transform = InvariantRandAugment(2, 10)
     supervised_loss = CrossEntropyLoss()
-    unsupervised_loss = MSELoss()
+    unsupervised_loss = CrossEntropyLoss()
 
     def process_targets(targets, num_classes):
-        # TODO: Convert to tv tensor: no need if transforms do not change mask
         targets = F.one_hot(targets, num_classes).float()
-        return targets.permute(0, 3, 1, 2)
+        targets = targets.permute(0, 3, 1, 2)
+        return tv_tensors.Mask(targets)
     return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)

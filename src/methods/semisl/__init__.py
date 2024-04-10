@@ -1,7 +1,7 @@
 from .pi_model import PiModelCIFAR10, PiModelSVHN, PiModelCityscapesSeg
 from .temporal import TemporalEnsemblingCIFAR10, TemporalEnsemblingSVHN
 from .mixmatch import MixMatchCIFAR10, MixMatchSVHN, MixMatchCityscapesSeg
-from .remixmatch import ReMixMatchCIFAR10, ReMixMatchSVHN
+from .remixmatch import ReMixMatchCIFAR10, ReMixMatchSVHN, ReMixMatchCityscapesSeg
 from .fixmatch import FixMatchCIFAR10, FixMatchSVHN, FixMatchCityscapesSeg
 
 classes = [
@@ -15,6 +15,7 @@ classes = [
     MixMatchCityscapesSeg,
     ReMixMatchCIFAR10,
     ReMixMatchSVHN,
+    ReMixMatchCityscapesSeg,
     FixMatchCIFAR10,
     FixMatchSVHN,
     FixMatchCityscapesSeg,
