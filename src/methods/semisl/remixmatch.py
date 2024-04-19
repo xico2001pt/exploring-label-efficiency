@@ -1,11 +1,13 @@
 import torch
+from collections import OrderedDict
 import torch.nn.functional as F
 from torch.nn import CrossEntropyLoss
+from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
 from ...core.losses import CrossEntropyWithLogitsLoss
 from ...utils.structures import TensorMovingAverage
-from ...utils.transforms import temperature_sharpening, mixup, GaussianNoise
+from ...utils.transforms import temperature_sharpening, mixup, InvariantRandAugment
 from ...utils.ramps import linear_rampup
 from ...utils.utils import classes_mean, backbone_getter
 
@@ -46,6 +48,9 @@ class ReMixMatch(SemiSLMethod):
             return
 
         def on_forward(m, inputs, output):
+            if isinstance(output, OrderedDict):
+                output = output['out']
+
             if self.rotation_classifier is None:
                 self.init_rotation_classifier(output.size(1))
 
@@ -95,6 +100,7 @@ class ReMixMatch(SemiSLMethod):
 
         targets = torch.zeros(split, dtype=torch.long)
         targets = torch.cat([targets, targets + 1, targets + 2, targets + 3])
+        targets = torch.cat([targets, torch.zeros(len(inputs) - len(targets), dtype=torch.long) + 3])
         targets = targets.to(inputs.device)
 
         inputs = torch.cat([x1, x2, x3, x4], dim=0)
@@ -185,7 +191,7 @@ class ReMixMatch(SemiSLMethod):
 
     def apply_distribution_alignment(self, gt_labels, preds):
         ratio = (1e-6 + gt_labels) / (1e-6 + self.preds_moving_average.get_value())
-        preds = preds * ratio
+        #preds = preds * ratio.view(-1, 1, 1)  # TODO: Only used in segmentation
         self.preds_moving_average.update(preds)
         return preds
 
@@ -237,3 +243,25 @@ def ReMixMatchSVHN(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length
     unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     rotation_loss = CrossEntropyLoss()
     return ReMixMatch(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss)
+
+
+def ReMixMatchCityscapesSeg(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
+    gt_labels = None
+    labeled_transform = v2.Compose([
+        v2.RandomCrop((512, 512), padding=64, padding_mode='reflect'),
+        v2.RandomHorizontalFlip(),
+    ])
+    weak_unlabeled_transform = v2.Identity()
+
+    strong_unlabeled_transform = v2.Compose([
+        InvariantRandAugment(2, 10),
+    ])
+    supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
+    unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
+    rotation_loss = CrossEntropyLoss()
+
+    def process_targets(targets, num_classes):
+        targets = F.one_hot(targets, num_classes).float()
+        targets = targets.permute(0, 3, 1, 2)
+        return tv_tensors.Mask(targets)
+    return ReMixMatch(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets)

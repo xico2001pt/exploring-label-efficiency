@@ -129,7 +129,7 @@ def MixMatchCityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, tempe
     ])
     unlabeled_transform = InvariantRandAugment(2, 10)
     supervised_loss = CrossEntropyLoss()
-    unsupervised_loss = CrossEntropyLoss()
+    unsupervised_loss = MSELoss()
 
     def process_targets(targets, num_classes):
         targets = F.one_hot(targets, num_classes).float()

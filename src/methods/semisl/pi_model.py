@@ -93,6 +93,6 @@ def PiModelCityscapesSeg(w_max, unsupervised_weight_rampup_length):
         InvariantRandAugment(2, 10),
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
-    unsupervised_loss = CrossEntropyLoss(reduction='mean')
+    unsupervised_loss = MSELoss(reduction='mean')
 
     return PiModel(w_max, unsupervised_weight_rampup_length, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
