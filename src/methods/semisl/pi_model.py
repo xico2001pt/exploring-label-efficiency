@@ -1,5 +1,4 @@
 import torch
-import torch.nn.functional as F
 from torch.nn import CrossEntropyLoss, MSELoss
 import torchvision.transforms.v2 as v2
 from .semisl_method import SemiSLMethod
