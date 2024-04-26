@@ -191,7 +191,7 @@ class ReMixMatch(SemiSLMethod):
 
     def apply_distribution_alignment(self, gt_labels, preds):
         ratio = (1e-6 + gt_labels) / (1e-6 + self.preds_moving_average.get_value())
-        #preds = preds * ratio.view(-1, 1, 1)  # TODO: Only used in segmentation
+        preds = preds * ratio
         self.preds_moving_average.update(preds)
         return preds
 

@@ -13,8 +13,8 @@ class ReMixMatchV2(ReMixMatch):
         return super().compute_loss(idx, labeled, targets, unlabeled)
 
     def apply_distribution_alignment(self, gt_labels, preds):
-        ratio = (1e-6 + gt_labels) / (1e-6 + self.preds_moving_average.get_value())
-        preds = preds * ratio.view(-1, 1, 1)
+        #ratio = (1e-6 + gt_labels) / (1e-6 + self.preds_moving_average.get_value())
+        #preds = preds * ratio.view(-1, 1, 1)
         self.preds_moving_average.update(preds)
         return preds
 
