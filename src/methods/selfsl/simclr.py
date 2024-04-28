@@ -1,7 +1,7 @@
 from .selfsl_method import SelfSLMethod
 from ...core.losses import NTXentLoss
 from ...utils.utils import backbone_getter
-import torch
+from ...utils.transforms import GaussianNoise
 from torch import nn
 from collections import OrderedDict
 import torchvision.transforms.v2 as v2
@@ -66,7 +66,13 @@ class SimCLR(SelfSLMethod):
 
 
 def SimCLRCIFAR10(temperature, projection_dim):
-    transform = v2.Identity()  # TODO
+    transform = v2.Compose([
+        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
+        v2.RandomHorizontalFlip(p=0.5),
+        v2.RandomApply([v2.ColorJitter(0.8, 0.8, 0.8, 0.2)], p=0.8),
+        v2.RandomGrayscale(p=0.2),
+        GaussianNoise(p=0.5)
+    ])
     loss = NTXentLoss(temperature, return_dict=True)
 
     def decoder_builder(num_features):
