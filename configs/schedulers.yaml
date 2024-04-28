@@ -1,3 +1,5 @@
+## Supervised Learning
+#### Classification
 supervised_wideresnet_cifar_lr:
   class: MultiStepLR
   args:
@@ -10,12 +12,15 @@ supervised_wideresnet_svhn_lr:
     milestones: [80, 120]
     gamma: 0.2
 
+#### Segmentation
 cityscapes_polynomial_lr:
   class: PolynomialLR
   args:
     total_iters: 120
     power: 0.9
 
+## Semi-supervised Learning
+#### Classification
 pi_model_exp_warmup_lr:
   class: ExpWarmupLR
   args:
@@ -40,6 +45,7 @@ fixmatch_cosine_lr:
   args:
     T_max: 1000
 
+#### Segmentation
 pi_model_seg_polynomial_lr:
   class: PolynomialLR
   args:
@@ -84,3 +90,10 @@ fixmatch_seg_cosine_lr:
   class: CosineAnnealingLR
   args:
     T_max: 120
+
+## Self-supervised Learning
+#### Classification
+simclr_cosine_lr:
+  class: CosineAnnealingLR
+  args:
+    T_max: 200
