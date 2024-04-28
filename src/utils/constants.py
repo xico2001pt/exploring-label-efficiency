@@ -48,8 +48,10 @@ class Constants:
     class Logging:  # Logging constants
         LOGS_DIR = os.path.join(ROOT_DIR, "logs")  # Root directory where all logs are stored
         TRAIN_OUTPUT_FILENAME = "train_output.log"  # Name of the file that contains the redirected train output of the console
+        SELFSL_TRAIN_OUTPUT_FILENAME = "selfsl_train_output.log"  # Name of the file that contains the redirected self-supervised train output of the console
         TEST_OUTPUT_FILENAME = "test_output.log"  # Name of the file that contains the redirected test output of the console
         TRAIN_LOG_FILENAME = "train_log.yaml"  # Name of the file that contains the train configurations of the run
+        SELFSL_TRAIN_LOG_FILENAME = "selfsl_train_log.yaml"  # Name of the file that contains the self-supervised train configurations of the run
         TEST_LOG_FILENAME = "test_log.yaml"  # Name of the file that contains the test configurations of the run
 
     class Trainer:  # Trainer constants
