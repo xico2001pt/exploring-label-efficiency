@@ -2,7 +2,6 @@ import os
 import torch
 import numpy as np
 from tqdm import tqdm
-from ..utils.train import TrainData
 from ..utils.constants import Constants as c
 import torch.optim.swa_utils as swa_utils
 

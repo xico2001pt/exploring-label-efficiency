@@ -25,6 +25,7 @@ class Constants:
             SCHEDULER_CONFIG_NAME = "scheduler"  # Name of the scheduler configuration parameter
             STOP_CONDITION_CONFIG_NAME = "stop_condition"  # Name of the stop condition configuration parameter
             MODEL_WEIGHTS_PATH_CONFIG_NAME = "model_weights_path"  # Name of the model weights path configuration parameter
+            MODEL_WEIGHTS_NAME_CONFIG_NAME = "model_weights_name"  # Name of the model weights in SelfSL configuration parameter
             HYPERPARAMETERS_CONFIG_NAME = "hyperparameters"  # Name of the hyperparameters configuration parameter
 
             EPOCHS_CONFIG_NAME = "epochs"  # Name of the epochs configuration parameter
@@ -42,6 +43,7 @@ class Constants:
         SCHEDULERS_CONFIG_FILENAME = "schedulers.yaml"  # Name of the schedulers configuration file
         STOP_CONDITIONS_CONFIG_FILENAME = "stop_conditions.yaml"  # Name of the stop conditions configuration file
         SEMISL_METHODS_CONFIG_FILENAME = "semisl_methods.yaml"  # Name of the semi-supervised methods configuration file
+        SELFSL_METHODS_CONFIG_FILENAME = "selfsl_methods.yaml"  # Name of the self-supervised methods configuration file
 
     class Logging:  # Logging constants
         LOGS_DIR = os.path.join(ROOT_DIR, "logs")  # Root directory where all logs are stored

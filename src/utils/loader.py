@@ -4,6 +4,7 @@ from ..core import classes as core_classes
 from ..datasets import classes as datasets_classes
 from ..models import classes as models_classes
 from ..methods.semisl import classes as semisl_classes
+from ..methods.selfsl import classes as selfsl_classes
 from .constants import Constants as c
 
 
@@ -67,3 +68,6 @@ class Loader:
 
     def load_semisl_method(self, name: str):
         return self._load_config(c.Loader.SEMISL_METHODS_CONFIG_FILENAME, name, semisl_classes)
+
+    def load_selfsl_method(self, name: str):
+        return self._load_config(c.Loader.SELFSL_METHODS_CONFIG_FILENAME, name, selfsl_classes)
