@@ -9,7 +9,6 @@ from ..utils.loader import Loader
 from ..utils.logger import Logger
 from ..utils.constants import Constants as c, ROOT_DIR
 from ..utils.utils import _load_model, _get_device, _get_config_name, set_reproducibility
-import torch.optim.swa_utils as swa_utils
 
 
 CONFIGS_DIR = os.path.join(ROOT_DIR, c.Configurations.CONFIGS_DIR)

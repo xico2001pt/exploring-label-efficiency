@@ -1,5 +1,6 @@
 import os
 import time
+import torch
 import argparse
 from torch.utils.data import DataLoader
 from ..trainers.trainer import Trainer
@@ -11,6 +12,7 @@ from ..utils.utils import _load_model, _get_device, _get_config_name, set_reprod
 
 CONFIGS_DIR = c.Configurations.CONFIGS_DIR
 LOGS_DIR = c.Logging.LOGS_DIR
+WEIGHTS_DIR = os.path.join(ROOT_DIR, c.Trainer.WEIGHTS_DIR)
 
 
 def _load_train_data(loader, train_config, model, logger):
@@ -44,6 +46,8 @@ def _load_train_data(loader, train_config, model, logger):
     stop_condition, stop_condition_config = loader.load_stop_condition(stop_condition_name)
     logger.log_config(c.Configurations.Parameters.STOP_CONDITION_CONFIG_NAME, stop_condition_config)
 
+    model_weights_path = train_config[c.Configurations.Parameters.MODEL_WEIGHTS_PATH_CONFIG_NAME]
+
     hyperparameters = train_config[c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME]
     logger.log_config(c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME, hyperparameters)
 
@@ -55,6 +59,7 @@ def _load_train_data(loader, train_config, model, logger):
         c.Configurations.Parameters.METRICS_CONFIG_NAME: metrics,
         c.Configurations.Parameters.SCHEDULER_CONFIG_NAME: scheduler,
         c.Configurations.Parameters.STOP_CONDITION_CONFIG_NAME: stop_condition,
+        c.Configurations.Parameters.MODEL_WEIGHTS_PATH_CONFIG_NAME: model_weights_path,
         c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME: hyperparameters,
     }
 
@@ -83,6 +88,17 @@ def _log_train_time(start_time, end_time, logger):
     logger.log_time("Training", end_time - start_time)
 
 
+def _load_model_weights(model, model_weights_path, logger):
+    try:
+        path = os.path.join(WEIGHTS_DIR, model_weights_path)
+        model.load_state_dict(torch.load(path))
+        logger.info("Model weights loaded successfully")
+
+    except Exception:
+        logger.error("Failed to load model weights")
+        raise
+
+
 def main(args):
     set_reproducibility(c.Miscellaneous.SEED)
 
@@ -109,6 +125,7 @@ def main(args):
             metrics,
             scheduler,
             stop_condition,
+            model_weights_path,
             hyperparameters,
         ) = data.values()
 
@@ -121,6 +138,9 @@ def main(args):
         model.to(device)
 
         metrics = {metric_name: metric.to(device) for metric_name, metric in metrics.items()}
+
+        if model_weights_path:
+            _load_model_weights(model, model_weights_path, logger)
 
         trainer = Trainer(model, device, logger, loss)
 
