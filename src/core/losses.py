@@ -30,34 +30,16 @@ class NTXentLoss(nn.Module):
         super(NTXentLoss, self).__init__()
         self.temperature = temperature
         self.return_dict = return_dict
-        self.sim = nn.CosineSimilarity(dim=-1)
-        self.loss = nn.CrossEntropyLoss(reduction="sum")
-        self.mask = None
+        self.loss = nn.CrossEntropyLoss()
 
-    def _create_mask(self, N, device):
-        mask = torch.ones((2 * N, 2 * N), dtype=bool).to(device)
-        mask = mask.fill_diagonal_(0)
-        for i in range(N):
-            mask[i, N + i] = 0
-            mask[N + i, i] = 0
-        return mask
+    def forward(self, feat):
+        feat = F.normalize(feat, dim=1)
+        feat_scores = torch.matmul(feat, feat.t()).clamp(min=1e-7) / self.temperature
+        feat_scores = feat_scores - torch.eye(feat_scores.size(0)).to(feat_scores.device) * 1e5
 
-    def forward(self, z_i, z_j):
-        N = z_i.size(0)
-        z = torch.cat([z_i, z_j], dim=0)
+        labels = torch.arange(feat.size(0)).to(feat.device)
+        labels[::2] += 1
+        labels[1::2] -= 1
 
-        if self.mask is None:
-            self.mask = self._create_mask(N, z.device)
-
-        sim = self.sim(z.unsqueeze(1), z.unsqueeze(0)) / self.temperature
-
-        sim_i_j = torch.diag(sim, N)
-        sim_j_i = torch.diag(sim, -N)
-
-        positive = torch.cat((sim_i_j, sim_j_i), dim=0).reshape(2 * N, 1).to(z.device)
-        negative = sim[self.mask].reshape(2 * N, -1)
-
-        labels = torch.zeros(2 * N).to(z.device).long()
-        logits = torch.cat((positive, negative), dim=1)
-        loss = self.loss(logits, labels) / (2 * N)
+        loss = self.loss(feat_scores, labels.long())
         return {"total": loss} if self.return_dict else loss

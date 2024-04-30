@@ -1,7 +1,7 @@
 from .selfsl_method import SelfSLMethod
 from ...core.losses import NTXentLoss
 from ...utils.utils import backbone_getter
-from ...utils.transforms import GaussianNoise
+import torch
 from torch import nn
 from collections import OrderedDict
 import torchvision.transforms.v2 as v2
@@ -24,7 +24,7 @@ class SimCLR(SelfSLMethod):
             if self.decoder is None:
                 self.init_decoder(output.size(1))
 
-            if len(output.shape) > 2:  # TODO: Why is this necessary?
+            if len(output.shape) > 2:
                 output = output.mean([2, 3])
 
             self.embeddings = output
@@ -60,25 +60,29 @@ class SimCLR(SelfSLMethod):
 
         projections1, projections2 = self.decoder(representations1), self.decoder(representations2)
 
-        loss = self.loss(projections1, projections2)
+        # Interleave projections from batch of size 2 * batch_size
+        projs = torch.stack([projections1, projections2], dim=1)
+        projs = projs.view(2 * projs.size(0), projs.size(2))
+
+        loss = self.loss(projs)
 
         return None, None, loss
 
 
-def SimCLRCIFAR10(temperature, projection_dim):
+def SimCLRCIFAR10(temperature, projection_dim, color_jitter_strength):
+    s = color_jitter_strength
     transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         v2.RandomHorizontalFlip(p=0.5),
-        v2.RandomApply([v2.ColorJitter(0.8, 0.8, 0.8, 0.2)], p=0.8),
+        v2.RandomApply([v2.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
         v2.RandomGrayscale(p=0.2),
-        GaussianNoise(p=0.5)
     ])
     loss = NTXentLoss(temperature, return_dict=True)
 
     def decoder_builder(num_features):
         return nn.Sequential(
-            nn.Linear(num_features, num_features, bias=False),
+            nn.Linear(num_features, 2048),
             nn.ReLU(),
-            nn.Linear(num_features, projection_dim, bias=False),
+            nn.Linear(2048, projection_dim),
         )
     return SimCLR(transform, loss, decoder_builder)
