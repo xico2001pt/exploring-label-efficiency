@@ -2,6 +2,7 @@ import torch
 import torchvision
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
+from .unsupervised import UnsupervisedDataset
 from ..utils.utils import process_data_path, split_train_val_data, dataset_transform_filter
 
 
@@ -57,6 +58,12 @@ class SemiSupervisedCIFAR10Dataset(SemiSupervisedDataset):
         super().__init__(dataset, split=split, num_labeled=num_labeled)
 
 
+class UnsupervisedCIFAR10Dataset(UnsupervisedDataset):
+    def __init__(self, root, train_val_split=0.9, transform=None):
+        dataset = CIFAR10Dataset(root, split='train', train_val_split=train_val_split, transform=transform)
+        super().__init__(dataset)
+
+
 def CIFAR10(root, split='train', train_val_split=0.9):
     transform = v2.Compose([
         v2.RandomCrop(32, padding=4),
@@ -75,3 +82,7 @@ def SemiSupervisedCIFAR10(root, split='labeled', train_val_split=0.9, num_labele
         ])
     transform = dataset_transform_filter(split, transform)
     return SemiSupervisedCIFAR10Dataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+
+
+def UnsupervisedCIFAR10(root, train_val_split=0.9):
+    return UnsupervisedCIFAR10Dataset(root, train_val_split=train_val_split)

@@ -23,7 +23,7 @@ def _load_train_data(loader, train_config, model, logger):
     scheduler_name = train_config[c.Configurations.Parameters.SCHEDULER_CONFIG_NAME]
     stop_condition_name = train_config[c.Configurations.Parameters.STOP_CONDITION_CONFIG_NAME]
 
-    train_unlabeled_dataset, train_unlabeled_dataset_config = loader.load_dataset(train_dataset_name, split="unlabeled")
+    train_unlabeled_dataset, train_unlabeled_dataset_config = loader.load_dataset(train_dataset_name, None)
     logger.log_config(c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME, train_unlabeled_dataset_config)
 
     optimizer, optimizer_config = loader.load_optimizer(optimizer_name, model)

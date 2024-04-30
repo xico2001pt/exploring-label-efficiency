@@ -32,7 +32,8 @@ class Loader:
         return config
 
     def load_dataset(self, name: str, split: str):
-        return self._load_config(c.Loader.DATASETS_CONFIG_FILENAME, name, datasets_classes, {"split": split})
+        args = {"split": split} if split is not None else {}
+        return self._load_config(c.Loader.DATASETS_CONFIG_FILENAME, name, datasets_classes, args)
 
     def load_model(self, name: str):
         return self._load_config(c.Loader.MODELS_CONFIG_FILENAME, name, models_classes)
