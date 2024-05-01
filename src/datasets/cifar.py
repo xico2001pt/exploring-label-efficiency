@@ -59,8 +59,8 @@ class SemiSupervisedCIFAR10Dataset(SemiSupervisedDataset):
 
 
 class UnsupervisedCIFAR10Dataset(UnsupervisedDataset):
-    def __init__(self, root, train_val_split=0.9, transform=None):
-        dataset = CIFAR10Dataset(root, split='train', train_val_split=train_val_split, transform=transform)
+    def __init__(self, root, split, train_val_split=0.9, transform=None):
+        dataset = CIFAR10Dataset(root, split=split, train_val_split=train_val_split, transform=transform)
         super().__init__(dataset)
 
 
@@ -84,5 +84,5 @@ def SemiSupervisedCIFAR10(root, split='labeled', train_val_split=0.9, num_labele
     return SemiSupervisedCIFAR10Dataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
 
 
-def UnsupervisedCIFAR10(root, train_val_split=0.9):
-    return UnsupervisedCIFAR10Dataset(root, train_val_split=train_val_split)
+def UnsupervisedCIFAR10(root, split, train_val_split=0.9):
+    return UnsupervisedCIFAR10Dataset(root, split, train_val_split=train_val_split)

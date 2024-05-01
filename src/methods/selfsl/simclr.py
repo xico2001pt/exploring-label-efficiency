@@ -1,7 +1,6 @@
 from .selfsl_method import SelfSLMethod
 from ...core.losses import NTXentLoss
 from ...utils.utils import backbone_getter
-import torch
 from torch import nn
 from collections import OrderedDict
 import torchvision.transforms.v2 as v2
@@ -60,13 +59,12 @@ class SimCLR(SelfSLMethod):
 
         projections1, projections2 = self.decoder(representations1), self.decoder(representations2)
 
-        # Interleave projections from batch of size 2 * batch_size
-        projs = torch.stack([projections1, projections2], dim=1)
-        projs = projs.view(2 * projs.size(0), projs.size(2))
+        loss = self.loss(projections1, projections2)
 
-        loss = self.loss(projs)
+        outputs = self.loss.get_sim()
+        labels = self.loss.get_labels()
 
-        return None, None, loss
+        return outputs, labels, loss
 
 
 def SimCLRCIFAR10(temperature, projection_dim, color_jitter_strength):
@@ -81,8 +79,8 @@ def SimCLRCIFAR10(temperature, projection_dim, color_jitter_strength):
 
     def decoder_builder(num_features):
         return nn.Sequential(
-            nn.Linear(num_features, 2048),
+            nn.Linear(num_features, num_features, bias=False),
             nn.ReLU(),
-            nn.Linear(2048, projection_dim),
+            nn.Linear(num_features, projection_dim, bias=False),
         )
     return SimCLR(transform, loss, decoder_builder)
