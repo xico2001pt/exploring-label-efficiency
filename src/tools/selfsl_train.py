@@ -16,7 +16,6 @@ LOGS_DIR = c.Logging.LOGS_DIR
 
 def _load_train_data(loader, train_config, model, logger):
     train_dataset_name = train_config[c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME]
-    val_dataset_name = train_config[c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME]
     model_weights_name = train_config[c.Configurations.Parameters.MODEL_WEIGHTS_NAME_CONFIG_NAME]
     optimizer_name = train_config[c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME]
     method_name = train_config[c.Configurations.Parameters.METHOD_CONFIG_NAME]
@@ -26,9 +25,6 @@ def _load_train_data(loader, train_config, model, logger):
 
     train_unlabeled_dataset, train_unlabeled_dataset_config = loader.load_dataset(train_dataset_name, "train")
     logger.log_config(c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME, train_unlabeled_dataset_config)
-
-    val_dataset, val_dataset_config = loader.load_dataset(val_dataset_name, split="val")
-    logger.log_config(c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME, val_dataset_config)
 
     optimizer, optimizer_config = loader.load_optimizer(optimizer_name, model.backbone)
     logger.log_config(c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME, optimizer_config)
@@ -51,7 +47,6 @@ def _load_train_data(loader, train_config, model, logger):
 
     return {
         c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME: train_unlabeled_dataset,
-        c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME: val_dataset,
         c.Configurations.Parameters.MODEL_WEIGHTS_NAME_CONFIG_NAME: model_weights_name,
         c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME: optimizer,
         c.Configurations.Parameters.METHOD_CONFIG_NAME: method,
@@ -62,25 +57,16 @@ def _load_train_data(loader, train_config, model, logger):
     }
 
 
-def _get_dataloaders(train_unlabeled_dataset, validation_dataset, batch_size, num_workers):
+def _get_dataloader(train_unlabeled_dataset, batch_size, num_workers):
     train_unlabeled_dataloader = DataLoader(
         train_unlabeled_dataset,
         batch_size=batch_size,
         shuffle=True,
         num_workers=num_workers,
-        pin_memory=True,
+        pin_memory=False,
         drop_last=True
     )
-
-    validation_loader = DataLoader(
-        validation_dataset,
-        batch_size=batch_size,
-        shuffle=False,
-        num_workers=num_workers,
-        pin_memory=True,
-        drop_last=True
-    )
-    return train_unlabeled_dataloader, validation_loader
+    return train_unlabeled_dataloader
 
 
 def _log_train_time(start_time, end_time, logger):
@@ -107,7 +93,6 @@ def main(args):
         data = _load_train_data(loader, train_config, model, logger)
         (
             train_unlabeled_dataset,
-            validation_dataset,
             model_weights_name,
             optimizer,
             method,
@@ -119,7 +104,7 @@ def main(args):
 
         epochs, num_workers, batch_size, max_num_samples, save_freq, ema_decay = hyperparameters.values()
 
-        train_unlabeled_loader, validation_loader = _get_dataloaders(train_unlabeled_dataset, validation_dataset, batch_size, num_workers)
+        train_unlabeled_loader = _get_dataloader(train_unlabeled_dataset, batch_size, num_workers)
 
         device = _get_device(logger)
 
@@ -153,7 +138,7 @@ def main(args):
 
         trainer.train(
             train_unlabeled_loader,
-            validation_loader,
+            None,
             epochs,
             optimizer,
             scheduler=scheduler,
