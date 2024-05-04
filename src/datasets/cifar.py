@@ -1,5 +1,6 @@
 import torch
 import torchvision
+import torchvision.transforms as v1
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
 from .unsupervised import UnsupervisedDataset
@@ -85,4 +86,11 @@ def SemiSupervisedCIFAR10(root, split='labeled', train_val_split=0.9, num_labele
 
 
 def UnsupervisedCIFAR10(root, split, train_val_split=0.9):
-    return UnsupervisedCIFAR10Dataset(root, split, train_val_split=train_val_split)
+    return UnsupervisedCIFAR10Dataset(root, split, train_val_split=train_val_split, transform=None)
+
+
+def LinearEvalCIFAR10(root, split, train_val_split=0.9):
+    transform = v2.Compose([
+        v1.Resize(112),
+    ])
+    return CIFAR10Dataset(root, split=split, train_val_split=train_val_split, transform=transform)

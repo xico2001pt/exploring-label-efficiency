@@ -1,9 +1,9 @@
 from .selfsl_method import SelfSLMethod
-from ...core.losses import NTXentLoss
+from ...core.losses import NTXentLoss, NTXent3Loss, NTXent4Loss, NTXentFinalLoss, NTXent9Loss
 from ...utils.utils import backbone_getter
 from torch import nn
 from collections import OrderedDict
-import torchvision.transforms.v2 as v2
+import torchvision.transforms as v1
 
 
 class SimCLR(SelfSLMethod):
@@ -20,11 +20,11 @@ class SimCLR(SelfSLMethod):
             if isinstance(output, OrderedDict):
                 output = output['out']
 
-            if self.decoder is None:
-                self.init_decoder(output.size(1))
-
             if len(output.shape) > 2:
                 output = output.mean([2, 3])
+
+            if self.decoder is None:
+                self.init_decoder(output.size(1))
 
             self.embeddings = output
 
@@ -49,15 +49,15 @@ class SimCLR(SelfSLMethod):
 
     def compute_loss(self, idx, unlabeled):
         unlabeled1, unlabeled2 = self.transform(unlabeled), self.transform(unlabeled)
+        unlabeled1, unlabeled2 = unlabeled1.to(self.device, non_blocking=True), unlabeled2.to(self.device, non_blocking=True)
 
         self.model(unlabeled1)
         representations1 = self.embeddings
-        del unlabeled1
         self.model(unlabeled2)
         representations2 = self.embeddings
-        del unlabeled2
 
-        projections1, projections2 = self.decoder(representations1), self.decoder(representations2)
+        projections1 = self.decoder(representations1)
+        projections2 = self.decoder(representations2)
 
         loss = self.loss(projections1, projections2)
 
@@ -69,13 +69,13 @@ class SimCLR(SelfSLMethod):
 
 def SimCLRCIFAR10(temperature, projection_dim, color_jitter_strength):
     s = color_jitter_strength
-    transform = v2.Compose([
-        v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
-        v2.RandomHorizontalFlip(p=0.5),
-        v2.RandomApply([v2.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
-        v2.RandomGrayscale(p=0.2),
+    transform = v1.Compose([
+        v1.RandomResizedCrop(112),
+        v1.RandomHorizontalFlip(p=0.5),
+        v1.RandomApply([v1.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
+        v1.RandomGrayscale(p=0.2),
     ])
-    loss = NTXentLoss(temperature, return_dict=True)
+    loss = NTXent9Loss(temperature, return_dict=True)
 
     def decoder_builder(num_features):
         return nn.Sequential(
