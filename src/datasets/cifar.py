@@ -91,6 +91,6 @@ def UnsupervisedCIFAR10(root, split, train_val_split=0.9):
 
 def LinearEvalCIFAR10(root, split, train_val_split=0.9):
     transform = v2.Compose([
-        v1.Resize(112),
+        v1.Resize(224),
     ])
     return CIFAR10Dataset(root, split=split, train_val_split=train_val_split, transform=transform)

@@ -1,5 +1,5 @@
 from .selfsl_method import SelfSLMethod
-from ...core.losses import NTXentLoss, NTXent3Loss, NTXent4Loss, NTXentFinalLoss, NTXent9Loss
+from ...core.losses import NTXentLoss
 from ...utils.utils import backbone_getter
 from torch import nn
 from collections import OrderedDict
@@ -70,12 +70,12 @@ class SimCLR(SelfSLMethod):
 def SimCLRCIFAR10(temperature, projection_dim, color_jitter_strength):
     s = color_jitter_strength
     transform = v1.Compose([
-        v1.RandomResizedCrop(112),
+        v1.RandomResizedCrop(224),
         v1.RandomHorizontalFlip(p=0.5),
         v1.RandomApply([v1.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
         v1.RandomGrayscale(p=0.2),
     ])
-    loss = NTXent9Loss(temperature, return_dict=True)
+    loss = NTXentLoss(temperature, return_dict=True)
 
     def decoder_builder(num_features):
         return nn.Sequential(

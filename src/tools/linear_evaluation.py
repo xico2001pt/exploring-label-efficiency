@@ -3,7 +3,6 @@ import time
 import torch
 import argparse
 from torch.utils.data import DataLoader
-from ..models.linear_evaluator import LinearEvaluator
 from ..trainers.trainer import Trainer
 from ..utils.loader import Loader
 from ..utils.logger import Logger
@@ -16,7 +15,7 @@ LOGS_DIR = c.Logging.LOGS_DIR
 WEIGHTS_DIR = os.path.join(ROOT_DIR, c.Trainer.WEIGHTS_DIR)
 
 
-def _load_train_data(loader, train_config, backbone, logger):
+def _load_train_data(loader, train_config, model, logger):
     train_dataset_name = train_config[c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME]
     val_dataset_name = train_config[c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME]
     optimizer_name = train_config[c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME]
@@ -30,8 +29,6 @@ def _load_train_data(loader, train_config, backbone, logger):
 
     val_dataset, val_dataset_config = loader.load_dataset(val_dataset_name, split="val")
     logger.log_config(c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME, val_dataset_config)
-
-    model = LinearEvaluator(backbone, train_dataset.get_num_classes())
 
     optimizer, optimizer_config = loader.load_optimizer(optimizer_name, model)
     logger.log_config(c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME, optimizer_config)
@@ -54,7 +51,7 @@ def _load_train_data(loader, train_config, backbone, logger):
     hyperparameters = train_config[c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME]
     logger.log_config(c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME, hyperparameters)
 
-    return ({
+    return {
         c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME: train_dataset,
         c.Configurations.Parameters.VALIDATION_DATASET_CONFIG_NAME: val_dataset,
         c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME: optimizer,
@@ -64,7 +61,7 @@ def _load_train_data(loader, train_config, backbone, logger):
         c.Configurations.Parameters.STOP_CONDITION_CONFIG_NAME: stop_condition,
         c.Configurations.Parameters.MODEL_WEIGHTS_PATH_CONFIG_NAME: model_weights_path,
         c.Configurations.Parameters.HYPERPARAMETERS_CONFIG_NAME: hyperparameters,
-    }, model)
+    }
 
 
 def _get_dataloaders(train_dataset, val_dataset, batch_size, num_workers):
@@ -93,11 +90,11 @@ def _log_train_time(start_time, end_time, logger):
 
 def _load_model_weights(model, model_weights_path, logger):
     try:
-        #path = os.path.join(WEIGHTS_DIR, model_weights_path)
-        path = os.path.join(LOGS_DIR, 'simclr_cifar10_wideresnet28_2/checkpoints/best_checkpoint.pth')
-        state = torch.load(path)
-        model.load_state_dict(state["model"])
-        #model.load_state_dict(torch.load(path))
+        path = os.path.join(WEIGHTS_DIR, model_weights_path)
+        #path = os.path.join(LOGS_DIR, 'simclr_cifar10_wideresnet28_2/checkpoints/best_checkpoint.pth')
+        #state = torch.load(path)
+        #model.load_state_dict(state["model"])
+        model.load_state_dict(torch.load(path))
         logger.info("Model weights loaded successfully")
 
     except Exception:
@@ -119,12 +116,12 @@ def main(args):
 
         config = loader.load_config_file(args.config)
 
-        backbone_model = _load_model(loader, config, logger)
-        backbone = backbone_getter(backbone_model)
+        model = _load_model(loader, config, logger)
+        backbone = backbone_getter(model)
         backbone.requires_grad_(False)
 
         train_config = config["sl_train"]
-        data, model = _load_train_data(loader, train_config, backbone_model, logger)
+        data = _load_train_data(loader, train_config, model, logger)
         (
             train_dataset,
             val_dataset,
@@ -141,12 +138,14 @@ def main(args):
 
         train_loader, validation_loader = _get_dataloaders(train_dataset, val_dataset, batch_size, num_workers)
 
+        # TODO: Optimize: Pre process the model features and make that the input to the trainer
+
         device = _get_device(logger)
 
         metrics = {metric_name: metric.to(device) for metric_name, metric in metrics.items()}
 
         if model_weights_path:
-            _load_model_weights(backbone_model, model_weights_path, logger)
+            _load_model_weights(model, model_weights_path, logger)
 
         model.to(device)
 

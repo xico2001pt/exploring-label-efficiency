@@ -5,16 +5,16 @@ model: cifar10_wideresnet28_2  # Name of model
 sl_train:
   train_dataset: linear_eval_cifar10  # Dataset to use for training
   val_dataset: linear_eval_cifar10  # Dataset to use for validation
-  optimizer: simclr_cifar10_adam  # Optimizer
+  optimizer: supervised_wideresnet_sgd  # Optimizer
   loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
-  scheduler: null  # Learning rate scheduler. Can be null
+  scheduler: supervised_wideresnet_cifar_lr  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
   model_weights_path: simclr_cifar10_wideresnet28_2_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
   hyperparameters:  # Hyperparameters for training
     epochs: 100  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
-    batch_size: 256  # Training batch size
+    batch_size: 128  # Training batch size
     save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
     ema_decay: null  # Exponential moving average decay
 

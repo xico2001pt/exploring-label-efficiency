@@ -51,8 +51,11 @@ def _get_dataloader(dataset, batch_size, num_workers):
 
 def _load_model_weights(model, model_weights_path, logger):
     try:
-        path = os.path.join(WEIGHTS_DIR, model_weights_path)
-        model.load_state_dict(torch.load(path))
+        #path = os.path.join(WEIGHTS_DIR, model_weights_path)
+        log = "simclr_eval_cifar10_wideresnet28_2_4000l"
+        path = os.path.join(LOGS_DIR, log, 'checkpoints', "latest_checkpoint.pth")
+        weights = torch.load(path)["model"]
+        model.load_state_dict(weights)
         logger.info("Model weights loaded successfully")
 
     except Exception:
