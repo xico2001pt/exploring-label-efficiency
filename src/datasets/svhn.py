@@ -1,7 +1,9 @@
 import torch
 import torchvision
+import torchvision.transforms as v1
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
+from .unsupervised import UnsupervisedDataset
 from ..utils.utils import process_data_path, split_train_val_data, dataset_transform_filter
 
 
@@ -57,6 +59,12 @@ class SemiSupervisedSVHNDataset(SemiSupervisedDataset):
         super().__init__(dataset, split=split, num_labeled=num_labeled)
 
 
+class UnsupervisedSVHNDataset(UnsupervisedDataset):
+    def __init__(self, root, split, train_val_split=0.9, transform=None):
+        dataset = SVHNDataset(root, split=split, train_val_split=train_val_split, transform=transform)
+        super().__init__(dataset)
+
+
 def SVHN(root, split='train', train_val_split=0.9):
     transform = v2.Compose([
         v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
@@ -73,3 +81,14 @@ def SemiSupervisedSVHN(root, split='labeled', train_val_split=0.9, num_labeled=1
         ])
     transform = dataset_transform_filter(split, transform)
     return SemiSupervisedSVHNDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+
+
+def UnsupervisedSVHN(root, split, train_val_split=0.9):
+    return UnsupervisedSVHNDataset(root, split, train_val_split=train_val_split, transform=None)
+
+
+def SimCLRLinearEvalSVHN(root, split, train_val_split=0.9):
+    transform = v2.Compose([
+        v1.Resize(224),
+    ])
+    return SVHNDataset(root, split=split, train_val_split=train_val_split, transform=transform)

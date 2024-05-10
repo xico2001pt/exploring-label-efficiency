@@ -89,7 +89,7 @@ def UnsupervisedCIFAR10(root, split, train_val_split=0.9):
     return UnsupervisedCIFAR10Dataset(root, split, train_val_split=train_val_split, transform=None)
 
 
-def LinearEvalCIFAR10(root, split, train_val_split=0.9):
+def SimCLRLinearEvalCIFAR10(root, split, train_val_split=0.9):
     transform = v2.Compose([
         v1.Resize(224),
     ])
