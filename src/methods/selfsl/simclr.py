@@ -50,6 +50,7 @@ class SimCLR(SelfSLMethod):
     def compute_loss(self, idx, unlabeled):
         unlabeled1, unlabeled2 = self.transform(unlabeled), self.transform(unlabeled)
         unlabeled1, unlabeled2 = unlabeled1.to(self.device, non_blocking=True), unlabeled2.to(self.device, non_blocking=True)
+        del unlabeled
 
         self.model(unlabeled1)
         representations1 = self.embeddings
@@ -90,6 +91,25 @@ def SimCLRSVHN(temperature, projection_dim, color_jitter_strength):
     s = color_jitter_strength
     transform = v1.Compose([
         v1.RandomResizedCrop(224),
+        v1.RandomApply([v1.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
+        v1.RandomGrayscale(p=0.2),
+    ])
+    loss = NTXentLoss(temperature, return_dict=True)
+
+    def decoder_builder(num_features):
+        return nn.Sequential(
+            nn.Linear(num_features, num_features, bias=False),
+            nn.ReLU(),
+            nn.Linear(num_features, projection_dim, bias=False),
+        )
+    return SimCLR(transform, loss, decoder_builder)
+
+
+def SimCLRCityscapes(temperature, projection_dim, color_jitter_strength):
+    s = color_jitter_strength
+    transform = v1.Compose([
+        v1.RandomResizedCrop(128),
+        v1.RandomHorizontalFlip(p=0.5),
         v1.RandomApply([v1.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
         v1.RandomGrayscale(p=0.2),
     ])

@@ -3,6 +3,7 @@ import torchvision
 from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
+from. unsupervised import UnsupervisedDataset
 from ..utils.utils import process_data_path, split_train_val_data
 
 
@@ -79,6 +80,14 @@ class SemiSupervisedCityscapesSegDataset(SemiSupervisedDataset):
         super().__init__(dataset, split, num_labeled)
 
 
+class UnsupervisedCityscapesSegDataset(UnsupervisedDataset):
+    def __init__(self, root, split='train', mode='fine', train_val_split=2475, transform=None):
+        if split == 'train':
+            split = 'train_extra'
+        dataset = CityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
+        super().__init__(dataset)
+
+
 def CityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
     transform = v2.Compose([
         v2.Resize(int(512*1.05)),
@@ -93,6 +102,21 @@ def SemiSupervisedCityscapesSeg(root, split='labeled', train_val_split=2475, num
         v2.RandomCrop(512),
     ])
     return SemiSupervisedCityscapesSegDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+
+
+def UnsupervisedCityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
+    transform = v2.Compose([
+        v2.Resize(int(128*1.05)),
+        v2.RandomCrop(128),
+    ])
+    return UnsupervisedCityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
+
+
+def SimCLRLinearEvalCityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
+    transform = v2.Compose([
+        v2.Resize(128),
+    ])
+    return CityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
 
 
 if __name__ == "__main__":
