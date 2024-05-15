@@ -1,0 +1,19 @@
+name: byol_cifar10_resnet50  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+
+model: cifar10_resnet50  # Name of model
+
+selfsl_train:
+  train_dataset: unsupervised_cifar10  # Dataset to use for training
+  model_weights_name: byol_cifar10_resnet50_pretrained  # Filename to save model weights (relative to weights folder).
+  optimizer: byol_cifar10_lars  # Optimizer
+  method: byol_cifar10  # Semi-supervised method
+  metrics: []  # Metrics to evaluate
+  scheduler: null  # Learning rate scheduler. Can be null
+  stop_condition: null  # Condition to stop training. Can be null
+  hyperparameters:  # Hyperparameters for training
+    epochs: 300  # Number of training epochs
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 128  # Training batch size
+    max_num_samples: -1  # Maximum number of samples to use for training. If -1, all samples are used
+    save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: null  # Exponential moving average decay

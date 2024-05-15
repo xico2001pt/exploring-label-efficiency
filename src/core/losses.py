@@ -3,6 +3,19 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
+def sum_losses(losses, return_dict=True):
+    total_loss = {"total": 0}
+    for loss in losses:
+        if isinstance(loss, dict):
+            for key, value in loss.items():
+                if key not in total_loss:
+                    total_loss[key] = 0
+                total_loss[key] += value
+        else:
+            total_loss["total"] += loss
+    return total_loss if return_dict else total_loss["total"]
+
+
 class CrossEntropyLoss(nn.CrossEntropyLoss):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,3 +68,15 @@ class NTXentLoss(nn.Module):
 
     def get_sim(self):
         return self.sim
+
+
+class BYOLLoss(nn.Module):
+    def __init__(self, return_dict=True):
+        super(BYOLLoss, self).__init__()
+        self.return_dict = return_dict
+
+    def forward(self, x, y):
+        x = F.normalize(x, dim=-1, p=2)
+        y = F.normalize(y, dim=-1, p=2)
+        loss = 2 - 2 * (x * y).sum(dim=-1)
+        return {"total": loss} if self.return_dict else loss

@@ -8,6 +8,9 @@ class Method:
     def on_start_epoch(self, epoch):
         pass
 
+    def on_optimize_step(self):
+        pass
+
     def on_end_train(self, train_data):
         pass
 

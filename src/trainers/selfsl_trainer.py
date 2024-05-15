@@ -19,6 +19,9 @@ class SelfSLTrainer(Trainer):
     def on_start_epoch(self, epoch):
         self.method.on_start_epoch(epoch)
 
+    def on_optimize_step(self):
+        self.method.on_optimize_step()
+
     def on_end_train(self, train_data):
         self.method.on_end_train(train_data)
 
@@ -43,6 +46,8 @@ class SelfSLTrainer(Trainer):
 
             loss['total'].backward()
             optimizer.step()
+
+            self.on_optimize_step()
             if self.ema_model:
                 self.ema_model.update_parameters(self.model)
 
