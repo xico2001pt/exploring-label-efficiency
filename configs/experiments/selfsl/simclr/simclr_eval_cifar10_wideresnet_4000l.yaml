@@ -3,12 +3,12 @@ name: simclr_eval_cifar10_wideresnet28_2_4000l  # Name of experiment (used for l
 model: cifar10_wideresnet28_2  # Name of model
 
 sl_train:
-  train_dataset: supervised_cifar10_4000l  # Dataset to use for training
-  val_dataset: cifar10  # Dataset to use for validation
-  optimizer: supervised_wideresnet_sgd  # Optimizer
+  train_dataset: fine_tuning_cifar10_4000l  # Dataset to use for training
+  val_dataset: linear_eval_cifar10  # Dataset to use for validation
+  optimizer: simclr_cifar10_adam  # Optimizer
   loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
-  scheduler: supervised_wideresnet_cifar_lr  # Learning rate scheduler. Can be null
+  scheduler: null  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
   model_weights_path: simclr_cifar10_wideresnet28_2_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
   hyperparameters:  # Hyperparameters for training
@@ -19,7 +19,7 @@ sl_train:
     ema_decay: null  # Exponential moving average decay
 
 test:
-  test_dataset: cifar10  # Dataset to use for testing
+  test_dataset: linear_eval_cifar10  # Dataset to use for testing
   model_weights_path: simclr_eval_cifar10_wideresnet28_2_4000l.pth  # Path to model weights (relative to weights folder). If null, config name is used
   loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate

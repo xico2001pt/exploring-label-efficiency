@@ -1,6 +1,5 @@
 import torch
 import torchvision
-import torchvision.transforms as v1
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
 from .unsupervised import UnsupervisedDataset
@@ -89,8 +88,17 @@ def UnsupervisedCIFAR10(root, split, train_val_split=0.9):
     return UnsupervisedCIFAR10Dataset(root, split, train_val_split=train_val_split, transform=None)
 
 
-def SimCLRLinearEvalCIFAR10(root, split, train_val_split=0.9):
+def LinearEvalCIFAR10(root, split, train_val_split=0.9):
     transform = v2.Compose([
-        v1.Resize(224),
+        v2.Resize(128),
     ])
     return CIFAR10Dataset(root, split=split, train_val_split=train_val_split, transform=transform)
+
+
+def FineTuningTrainCIFAR10(root, split, train_val_split=0.9, num_labeled=4000):
+    transform = v2.Compose([
+        v2.RandomHorizontalFlip(),
+        v2.RandomCrop(32, padding=4),
+        v2.Resize(128),
+    ])
+    return SemiSupervisedCIFAR10Dataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)

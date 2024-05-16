@@ -3,12 +3,12 @@ name: simclr_eval_svhn_wideresnet28_2_500l  # Name of experiment (used for log f
 model: svhn_wideresnet28_2  # Name of model
 
 sl_train:
-  train_dataset: supervised_svhn_500l  # Dataset to use for training
-  val_dataset: svhn  # Dataset to use for validation
-  optimizer: supervised_wideresnet_svhn_sgd  # Optimizer
+  train_dataset: fine_tuning_svhn_500l  # Dataset to use for training
+  val_dataset: linear_eval_svhn  # Dataset to use for validation
+  optimizer: simclr_svhn_adam  # Optimizer
   loss: cross_entropy  # Loss function
   metrics: [svhn_top1_accuracy, svhn_top5_accuracy]  # Metrics to evaluate
-  scheduler: supervised_wideresnet_svhn_lr  # Learning rate scheduler. Can be null
+  scheduler: null  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
   model_weights_path: simclr_svhn_wideresnet28_2_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
   hyperparameters:  # Hyperparameters for training
@@ -19,7 +19,7 @@ sl_train:
     ema_decay: null  # Exponential moving average decay
 
 test:
-  test_dataset: svhn  # Dataset to use for testing
+  test_dataset: linear_eval_svhn  # Dataset to use for testing
   model_weights_path: simclr_eval_svhn_wideresnet28_2_500l.pth  # Path to model weights (relative to weights folder). If null, config name is used
   loss: cross_entropy  # Loss function
   metrics: [svhn_top1_accuracy, svhn_top5_accuracy]  # Metrics to evaluate
