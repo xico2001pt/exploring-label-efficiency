@@ -1,39 +1,34 @@
-2024-05-10 12:25:29,112 - INFO - Loading configuration files...
-2024-05-10 12:25:29,154 - INFO - Loading model configuration
+2024-05-19 17:00:34,857 - INFO - Loading configuration files...
+2024-05-19 17:00:34,902 - INFO - Loading model configuration
 args:
   depth: 28
   num_classes: 10
   width: 2
 class: WideResNet
 
-2024-05-10 12:25:31,046 - INFO - Loading train_dataset configuration
+2024-05-19 17:00:36,886 - INFO - Loading train_dataset configuration
 args:
-  force_transform: true
   num_labeled: 250
   root: ./data/
   train_val_split: 0.9
-class: SemiSupervisedSVHN
+class: FineTuningTrainSVHN
 
-2024-05-10 12:25:32,710 - INFO - Loading val_dataset configuration
+2024-05-19 17:00:38,748 - INFO - Loading val_dataset configuration
 args:
   root: ./data/
   train_val_split: 0.9
-class: SVHN
+class: LinearEvalSVHN
 
-2024-05-10 12:25:32,720 - INFO - Loading optimizer configuration
+2024-05-19 17:00:38,760 - INFO - Loading optimizer configuration
 args:
-  dampening: 0.0
-  lr: 0.1
-  momentum: 0.9
-  nesterov: true
-  weight_decay: 0.0005
-class: SGD
+  lr: 0.0003
+class: Adam
 
-2024-05-10 12:25:32,721 - INFO - Loading loss configuration
+2024-05-19 17:00:38,761 - INFO - Loading loss configuration
 args: {}
 class: CrossEntropyLoss
 
-2024-05-10 12:25:32,732 - INFO - Loading metrics configuration
+2024-05-19 17:00:38,775 - INFO - Loading metrics configuration
 svhn_top1_accuracy:
   args:
     num_classes: 10
@@ -47,3024 +42,1516 @@ svhn_top5_accuracy:
     top_k: 5
   class: Accuracy
 
-2024-05-10 12:25:32,737 - INFO - Loading scheduler configuration
-args:
-  gamma: 0.2
-  milestones:
-  - 80
-  - 120
-class: MultiStepLR
-
-2024-05-10 12:25:32,738 - INFO - Loading hyperparameters configuration
+2024-05-19 17:00:38,775 - INFO - Loading hyperparameters configuration
 batch_size: 128
 ema_decay: null
-epochs: 200
+epochs: 100
 num_workers: 4
 save_freq: 30
 
-2024-05-10 12:25:33,088 - INFO - Using device: cuda
-2024-05-10 12:25:33,301 - INFO - Model weights loaded successfully
-2024-05-10 12:25:33,301 - INFO - Training for 200 epochs
-2024-05-10 12:25:33,301 - INFO - Epoch 1/200
-2024-05-10 12:25:34,296 - INFO - Train Stats
+2024-05-19 17:00:39,117 - INFO - Using device: cuda
+2024-05-19 17:00:39,319 - INFO - Model weights loaded successfully
+2024-05-19 17:00:39,320 - INFO - Training for 100 epochs
+2024-05-19 17:00:39,320 - INFO - Epoch 1/100
+2024-05-19 17:00:41,374 - INFO - Train Stats
 Loss:
-  total: 2.329797148704529
+  total: 2.3187605142593384
 Metrics:
-  svhn_top1_accuracy: 0.11968493834137917
-  svhn_top5_accuracy: 0.5160092115402222
+  svhn_top1_accuracy: 0.13684682548046112
+  svhn_top5_accuracy: 0.5119108557701111
 
-2024-05-10 12:25:35,041 - INFO - Validation Stats
+2024-05-19 17:00:48,787 - INFO - Validation Stats
 Loss:
-  total: 2.3908189370714386
+  total: 2.3049174876048646
 Metrics:
-  svhn_top1_accuracy: 0.1296605603962109
-  svhn_top5_accuracy: 0.5031968391147154
+  svhn_top1_accuracy: 0.11487068968086407
+  svhn_top5_accuracy: 0.5336745689655172
 
-2024-05-10 12:25:35,071 - INFO - Epoch 2/200
-2024-05-10 12:25:35,400 - INFO - Train Stats
+2024-05-19 17:00:48,829 - INFO - Epoch 2/100
+2024-05-19 17:00:50,168 - INFO - Train Stats
 Loss:
-  total: 2.2696456909179688
+  total: 2.2968719005584717
 Metrics:
-  svhn_top1_accuracy: 0.16476690769195557
-  svhn_top5_accuracy: 0.6073898673057556
+  svhn_top1_accuracy: 0.13121157884597778
+  svhn_top5_accuracy: 0.5478355586528778
 
-2024-05-10 12:25:36,192 - INFO - Validation Stats
+2024-05-19 17:00:57,386 - INFO - Validation Stats
 Loss:
-  total: 2.2878752206933908
+  total: 2.3003838802206107
 Metrics:
-  svhn_top1_accuracy: 0.1582794541428829
-  svhn_top5_accuracy: 0.6031249997944668
+  svhn_top1_accuracy: 0.12339260069460704
+  svhn_top5_accuracy: 0.5468390804940256
 
-2024-05-10 12:25:36,225 - INFO - Epoch 3/200
-2024-05-10 12:25:36,472 - INFO - Train Stats
+2024-05-19 17:00:57,429 - INFO - Epoch 3/100
+2024-05-19 17:00:58,765 - INFO - Train Stats
 Loss:
-  total: 2.210758090019226
+  total: 2.2778960466384888
 Metrics:
-  svhn_top1_accuracy: 0.22669057548046112
-  svhn_top5_accuracy: 0.6714267432689667
+  svhn_top1_accuracy: 0.1655353456735611
+  svhn_top5_accuracy: 0.5929175317287445
 
-2024-05-10 12:25:37,109 - INFO - Validation Stats
+2024-05-19 17:01:12,948 - INFO - Validation Stats
 Loss:
-  total: 2.2812686624198126
+  total: 2.2968183838087937
 Metrics:
-  svhn_top1_accuracy: 0.17963362074103847
-  svhn_top5_accuracy: 0.6129579739323978
+  svhn_top1_accuracy: 0.12689475586702084
+  svhn_top5_accuracy: 0.5544091237002405
 
-2024-05-10 12:25:37,140 - INFO - Epoch 4/200
-2024-05-10 12:25:37,803 - INFO - Train Stats
+2024-05-19 17:01:12,989 - INFO - Epoch 4/100
+2024-05-19 17:01:15,009 - INFO - Train Stats
 Loss:
-  total: 2.15334153175354
+  total: 2.257842540740967
 Metrics:
-  svhn_top1_accuracy: 0.25128073990345
-  svhn_top5_accuracy: 0.7114498019218445
+  svhn_top1_accuracy: 0.17161884903907776
+  svhn_top5_accuracy: 0.6585553288459778
 
-2024-05-10 12:25:38,605 - INFO - Validation Stats
+2024-05-19 17:01:22,316 - INFO - Validation Stats
 Loss:
-  total: 2.288703984227674
+  total: 2.295144936134075
 Metrics:
-  svhn_top1_accuracy: 0.18222880748839215
-  svhn_top5_accuracy: 0.6230962646418604
+  svhn_top1_accuracy: 0.12891523000495186
+  svhn_top5_accuracy: 0.5568336926657578
 
-2024-05-10 12:25:38,605 - INFO - Epoch 5/200
-2024-05-10 12:25:38,913 - INFO - Train Stats
+2024-05-19 17:01:22,385 - INFO - Epoch 5/100
+2024-05-19 17:01:24,954 - INFO - Train Stats
 Loss:
-  total: 2.101604700088501
+  total: 2.2379231452941895
+Metrics:
+  svhn_top1_accuracy: 0.19601690769195557
+  svhn_top5_accuracy: 0.6921106576919556
+
+2024-05-19 17:01:38,972 - INFO - Validation Stats
+Loss:
+  total: 2.294053418882962
+Metrics:
+  svhn_top1_accuracy: 0.13147449724633117
+  svhn_top5_accuracy: 0.5599317530105854
+
+2024-05-19 17:01:39,016 - INFO - Epoch 6/100
+2024-05-19 17:01:40,430 - INFO - Train Stats
+Loss:
+  total: 2.2185962200164795
+Metrics:
+  svhn_top1_accuracy: 0.21983862668275833
+  svhn_top5_accuracy: 0.7237448692321777
+
+2024-05-19 17:01:47,649 - INFO - Validation Stats
+Loss:
+  total: 2.293629214681428
+Metrics:
+  svhn_top1_accuracy: 0.13282148000495186
+  svhn_top5_accuracy: 0.5635686064588612
+
+2024-05-19 17:01:47,694 - INFO - Epoch 7/100
+2024-05-19 17:01:49,471 - INFO - Train Stats
+Loss:
+  total: 2.2055944204330444
+Metrics:
+  svhn_top1_accuracy: 0.2407146543264389
+  svhn_top5_accuracy: 0.7157402634620667
+
+2024-05-19 17:01:57,435 - INFO - Validation Stats
+Loss:
+  total: 2.2936292105707627
+Metrics:
+  svhn_top1_accuracy: 0.13447377882127104
+  svhn_top5_accuracy: 0.5663703304940256
+
+2024-05-19 17:01:57,481 - INFO - Epoch 8/100
+2024-05-19 17:01:58,905 - INFO - Train Stats
+Loss:
+  total: 2.1855567693710327
 Metrics:
   svhn_top1_accuracy: 0.26063011586666107
-  svhn_top5_accuracy: 0.7330942749977112
+  svhn_top5_accuracy: 0.7323258221149445
 
-2024-05-10 12:25:39,610 - INFO - Validation Stats
+2024-05-19 17:02:06,365 - INFO - Validation Stats
 Loss:
-  total: 2.2904652850381257
+  total: 2.2938630416475494
 Metrics:
-  svhn_top1_accuracy: 0.1925017962168003
-  svhn_top5_accuracy: 0.6231232038859663
+  svhn_top1_accuracy: 0.14070581901690055
+  svhn_top5_accuracy: 0.573311782088773
 
-2024-05-10 12:25:39,610 - INFO - Epoch 6/200
-2024-05-10 12:25:39,844 - INFO - Train Stats
+2024-05-19 17:02:06,365 - INFO - Epoch 9/100
+2024-05-19 17:02:07,781 - INFO - Train Stats
 Loss:
-  total: 2.0748801231384277
+  total: 2.169787049293518
 Metrics:
-  svhn_top1_accuracy: 0.24795082211494446
-  svhn_top5_accuracy: 0.7485271394252777
+  svhn_top1_accuracy: 0.28016136586666107
+  svhn_top5_accuracy: 0.7289958894252777
 
-2024-05-10 12:25:40,664 - INFO - Validation Stats
+2024-05-19 17:02:22,351 - INFO - Validation Stats
 Loss:
-  total: 2.259604515700505
+  total: 2.2951758688893813
 Metrics:
-  svhn_top1_accuracy: 0.20085308932024856
-  svhn_top5_accuracy: 0.6271641521618284
+  svhn_top1_accuracy: 0.14555495694793505
+  svhn_top5_accuracy: 0.5752963362068966
 
-2024-05-10 12:25:40,694 - INFO - Epoch 7/200
-2024-05-10 12:25:41,003 - INFO - Train Stats
+2024-05-19 17:02:22,352 - INFO - Epoch 10/100
+2024-05-19 17:02:25,327 - INFO - Train Stats
 Loss:
-  total: 2.000675857067108
+  total: 2.1546469926834106
 Metrics:
-  svhn_top1_accuracy: 0.26767417788505554
-  svhn_top5_accuracy: 0.7948258221149445
+  svhn_top1_accuracy: 0.2680584043264389
+  svhn_top5_accuracy: 0.7676741778850555
 
-2024-05-10 12:25:44,075 - INFO - Validation Stats
+2024-05-19 17:02:42,144 - INFO - Validation Stats
 Loss:
-  total: 2.234411428714621
+  total: 2.296577544047915
 Metrics:
-  svhn_top1_accuracy: 0.22227011518231754
-  svhn_top5_accuracy: 0.6451508618634323
+  svhn_top1_accuracy: 0.1515176005918404
+  svhn_top5_accuracy: 0.5776221269163592
 
-2024-05-10 12:25:44,107 - INFO - Epoch 8/200
-2024-05-10 12:25:44,741 - INFO - Train Stats
+2024-05-19 17:02:42,145 - INFO - Epoch 11/100
+2024-05-19 17:02:45,013 - INFO - Train Stats
 Loss:
-  total: 1.947055995464325
+  total: 2.142914652824402
 Metrics:
-  svhn_top1_accuracy: 0.32914958894252777
+  svhn_top1_accuracy: 0.28054559230804443
+  svhn_top5_accuracy: 0.7594774663448334
+
+2024-05-19 17:03:01,386 - INFO - Validation Stats
+Loss:
+  total: 2.2978479122293405
+Metrics:
+  svhn_top1_accuracy: 0.15825251438494387
+  svhn_top5_accuracy: 0.5812948993567763
+
+2024-05-19 17:03:01,387 - INFO - Epoch 12/100
+2024-05-19 17:03:04,210 - INFO - Train Stats
+Loss:
+  total: 2.1279444694519043
+Metrics:
+  svhn_top1_accuracy: 0.26825051009655
+  svhn_top5_accuracy: 0.7799692749977112
+
+2024-05-19 17:03:20,863 - INFO - Validation Stats
+Loss:
+  total: 2.300047516822815
+Metrics:
+  svhn_top1_accuracy: 0.16310165231597834
+  svhn_top5_accuracy: 0.5824084055834803
+
+2024-05-19 17:03:20,864 - INFO - Epoch 13/100
+2024-05-19 17:03:23,672 - INFO - Train Stats
+Loss:
+  total: 2.1137107610702515
+Metrics:
+  svhn_top1_accuracy: 0.2639600336551666
+  svhn_top5_accuracy: 0.7801613807678223
+
+2024-05-19 17:03:40,761 - INFO - Validation Stats
+Loss:
+  total: 2.3044331279294243
+Metrics:
+  svhn_top1_accuracy: 0.16427801729276262
+  svhn_top5_accuracy: 0.583755388342101
+
+2024-05-19 17:03:40,761 - INFO - Epoch 14/100
+2024-05-19 17:03:43,606 - INFO - Train Stats
+Loss:
+  total: 2.095064163208008
+Metrics:
+  svhn_top1_accuracy: 0.2885501980781555
+  svhn_top5_accuracy: 0.7842597365379333
+
+2024-05-19 17:04:01,081 - INFO - Validation Stats
+Loss:
+  total: 2.307558869493419
+Metrics:
+  svhn_top1_accuracy: 0.1656250000513833
+  svhn_top5_accuracy: 0.5851023711007217
+
+2024-05-19 17:04:01,081 - INFO - Epoch 15/100
+2024-05-19 17:04:03,912 - INFO - Train Stats
+Loss:
+  total: 2.0851341485977173
+Metrics:
+  svhn_top1_accuracy: 0.28310707211494446
+  svhn_top5_accuracy: 0.8000768423080444
+
+2024-05-19 17:04:20,745 - INFO - Validation Stats
+Loss:
+  total: 2.3155525881668617
+Metrics:
+  svhn_top1_accuracy: 0.162428160936668
+  svhn_top5_accuracy: 0.5868534486869286
+
+2024-05-19 17:04:20,746 - INFO - Epoch 16/100
+2024-05-19 17:04:23,560 - INFO - Train Stats
+Loss:
+  total: 2.0703179836273193
+Metrics:
+  svhn_top1_accuracy: 0.2768314480781555
+  svhn_top5_accuracy: 0.8164702951908112
+
+2024-05-19 17:04:41,176 - INFO - Validation Stats
+Loss:
+  total: 2.3190375895335755
+Metrics:
+  svhn_top1_accuracy: 0.1609105603962109
+  svhn_top5_accuracy: 0.5866469113991178
+
+2024-05-19 17:04:41,177 - INFO - Epoch 17/100
+2024-05-19 17:04:43,963 - INFO - Train Stats
+Loss:
+  total: 2.0602784156799316
+Metrics:
+  svhn_top1_accuracy: 0.28387551009655
   svhn_top5_accuracy: 0.7961705923080444
 
-2024-05-10 12:25:47,859 - INFO - Validation Stats
+2024-05-19 17:05:01,466 - INFO - Validation Stats
 Loss:
-  total: 2.218519695873918
+  total: 2.3212009216177054
 Metrics:
-  svhn_top1_accuracy: 0.22920258625827986
-  svhn_top5_accuracy: 0.6533045974271051
+  svhn_top1_accuracy: 0.16141343399368482
+  svhn_top5_accuracy: 0.5901221262997595
 
-2024-05-10 12:25:47,891 - INFO - Epoch 9/200
-2024-05-10 12:25:48,247 - INFO - Train Stats
+2024-05-19 17:05:01,466 - INFO - Epoch 18/100
+2024-05-19 17:05:04,248 - INFO - Train Stats
 Loss:
-  total: 1.9253901243209839
+  total: 2.041572093963623
 Metrics:
-  svhn_top1_accuracy: 0.3240906745195389
-  svhn_top5_accuracy: 0.7971311509609222
+  svhn_top1_accuracy: 0.29597848653793335
+  svhn_top5_accuracy: 0.8117955923080444
 
-2024-05-10 12:25:51,102 - INFO - Validation Stats
+2024-05-19 17:05:20,890 - INFO - Validation Stats
 Loss:
-  total: 2.2016242125938676
+  total: 2.3197420136681917
 Metrics:
-  svhn_top1_accuracy: 0.23957435349965917
-  svhn_top5_accuracy: 0.6585219111935846
+  svhn_top1_accuracy: 0.1624910202005814
+  svhn_top5_accuracy: 0.5923760779972734
 
-2024-05-10 12:25:51,140 - INFO - Epoch 10/200
-2024-05-10 12:25:51,439 - INFO - Train Stats
+2024-05-19 17:05:20,891 - INFO - Epoch 19/100
+2024-05-19 17:05:23,928 - INFO - Train Stats
 Loss:
-  total: 1.8462257385253906
+  total: 2.0298131704330444
 Metrics:
-  svhn_top1_accuracy: 0.35066598653793335
-  svhn_top5_accuracy: 0.8315189480781555
+  svhn_top1_accuracy: 0.2914959043264389
+  svhn_top5_accuracy: 0.7989241778850555
 
-2024-05-10 12:25:52,098 - INFO - Validation Stats
+2024-05-19 17:05:41,311 - INFO - Validation Stats
 Loss:
-  total: 2.185350535244777
+  total: 2.3176309322488717
 Metrics:
-  svhn_top1_accuracy: 0.24469288798241778
-  svhn_top5_accuracy: 0.6623563221816359
+  svhn_top1_accuracy: 0.16366738517736568
+  svhn_top5_accuracy: 0.5928789510809142
 
-2024-05-10 12:25:52,135 - INFO - Epoch 11/200
-2024-05-10 12:25:52,389 - INFO - Train Stats
+2024-05-19 17:05:41,312 - INFO - Epoch 20/100
+2024-05-19 17:05:44,184 - INFO - Train Stats
 Loss:
-  total: 1.8070576786994934
+  total: 2.008777141571045
 Metrics:
-  svhn_top1_accuracy: 0.3846055269241333
-  svhn_top5_accuracy: 0.8354251980781555
+  svhn_top1_accuracy: 0.3160860687494278
+  svhn_top5_accuracy: 0.7922643423080444
 
-2024-05-10 12:25:55,232 - INFO - Validation Stats
+2024-05-19 17:06:00,551 - INFO - Validation Stats
 Loss:
-  total: 2.1952897145830352
+  total: 2.319336011491973
 Metrics:
-  svhn_top1_accuracy: 0.24536637936172814
-  svhn_top5_accuracy: 0.6563667387797915
+  svhn_top1_accuracy: 0.16555316103943463
+  svhn_top5_accuracy: 0.5948006469627907
 
-2024-05-10 12:25:55,232 - INFO - Epoch 12/200
-2024-05-10 12:25:55,582 - INFO - Train Stats
+2024-05-19 17:06:00,552 - INFO - Epoch 21/100
+2024-05-19 17:06:03,579 - INFO - Train Stats
 Loss:
-  total: 1.7840133905410767
+  total: 1.9967911839485168
 Metrics:
-  svhn_top1_accuracy: 0.3875512331724167
-  svhn_top5_accuracy: 0.8438140451908112
+  svhn_top1_accuracy: 0.31141136586666107
+  svhn_top5_accuracy: 0.7873975336551666
 
-2024-05-10 12:25:56,188 - INFO - Validation Stats
+2024-05-19 17:06:21,060 - INFO - Validation Stats
 Loss:
-  total: 2.2097284958280365
+  total: 2.3249790504060943
 Metrics:
-  svhn_top1_accuracy: 0.24146012936172814
-  svhn_top5_accuracy: 0.6631645118368084
+  svhn_top1_accuracy: 0.16730423862564153
+  svhn_top5_accuracy: 0.5955729165981556
 
-2024-05-10 12:25:56,188 - INFO - Epoch 13/200
-2024-05-10 12:25:56,432 - INFO - Train Stats
+2024-05-19 17:06:21,061 - INFO - Epoch 22/100
+2024-05-19 17:06:24,009 - INFO - Train Stats
 Loss:
-  total: 1.6829673051834106
+  total: 1.9823001027107239
 Metrics:
-  svhn_top1_accuracy: 0.4469134211540222
-  svhn_top5_accuracy: 0.8633452951908112
+  svhn_top1_accuracy: 0.33894723653793335
+  svhn_top5_accuracy: 0.8043673038482666
 
-2024-05-10 12:25:57,008 - INFO - Validation Stats
+2024-05-19 17:06:41,350 - INFO - Validation Stats
 Loss:
-  total: 2.241526576979407
+  total: 2.333513227002374
 Metrics:
-  svhn_top1_accuracy: 0.24590517246517643
-  svhn_top5_accuracy: 0.6682830463195669
+  svhn_top1_accuracy: 0.16932471276357255
+  svhn_top5_accuracy: 0.5977999280238974
 
-2024-05-10 12:25:57,008 - INFO - Epoch 14/200
-2024-05-10 12:25:57,244 - INFO - Train Stats
+2024-05-19 17:06:41,351 - INFO - Epoch 23/100
+2024-05-19 17:06:44,312 - INFO - Train Stats
 Loss:
-  total: 1.601967215538025
+  total: 1.9685983657836914
 Metrics:
-  svhn_top1_accuracy: 0.48046875
-  svhn_top5_accuracy: 0.8639216125011444
+  svhn_top1_accuracy: 0.32037653028964996
+  svhn_top5_accuracy: 0.8117955923080444
 
-2024-05-10 12:25:58,010 - INFO - Validation Stats
+2024-05-19 17:07:01,523 - INFO - Validation Stats
 Loss:
-  total: 2.369659452602781
+  total: 2.338454032766408
 Metrics:
-  svhn_top1_accuracy: 0.25025143679873696
-  svhn_top5_accuracy: 0.6639367814721733
+  svhn_top1_accuracy: 0.1697647270971331
+  svhn_top5_accuracy: 0.602918462506656
 
-2024-05-10 12:25:58,011 - INFO - Epoch 15/200
-2024-05-10 12:25:58,252 - INFO - Train Stats
+2024-05-19 17:07:01,523 - INFO - Epoch 24/100
+2024-05-19 17:07:04,475 - INFO - Train Stats
 Loss:
-  total: 1.6032394170761108
+  total: 1.9594736099243164
 Metrics:
-  svhn_top1_accuracy: 0.4521644413471222
-  svhn_top5_accuracy: 0.8832607567310333
+  svhn_top1_accuracy: 0.32293801009655
+  svhn_top5_accuracy: 0.8119876980781555
 
-2024-05-10 12:25:58,859 - INFO - Validation Stats
+2024-05-19 17:07:21,082 - INFO - Validation Stats
 Loss:
-  total: 2.3439637956948114
+  total: 2.3397173470464248
 Metrics:
-  svhn_top1_accuracy: 0.2583333333504611
-  svhn_top5_accuracy: 0.6704741377255012
+  svhn_top1_accuracy: 0.16945941103943463
+  svhn_top5_accuracy: 0.600897988368725
 
-2024-05-10 12:25:58,859 - INFO - Epoch 16/200
-2024-05-10 12:25:59,079 - INFO - Train Stats
+2024-05-19 17:07:21,083 - INFO - Epoch 25/100
+2024-05-19 17:07:24,056 - INFO - Train Stats
 Loss:
-  total: 1.5195632576942444
+  total: 1.9546878337860107
 Metrics:
-  svhn_top1_accuracy: 0.4892418086528778
-  svhn_top5_accuracy: 0.883837103843689
+  svhn_top1_accuracy: 0.33600153028964996
+  svhn_top5_accuracy: 0.8194159865379333
 
-2024-05-10 12:25:59,690 - INFO - Validation Stats
+2024-05-19 17:07:41,648 - INFO - Validation Stats
 Loss:
-  total: 2.333637915808579
+  total: 2.3477932132523636
 Metrics:
-  svhn_top1_accuracy: 0.2672234195573577
-  svhn_top5_accuracy: 0.6835398704841219
+  svhn_top1_accuracy: 0.17121048862564153
+  svhn_top5_accuracy: 0.6014367814721733
 
-2024-05-10 12:25:59,690 - INFO - Epoch 17/200
-2024-05-10 12:25:59,928 - INFO - Train Stats
+2024-05-19 17:07:41,649 - INFO - Epoch 26/100
+2024-05-19 17:07:44,527 - INFO - Train Stats
 Loss:
-  total: 1.5132859945297241
+  total: 1.9376669526100159
 Metrics:
-  svhn_top1_accuracy: 0.4830302298069
-  svhn_top5_accuracy: 0.8998463153839111
+  svhn_top1_accuracy: 0.3836449831724167
+  svhn_top5_accuracy: 0.8199923038482666
 
-2024-05-10 12:26:00,524 - INFO - Validation Stats
+2024-05-19 17:08:01,406 - INFO - Validation Stats
 Loss:
-  total: 2.41675341951436
+  total: 2.3475810536022843
 Metrics:
-  svhn_top1_accuracy: 0.2709949712814956
-  svhn_top5_accuracy: 0.6772449715384121
+  svhn_top1_accuracy: 0.17255747138426222
+  svhn_top5_accuracy: 0.6036907331696872
 
-2024-05-10 12:26:00,525 - INFO - Epoch 18/200
-2024-05-10 12:26:00,763 - INFO - Train Stats
+2024-05-19 17:08:01,407 - INFO - Epoch 27/100
+2024-05-19 17:08:04,338 - INFO - Train Stats
 Loss:
-  total: 1.4677637815475464
+  total: 1.9340863227844238
 Metrics:
-  svhn_top1_accuracy: 0.5247822701931
+  svhn_top1_accuracy: 0.3512423187494278
+  svhn_top5_accuracy: 0.8160860538482666
+
+2024-05-19 17:08:20,680 - INFO - Validation Stats
+Loss:
+  total: 2.3555270186785995
+Metrics:
+  svhn_top1_accuracy: 0.17201867828081394
+  svhn_top5_accuracy: 0.6020743538593424
+
+2024-05-19 17:08:20,681 - INFO - Epoch 28/100
+2024-05-19 17:08:23,773 - INFO - Train Stats
+Loss:
+  total: 1.9048687815666199
+Metrics:
+  svhn_top1_accuracy: 0.3602074831724167
+  svhn_top5_accuracy: 0.8198001980781555
+
+2024-05-19 17:08:39,549 - INFO - Validation Stats
+Loss:
+  total: 2.3481836524502984
+Metrics:
+  svhn_top1_accuracy: 0.1768678162118484
+  svhn_top5_accuracy: 0.6009608476326384
+
+2024-05-19 17:08:39,550 - INFO - Epoch 29/100
+2024-05-19 17:08:42,381 - INFO - Train Stats
+Loss:
+  total: 1.8901467323303223
+Metrics:
+  svhn_top1_accuracy: 0.3756403625011444
+  svhn_top5_accuracy: 0.8400999009609222
+
+2024-05-19 17:08:59,430 - INFO - Validation Stats
+Loss:
+  total: 2.3447679486768
+Metrics:
+  svhn_top1_accuracy: 0.1765984196601243
+  svhn_top5_accuracy: 0.603286638342101
+
+2024-05-19 17:08:59,431 - INFO - Epoch 30/100
+2024-05-19 17:09:02,247 - INFO - Train Stats
+Loss:
+  total: 1.875568449497223
+Metrics:
+  svhn_top1_accuracy: 0.36821208894252777
+  svhn_top5_accuracy: 0.8205686509609222
+
+2024-05-19 17:09:18,087 - INFO - Validation Stats
+Loss:
+  total: 2.3546026410727667
+Metrics:
+  svhn_top1_accuracy: 0.18036997138426222
+  svhn_top5_accuracy: 0.6047683193765837
+
+2024-05-19 17:09:18,407 - INFO - Epoch 31/100
+2024-05-19 17:09:21,335 - INFO - Train Stats
+Loss:
+  total: 1.8646262884140015
+Metrics:
+  svhn_top1_accuracy: 0.3629610687494278
+  svhn_top5_accuracy: 0.8404841125011444
+
+2024-05-19 17:09:37,741 - INFO - Validation Stats
+Loss:
+  total: 2.3643980766164847
+Metrics:
+  svhn_top1_accuracy: 0.18090876448771048
+  svhn_top5_accuracy: 0.6054418107558941
+
+2024-05-19 17:09:37,742 - INFO - Epoch 32/100
+2024-05-19 17:09:40,772 - INFO - Train Stats
+Loss:
+  total: 1.85864919424057
+Metrics:
+  svhn_top1_accuracy: 0.37602458894252777
+  svhn_top5_accuracy: 0.8080814480781555
+
+2024-05-19 17:09:58,083 - INFO - Validation Stats
+Loss:
+  total: 2.3773507743046203
+Metrics:
+  svhn_top1_accuracy: 0.17969648000495186
+  svhn_top5_accuracy: 0.604058907977466
+
+2024-05-19 17:09:58,084 - INFO - Epoch 33/100
+2024-05-19 17:10:00,870 - INFO - Train Stats
+Loss:
+  total: 1.858560025691986
+Metrics:
+  svhn_top1_accuracy: 0.3826844245195389
+  svhn_top5_accuracy: 0.8272284865379333
+
+2024-05-19 17:10:17,977 - INFO - Validation Stats
+Loss:
+  total: 2.381673216819763
+Metrics:
+  svhn_top1_accuracy: 0.18225574724633117
+  svhn_top5_accuracy: 0.6022449711273457
+
+2024-05-19 17:10:17,978 - INFO - Epoch 34/100
+2024-05-19 17:10:20,873 - INFO - Train Stats
+Loss:
+  total: 1.822674572467804
+Metrics:
+  svhn_top1_accuracy: 0.4043288975954056
+  svhn_top5_accuracy: 0.8360015451908112
+
+2024-05-19 17:10:37,932 - INFO - Validation Stats
+Loss:
+  total: 2.37659936526726
+Metrics:
+  svhn_top1_accuracy: 0.18579382192471933
+  svhn_top5_accuracy: 0.6047683193765837
+
+2024-05-19 17:10:37,933 - INFO - Epoch 35/100
+2024-05-19 17:10:40,701 - INFO - Train Stats
+Loss:
+  total: 1.8225181102752686
+Metrics:
+  svhn_top1_accuracy: 0.3691726475954056
+  svhn_top5_accuracy: 0.8319031894207001
+
+2024-05-19 17:10:57,739 - INFO - Validation Stats
+Loss:
+  total: 2.3743755447453467
+Metrics:
+  svhn_top1_accuracy: 0.18225574724633117
+  svhn_top5_accuracy: 0.607058190066239
+
+2024-05-19 17:10:57,740 - INFO - Epoch 36/100
+2024-05-19 17:11:00,776 - INFO - Train Stats
+Loss:
+  total: 1.795910656452179
+Metrics:
+  svhn_top1_accuracy: 0.4080430269241333
+  svhn_top5_accuracy: 0.8322874009609222
+
+2024-05-19 17:11:18,137 - INFO - Validation Stats
+Loss:
+  total: 2.379941023629287
+Metrics:
+  svhn_top1_accuracy: 0.18036997138426222
+  svhn_top5_accuracy: 0.6106591234947073
+
+2024-05-19 17:11:18,138 - INFO - Epoch 37/100
+2024-05-19 17:11:20,944 - INFO - Train Stats
+Loss:
+  total: 1.7788543701171875
+Metrics:
+  svhn_top1_accuracy: 0.4394851475954056
+  svhn_top5_accuracy: 0.8445824682712555
+
+2024-05-19 17:11:38,020 - INFO - Validation Stats
+Loss:
+  total: 2.3859883300189315
+Metrics:
+  svhn_top1_accuracy: 0.18454561793598637
+  svhn_top5_accuracy: 0.6113685348938251
+
+2024-05-19 17:11:38,021 - INFO - Epoch 38/100
+2024-05-19 17:11:40,851 - INFO - Train Stats
+Loss:
+  total: 1.764805018901825
+Metrics:
+  svhn_top1_accuracy: 0.4560706913471222
+  svhn_top5_accuracy: 0.8471439480781555
+
+2024-05-19 17:11:57,048 - INFO - Validation Stats
+Loss:
+  total: 2.383676126085479
+Metrics:
+  svhn_top1_accuracy: 0.19006824724633117
+  svhn_top5_accuracy: 0.6119073279972734
+
+2024-05-19 17:11:57,048 - INFO - Epoch 39/100
+2024-05-19 17:12:00,132 - INFO - Train Stats
+Loss:
+  total: 1.7734254002571106
+Metrics:
+  svhn_top1_accuracy: 0.42405225336551666
+  svhn_top5_accuracy: 0.8602074682712555
+
+2024-05-19 17:12:17,020 - INFO - Validation Stats
+Loss:
+  total: 2.3788533539607606
+Metrics:
+  svhn_top1_accuracy: 0.19033764379805532
+  svhn_top5_accuracy: 0.6116738504376905
+
+2024-05-19 17:12:17,021 - INFO - Epoch 40/100
+2024-05-19 17:12:19,873 - INFO - Train Stats
+Loss:
+  total: 1.7386175990104675
+Metrics:
+  svhn_top1_accuracy: 0.4738089144229889
+  svhn_top5_accuracy: 0.8522028625011444
+
+2024-05-19 17:12:35,756 - INFO - Validation Stats
+Loss:
+  total: 2.377672557173104
+Metrics:
+  svhn_top1_accuracy: 0.18845186793598637
+  svhn_top5_accuracy: 0.6119073279972734
+
+2024-05-19 17:12:35,757 - INFO - Epoch 41/100
+2024-05-19 17:12:38,800 - INFO - Train Stats
+Loss:
+  total: 1.726215422153473
+Metrics:
+  svhn_top1_accuracy: 0.4689421057701111
+  svhn_top5_accuracy: 0.8430455923080444
+
+2024-05-19 17:12:54,905 - INFO - Validation Stats
+Loss:
+  total: 2.3870165183626373
+Metrics:
+  svhn_top1_accuracy: 0.1885865662118484
+  svhn_top5_accuracy: 0.6082704745489975
+
+2024-05-19 17:12:54,906 - INFO - Epoch 42/100
+2024-05-19 17:12:58,011 - INFO - Train Stats
+Loss:
+  total: 1.7162932753562927
+Metrics:
+  svhn_top1_accuracy: 0.4508196711540222
+  svhn_top5_accuracy: 0.8641137182712555
+
+2024-05-19 17:13:15,978 - INFO - Validation Stats
+Loss:
+  total: 2.4033102167063745
+Metrics:
+  svhn_top1_accuracy: 0.19077765813161587
+  svhn_top5_accuracy: 0.6058459055834803
+
+2024-05-19 17:13:15,979 - INFO - Epoch 43/100
+2024-05-19 17:13:18,928 - INFO - Train Stats
+Loss:
+  total: 1.6908014416694641
+Metrics:
+  svhn_top1_accuracy: 0.4812372028827667
+  svhn_top5_accuracy: 0.8641137182712555
+
+2024-05-19 17:13:36,473 - INFO - Validation Stats
+Loss:
+  total: 2.3996225718794197
+Metrics:
+  svhn_top1_accuracy: 0.19266343399368482
+  svhn_top5_accuracy: 0.6085039510809142
+
+2024-05-19 17:13:36,474 - INFO - Epoch 44/100
+2024-05-19 17:13:39,432 - INFO - Train Stats
+Loss:
+  total: 1.6722427010536194
+Metrics:
+  svhn_top1_accuracy: 0.48264600336551666
+  svhn_top5_accuracy: 0.8596311509609222
+
+2024-05-19 17:13:56,976 - INFO - Validation Stats
+Loss:
+  total: 2.4032841263146234
+Metrics:
+  svhn_top1_accuracy: 0.19101113517736568
+  svhn_top5_accuracy: 0.6102909486869286
+
+2024-05-19 17:13:56,977 - INFO - Epoch 45/100
+2024-05-19 17:13:59,900 - INFO - Train Stats
+Loss:
+  total: 1.6675705313682556
+Metrics:
+  svhn_top1_accuracy: 0.48866546154022217
+  svhn_top5_accuracy: 0.8680199682712555
+
+2024-05-19 17:14:17,350 - INFO - Validation Stats
+Loss:
+  total: 2.412410329128134
+Metrics:
+  svhn_top1_accuracy: 0.18683548862564153
+  svhn_top5_accuracy: 0.6146012935145148
+
+2024-05-19 17:14:17,351 - INFO - Epoch 46/100
+2024-05-19 17:14:20,322 - INFO - Train Stats
+Loss:
+  total: 1.644409418106079
+Metrics:
+  svhn_top1_accuracy: 0.5035220235586166
+  svhn_top5_accuracy: 0.8596311509609222
+
+2024-05-19 17:14:37,881 - INFO - Validation Stats
+Loss:
+  total: 2.4101896491544
+Metrics:
+  svhn_top1_accuracy: 0.19060704034977946
+  svhn_top5_accuracy: 0.6105603452386528
+
+2024-05-19 17:14:37,882 - INFO - Epoch 47/100
+2024-05-19 17:14:40,858 - INFO - Train Stats
+Loss:
+  total: 1.631034255027771
+Metrics:
+  svhn_top1_accuracy: 0.5154328942298889
+  svhn_top5_accuracy: 0.8553406894207001
+
+2024-05-19 17:14:59,130 - INFO - Validation Stats
+Loss:
+  total: 2.4161985865954696
+Metrics:
+  svhn_top1_accuracy: 0.1924928162118484
+  svhn_top5_accuracy: 0.60907866420417
+
+2024-05-19 17:14:59,131 - INFO - Epoch 48/100
+2024-05-19 17:15:02,045 - INFO - Train Stats
+Loss:
+  total: 1.6099339723587036
+Metrics:
+  svhn_top1_accuracy: 0.5167776644229889
+  svhn_top5_accuracy: 0.876024603843689
+
+2024-05-19 17:15:19,994 - INFO - Validation Stats
+Loss:
+  total: 2.4222039025405357
+Metrics:
+  svhn_top1_accuracy: 0.19225933916609864
+  svhn_top5_accuracy: 0.608099856253328
+
+2024-05-19 17:15:19,995 - INFO - Epoch 49/100
+2024-05-19 17:15:22,960 - INFO - Train Stats
+Loss:
+  total: 1.610107421875
+Metrics:
+  svhn_top1_accuracy: 0.5232453942298889
+  svhn_top5_accuracy: 0.8758324682712555
+
+2024-05-19 17:15:40,950 - INFO - Validation Stats
+Loss:
+  total: 2.419869702437828
+Metrics:
+  svhn_top1_accuracy: 0.19333692537299518
+  svhn_top5_accuracy: 0.6066181752188452
+
+2024-05-19 17:15:40,951 - INFO - Epoch 50/100
+2024-05-19 17:15:43,919 - INFO - Train Stats
+Loss:
+  total: 1.5906880497932434
+Metrics:
+  svhn_top1_accuracy: 0.5152407735586166
+  svhn_top5_accuracy: 0.872118353843689
+
+2024-05-19 17:16:01,626 - INFO - Validation Stats
+Loss:
+  total: 2.4402573437526307
+Metrics:
+  svhn_top1_accuracy: 0.19101113517736568
+  svhn_top5_accuracy: 0.6087733476326384
+
+2024-05-19 17:16:01,627 - INFO - Epoch 51/100
+2024-05-19 17:16:04,571 - INFO - Train Stats
+Loss:
+  total: 1.5760735273361206
+Metrics:
+  svhn_top1_accuracy: 0.5206839144229889
+  svhn_top5_accuracy: 0.8723104596138
+
+2024-05-19 17:16:22,098 - INFO - Validation Stats
+Loss:
+  total: 2.434566329265463
+Metrics:
+  svhn_top1_accuracy: 0.19114583345322772
+  svhn_top5_accuracy: 0.6117367097016039
+
+2024-05-19 17:16:22,099 - INFO - Epoch 52/100
+2024-05-19 17:16:25,119 - INFO - Train Stats
+Loss:
+  total: 1.5618376731872559
+Metrics:
+  svhn_top1_accuracy: 0.5714651644229889
+  svhn_top5_accuracy: 0.8844134211540222
+
+2024-05-19 17:16:41,796 - INFO - Validation Stats
+Loss:
+  total: 2.4212912197770744
+Metrics:
+  svhn_top1_accuracy: 0.1950880029592021
+  svhn_top5_accuracy: 0.6142959769429832
+
+2024-05-19 17:16:41,797 - INFO - Epoch 53/100
+2024-05-19 17:16:44,803 - INFO - Train Stats
+Loss:
+  total: 1.5445306897163391
+Metrics:
+  svhn_top1_accuracy: 0.5665983557701111
+  svhn_top5_accuracy: 0.8715420067310333
+
+2024-05-19 17:17:02,420 - INFO - Validation Stats
+Loss:
+  total: 2.43824709694961
+Metrics:
+  svhn_top1_accuracy: 0.1935075431548316
+  svhn_top5_accuracy: 0.612006106253328
+
+2024-05-19 17:17:02,421 - INFO - Epoch 54/100
+2024-05-19 17:17:05,351 - INFO - Train Stats
+Loss:
+  total: 1.5052881836891174
+Metrics:
+  svhn_top1_accuracy: 0.5677510201931
+  svhn_top5_accuracy: 0.876024603843689
+
+2024-05-19 17:17:23,125 - INFO - Validation Stats
+Loss:
+  total: 2.447034613839511
+Metrics:
+  svhn_top1_accuracy: 0.1908764369015036
+  svhn_top5_accuracy: 0.6147000717705694
+
+2024-05-19 17:17:23,126 - INFO - Epoch 55/100
+2024-05-19 17:17:26,211 - INFO - Train Stats
+Loss:
+  total: 1.5254029035568237
+Metrics:
+  svhn_top1_accuracy: 0.5626921057701111
+  svhn_top5_accuracy: 0.8840292096138
+
+2024-05-19 17:17:43,437 - INFO - Validation Stats
+Loss:
+  total: 2.4550634992533715
+Metrics:
+  svhn_top1_accuracy: 0.19181932483253808
+  svhn_top5_accuracy: 0.6160470545291901
+
+2024-05-19 17:17:43,438 - INFO - Epoch 56/100
+2024-05-19 17:17:46,373 - INFO - Train Stats
+Loss:
+  total: 1.4929989576339722
+Metrics:
+  svhn_top1_accuracy: 0.5735783874988556
+  svhn_top5_accuracy: 0.8846055269241333
+
+2024-05-19 17:18:02,295 - INFO - Validation Stats
+Loss:
+  total: 2.466031288278514
+Metrics:
+  svhn_top1_accuracy: 0.19491738517736568
+  svhn_top5_accuracy: 0.6185075435145148
+
+2024-05-19 17:18:02,296 - INFO - Epoch 57/100
+2024-05-19 17:18:05,248 - INFO - Train Stats
+Loss:
+  total: 1.4802460074424744
+Metrics:
+  svhn_top1_accuracy: 0.5648053288459778
+  svhn_top5_accuracy: 0.8885117769241333
+
+2024-05-19 17:18:21,037 - INFO - Validation Stats
+Loss:
+  total: 2.486317593475868
+Metrics:
+  svhn_top1_accuracy: 0.19114583345322772
+  svhn_top5_accuracy: 0.6194504314455492
+
+2024-05-19 17:18:21,038 - INFO - Epoch 58/100
+2024-05-19 17:18:24,044 - INFO - Train Stats
+Loss:
+  total: 1.4462862014770508
+Metrics:
+  svhn_top1_accuracy: 0.5815829932689667
+  svhn_top5_accuracy: 0.9043288826942444
+
+2024-05-19 17:18:41,191 - INFO - Validation Stats
+Loss:
+  total: 2.5192497434287238
+Metrics:
+  svhn_top1_accuracy: 0.1872036638187951
+  svhn_top5_accuracy: 0.617932830391259
+
+2024-05-19 17:18:41,192 - INFO - Epoch 59/100
+2024-05-19 17:18:44,103 - INFO - Train Stats
+Loss:
+  total: 1.4462555050849915
+Metrics:
+  svhn_top1_accuracy: 0.6003457903862
+  svhn_top5_accuracy: 0.9000384211540222
+
+2024-05-19 17:19:01,068 - INFO - Validation Stats
+Loss:
+  total: 2.512454090447261
+Metrics:
+  svhn_top1_accuracy: 0.1911817529592021
+  svhn_top5_accuracy: 0.6150682476060144
+
+2024-05-19 17:19:01,069 - INFO - Epoch 60/100
+2024-05-19 17:19:04,140 - INFO - Train Stats
+Loss:
+  total: 1.4489842057228088
+Metrics:
+  svhn_top1_accuracy: 0.5929815620183945
   svhn_top5_accuracy: 0.8920338153839111
 
-2024-05-10 12:26:02,494 - INFO - Validation Stats
+2024-05-19 17:19:20,013 - INFO - Validation Stats
 Loss:
-  total: 2.451137629048578
+  total: 2.5199295076830635
 Metrics:
-  svhn_top1_accuracy: 0.26520294541942663
-  svhn_top5_accuracy: 0.684042744595429
+  svhn_top1_accuracy: 0.19289691103943463
+  svhn_top5_accuracy: 0.6188757183222935
 
-2024-05-10 12:26:02,494 - INFO - Epoch 19/200
-2024-05-10 12:26:02,834 - INFO - Train Stats
+2024-05-19 17:19:20,330 - INFO - Epoch 61/100
+2024-05-19 17:19:23,333 - INFO - Train Stats
 Loss:
-  total: 1.3931838274002075
+  total: 1.4233091473579407
 Metrics:
-  svhn_top1_accuracy: 0.5275358557701111
-  svhn_top5_accuracy: 0.9031762182712555
+  svhn_top1_accuracy: 0.6038678288459778
+  svhn_top5_accuracy: 0.883837103843689
 
-2024-05-10 12:26:03,440 - INFO - Validation Stats
+2024-05-19 17:19:39,246 - INFO - Validation Stats
 Loss:
-  total: 2.382500114112065
+  total: 2.555101226116049
 Metrics:
-  svhn_top1_accuracy: 0.2739583333504611
-  svhn_top5_accuracy: 0.6982219825530874
+  svhn_top1_accuracy: 0.1943785920739174
+  svhn_top5_accuracy: 0.6201239228248596
 
-2024-05-10 12:26:03,440 - INFO - Epoch 20/200
-2024-05-10 12:26:03,694 - INFO - Train Stats
+2024-05-19 17:19:39,246 - INFO - Epoch 62/100
+2024-05-19 17:19:42,135 - INFO - Train Stats
 Loss:
-  total: 1.3394430875778198
+  total: 1.396890640258789
 Metrics:
-  svhn_top1_accuracy: 0.5201075673103333
-  svhn_top5_accuracy: 0.9158555269241333
+  svhn_top1_accuracy: 0.6214139461517334
+  svhn_top5_accuracy: 0.8969006240367889
 
-2024-05-10 12:26:04,307 - INFO - Validation Stats
+2024-05-19 17:19:57,891 - INFO - Validation Stats
 Loss:
-  total: 2.4335213611865867
+  total: 2.5353178525793143
 Metrics:
-  svhn_top1_accuracy: 0.27315014369528867
-  svhn_top5_accuracy: 0.700413074986688
+  svhn_top1_accuracy: 0.19599497138426222
+  svhn_top5_accuracy: 0.6173940372878107
 
-2024-05-10 12:26:04,307 - INFO - Epoch 21/200
-2024-05-10 12:26:04,541 - INFO - Train Stats
+2024-05-19 17:19:57,891 - INFO - Epoch 63/100
+2024-05-19 17:20:00,902 - INFO - Train Stats
 Loss:
-  total: 1.3147321939468384
+  total: 1.3997198343276978
 Metrics:
-  svhn_top1_accuracy: 0.5505891442298889
-  svhn_top5_accuracy: 0.8875512182712555
+  svhn_top1_accuracy: 0.6032914817333221
+  svhn_top5_accuracy: 0.8883196711540222
 
-2024-05-10 12:26:05,150 - INFO - Validation Stats
+2024-05-19 17:20:17,943 - INFO - Validation Stats
 Loss:
-  total: 2.4804520154821463
+  total: 2.553814468712642
 Metrics:
-  svhn_top1_accuracy: 0.27251257207886925
-  svhn_top5_accuracy: 0.7011494256299118
+  svhn_top1_accuracy: 0.1908764369015036
+  svhn_top5_accuracy: 0.6177981321153969
 
-2024-05-10 12:26:05,151 - INFO - Epoch 22/200
-2024-05-10 12:26:05,369 - INFO - Train Stats
+2024-05-19 17:20:17,944 - INFO - Epoch 64/100
+2024-05-19 17:20:20,924 - INFO - Train Stats
 Loss:
-  total: 1.2187407612800598
+  total: 1.3812366724014282
 Metrics:
-  svhn_top1_accuracy: 0.5755635201931
+  svhn_top1_accuracy: 0.6029072701931
+  svhn_top5_accuracy: 0.9074667096138
+
+2024-05-19 17:20:38,014 - INFO - Validation Stats
+Loss:
+  total: 2.632253305665378
+Metrics:
+  svhn_top1_accuracy: 0.18872126448771048
+  svhn_top5_accuracy: 0.6122755028050522
+
+2024-05-19 17:20:38,014 - INFO - Epoch 65/100
+2024-05-19 17:20:41,009 - INFO - Train Stats
+Loss:
+  total: 1.3828738927841187
+Metrics:
+  svhn_top1_accuracy: 0.6163550317287445
+  svhn_top5_accuracy: 0.9086193740367889
+
+2024-05-19 17:20:58,636 - INFO - Validation Stats
+Loss:
+  total: 2.636329383685671
+Metrics:
+  svhn_top1_accuracy: 0.1902388650281676
+  svhn_top5_accuracy: 0.61689116420417
+
+2024-05-19 17:20:58,637 - INFO - Epoch 66/100
+2024-05-19 17:21:01,670 - INFO - Train Stats
+Loss:
+  total: 1.3507266640663147
+Metrics:
+  svhn_top1_accuracy: 0.6364625990390778
+  svhn_top5_accuracy: 0.9125256240367889
+
+2024-05-19 17:21:17,680 - INFO - Validation Stats
+Loss:
+  total: 2.6057991200479966
+Metrics:
+  svhn_top1_accuracy: 0.19545617828081394
+  svhn_top5_accuracy: 0.6218750004110665
+
+2024-05-19 17:21:17,681 - INFO - Epoch 67/100
+2024-05-19 17:21:20,664 - INFO - Train Stats
+Loss:
+  total: 1.3350111246109009
+Metrics:
+  svhn_top1_accuracy: 0.6394082903862
+  svhn_top5_accuracy: 0.9039446711540222
+
+2024-05-19 17:21:38,795 - INFO - Validation Stats
+Loss:
+  total: 2.603696218852339
+Metrics:
+  svhn_top1_accuracy: 0.19656968399368482
+  svhn_top5_accuracy: 0.6194504314455492
+
+2024-05-19 17:21:38,796 - INFO - Epoch 68/100
+2024-05-19 17:21:41,784 - INFO - Train Stats
+Loss:
+  total: 1.3128565549850464
+Metrics:
+  svhn_top1_accuracy: 0.6358862817287445
   svhn_top5_accuracy: 0.9082351326942444
 
-2024-05-10 12:26:05,990 - INFO - Validation Stats
+2024-05-19 17:21:59,830 - INFO - Validation Stats
 Loss:
-  total: 2.5651303940805894
+  total: 2.5960503898817917
 Metrics:
-  svhn_top1_accuracy: 0.27089619276852445
-  svhn_top5_accuracy: 0.6971354165981556
+  svhn_top1_accuracy: 0.19266343399368482
+  svhn_top5_accuracy: 0.6177352728514836
 
-2024-05-10 12:26:05,990 - INFO - Epoch 23/200
-2024-05-10 12:26:06,241 - INFO - Train Stats
+2024-05-19 17:21:59,831 - INFO - Epoch 69/100
+2024-05-19 17:22:02,755 - INFO - Train Stats
 Loss:
-  total: 1.2174730896949768
+  total: 1.3380610346794128
 Metrics:
-  svhn_top1_accuracy: 0.6153944730758667
+  svhn_top1_accuracy: 0.6150102317333221
+  svhn_top5_accuracy: 0.8836449682712555
+
+2024-05-19 17:22:20,313 - INFO - Validation Stats
+Loss:
+  total: 2.610472288624994
+Metrics:
+  svhn_top1_accuracy: 0.19377693970655574
+  svhn_top5_accuracy: 0.6156788797214113
+
+2024-05-19 17:22:20,314 - INFO - Epoch 70/100
+2024-05-19 17:22:23,247 - INFO - Train Stats
+Loss:
+  total: 1.2959466576576233
+Metrics:
+  svhn_top1_accuracy: 0.6599000990390778
   svhn_top5_accuracy: 0.9201460182666779
 
-2024-05-10 12:26:06,866 - INFO - Validation Stats
+2024-05-19 17:22:40,711 - INFO - Validation Stats
 Loss:
-  total: 2.6001659385089217
+  total: 2.5783823564134796
 Metrics:
-  svhn_top1_accuracy: 0.2706267962168003
-  svhn_top5_accuracy: 0.6982130028050522
+  svhn_top1_accuracy: 0.19724317537299518
+  svhn_top5_accuracy: 0.6172593390119487
 
-2024-05-10 12:26:06,867 - INFO - Epoch 24/200
-2024-05-10 12:26:07,090 - INFO - Train Stats
+2024-05-19 17:22:40,712 - INFO - Epoch 71/100
+2024-05-19 17:22:43,670 - INFO - Train Stats
 Loss:
-  total: 1.1782639026641846
+  total: 1.2889277338981628
 Metrics:
-  svhn_top1_accuracy: 0.5841444730758667
-  svhn_top5_accuracy: 0.9324410855770111
+  svhn_top1_accuracy: 0.6526639461517334
+  svhn_top5_accuracy: 0.9039446711540222
 
-2024-05-10 12:26:07,795 - INFO - Validation Stats
+2024-05-19 17:23:01,711 - INFO - Validation Stats
 Loss:
-  total: 2.5920212515469254
+  total: 2.5443706635771126
 Metrics:
-  svhn_top1_accuracy: 0.2761135057642542
-  svhn_top5_accuracy: 0.7034662355636728
+  svhn_top1_accuracy: 0.18902658054540897
+  svhn_top5_accuracy: 0.6149335493301523
 
-2024-05-10 12:26:07,795 - INFO - Epoch 25/200
-2024-05-10 12:26:08,130 - INFO - Train Stats
+2024-05-19 17:23:01,712 - INFO - Epoch 72/100
+2024-05-19 17:23:04,655 - INFO - Train Stats
 Loss:
-  total: 1.1488715410232544
+  total: 1.2675456404685974
 Metrics:
-  svhn_top1_accuracy: 0.6157786846160889
-  svhn_top5_accuracy: 0.9474897682666779
+  svhn_top1_accuracy: 0.6643826961517334
+  svhn_top5_accuracy: 0.9123335182666779
 
-2024-05-10 12:26:08,822 - INFO - Validation Stats
+2024-05-19 17:23:20,353 - INFO - Validation Stats
 Loss:
-  total: 2.4431604023637443
+  total: 2.5569986721564986
 Metrics:
-  svhn_top1_accuracy: 0.2852729885228749
-  svhn_top5_accuracy: 0.7129669538859663
+  svhn_top1_accuracy: 0.18781429606265035
+  svhn_top5_accuracy: 0.6138559631232557
 
-2024-05-10 12:26:08,822 - INFO - Epoch 26/200
-2024-05-10 12:26:09,073 - INFO - Train Stats
+2024-05-19 17:23:20,354 - INFO - Epoch 73/100
+2024-05-19 17:23:23,364 - INFO - Train Stats
 Loss:
-  total: 1.078128457069397
+  total: 1.2686556577682495
 Metrics:
-  svhn_top1_accuracy: 0.6561859548091888
+  svhn_top1_accuracy: 0.6665599346160889
+  svhn_top5_accuracy: 0.9316726326942444
+
+2024-05-19 17:23:39,886 - INFO - Validation Stats
+Loss:
+  total: 2.5952297695751847
+Metrics:
+  svhn_top1_accuracy: 0.18629669552219325
+  svhn_top5_accuracy: 0.6164511493567763
+
+2024-05-19 17:23:39,886 - INFO - Epoch 74/100
+2024-05-19 17:23:42,856 - INFO - Train Stats
+Loss:
+  total: 1.2662557363510132
+Metrics:
+  svhn_top1_accuracy: 0.655225396156311
+  svhn_top5_accuracy: 0.9117571711540222
+
+2024-05-19 17:23:58,738 - INFO - Validation Stats
+Loss:
+  total: 2.557249768026944
+Metrics:
+  svhn_top1_accuracy: 0.19276221276357255
+  svhn_top5_accuracy: 0.6193785924336006
+
+2024-05-19 17:23:58,739 - INFO - Epoch 75/100
+2024-05-19 17:24:01,628 - INFO - Train Stats
+Loss:
+  total: 1.2566315531730652
+Metrics:
+  svhn_top1_accuracy: 0.6809682250022888
+  svhn_top5_accuracy: 0.9277663826942444
+
+2024-05-19 17:24:17,825 - INFO - Validation Stats
+Loss:
+  total: 2.5558926360360505
+Metrics:
+  svhn_top1_accuracy: 0.19050826157989173
+  svhn_top5_accuracy: 0.6169181034482759
+
+2024-05-19 17:24:17,825 - INFO - Epoch 76/100
+2024-05-19 17:24:20,829 - INFO - Train Stats
+Loss:
+  total: 1.2256470322608948
+Metrics:
+  svhn_top1_accuracy: 0.6751408874988556
+  svhn_top5_accuracy: 0.9119492769241333
+
+2024-05-19 17:24:37,406 - INFO - Validation Stats
+Loss:
+  total: 2.5817334158667204
+Metrics:
+  svhn_top1_accuracy: 0.1905801005918404
+  svhn_top5_accuracy: 0.6177622131232557
+
+2024-05-19 17:24:37,407 - INFO - Epoch 77/100
+2024-05-19 17:24:40,498 - INFO - Train Stats
+Loss:
+  total: 1.200051188468933
+Metrics:
+  svhn_top1_accuracy: 0.7045978605747223
+  svhn_top5_accuracy: 0.9205302298069
+
+2024-05-19 17:24:57,222 - INFO - Validation Stats
+Loss:
+  total: 2.6141842069297003
+Metrics:
+  svhn_top1_accuracy: 0.19185524433851242
+  svhn_top5_accuracy: 0.619818606253328
+
+2024-05-19 17:24:57,222 - INFO - Epoch 78/100
+2024-05-19 17:25:00,188 - INFO - Train Stats
+Loss:
+  total: 1.2126421332359314
+Metrics:
+  svhn_top1_accuracy: 0.6777023673057556
+  svhn_top5_accuracy: 0.9314805269241333
+
+2024-05-19 17:25:17,264 - INFO - Validation Stats
+Loss:
+  total: 2.6608168133373917
+Metrics:
+  svhn_top1_accuracy: 0.19262751448771048
+  svhn_top5_accuracy: 0.6210668107558941
+
+2024-05-19 17:25:17,264 - INFO - Epoch 79/100
+2024-05-19 17:25:20,074 - INFO - Train Stats
+Loss:
+  total: 1.2195414900779724
+Metrics:
+  svhn_top1_accuracy: 0.6720030605792999
+  svhn_top5_accuracy: 0.9242443740367889
+
+2024-05-19 17:25:36,767 - INFO - Validation Stats
+Loss:
+  total: 2.6235687116096758
+Metrics:
+  svhn_top1_accuracy: 0.18939475586702084
+  svhn_top5_accuracy: 0.622952586617963
+
+2024-05-19 17:25:36,768 - INFO - Epoch 80/100
+2024-05-19 17:25:39,826 - INFO - Train Stats
+Loss:
+  total: 1.1991427540779114
+Metrics:
+  svhn_top1_accuracy: 0.7003073692321777
+  svhn_top5_accuracy: 0.9197617769241333
+
+2024-05-19 17:25:55,604 - INFO - Validation Stats
+Loss:
+  total: 2.6012259228476164
+Metrics:
+  svhn_top1_accuracy: 0.187778376556676
+  svhn_top5_accuracy: 0.6215337648473936
+
+2024-05-19 17:25:55,605 - INFO - Epoch 81/100
+2024-05-19 17:25:58,698 - INFO - Train Stats
+Loss:
+  total: 1.178345501422882
+Metrics:
+  svhn_top1_accuracy: 0.7073514461517334
+  svhn_top5_accuracy: 0.9240522682666779
+
+2024-05-19 17:26:15,245 - INFO - Validation Stats
+Loss:
+  total: 2.6097959444440644
+Metrics:
+  svhn_top1_accuracy: 0.19037356330402966
+  svhn_top5_accuracy: 0.6231501441577385
+
+2024-05-19 17:26:15,246 - INFO - Epoch 82/100
+2024-05-19 17:26:18,226 - INFO - Train Stats
+Loss:
+  total: 1.1529123783111572
+Metrics:
+  svhn_top1_accuracy: 0.7122182250022888
+  svhn_top5_accuracy: 0.9398693740367889
+
+2024-05-19 17:26:35,337 - INFO - Validation Stats
+Loss:
+  total: 2.6044422511396736
+Metrics:
+  svhn_top1_accuracy: 0.19387571847644344
+  svhn_top5_accuracy: 0.6244971269163592
+
+2024-05-19 17:26:35,338 - INFO - Epoch 83/100
+2024-05-19 17:26:38,237 - INFO - Train Stats
+Loss:
+  total: 1.1448146104812622
+Metrics:
+  svhn_top1_accuracy: 0.7090804278850555
+  svhn_top5_accuracy: 0.9244364798069
+
+2024-05-19 17:26:54,701 - INFO - Validation Stats
+Loss:
+  total: 2.636035384802983
+Metrics:
+  svhn_top1_accuracy: 0.19323814660310745
+  svhn_top5_accuracy: 0.6217043821153969
+
+2024-05-19 17:26:54,703 - INFO - Epoch 84/100
+2024-05-19 17:26:57,828 - INFO - Train Stats
+Loss:
+  total: 1.11879962682724
+Metrics:
+  svhn_top1_accuracy: 0.7350794076919556
+  svhn_top5_accuracy: 0.9310963153839111
+
+2024-05-19 17:27:13,428 - INFO - Validation Stats
+Loss:
+  total: 2.673660191996344
+Metrics:
+  svhn_top1_accuracy: 0.19370510069460706
+  svhn_top5_accuracy: 0.6208961924602245
+
+2024-05-19 17:27:13,429 - INFO - Epoch 85/100
+2024-05-19 17:27:16,479 - INFO - Train Stats
+Loss:
+  total: 1.1130042672157288
+Metrics:
+  svhn_top1_accuracy: 0.7373847365379333
+  svhn_top5_accuracy: 0.9482581913471222
+
+2024-05-19 17:27:31,997 - INFO - Validation Stats
+Loss:
+  total: 2.6866471685212234
+Metrics:
+  svhn_top1_accuracy: 0.19683908054540897
+  svhn_top5_accuracy: 0.619818606253328
+
+2024-05-19 17:27:31,998 - INFO - Epoch 86/100
+2024-05-19 17:27:35,170 - INFO - Train Stats
+Loss:
+  total: 1.1032230854034424
+Metrics:
+  svhn_top1_accuracy: 0.7174692749977112
   svhn_top5_accuracy: 0.9359631240367889
 
-2024-05-10 12:26:09,716 - INFO - Validation Stats
+2024-05-19 17:27:50,860 - INFO - Validation Stats
 Loss:
-  total: 2.4733178574463417
+  total: 2.6866547115917863
 Metrics:
-  svhn_top1_accuracy: 0.2853089082857658
-  svhn_top5_accuracy: 0.7104705459085005
+  svhn_top1_accuracy: 0.19674030177552124
+  svhn_top5_accuracy: 0.6189744976060144
 
-2024-05-10 12:26:09,716 - INFO - Epoch 27/200
-2024-05-10 12:26:09,956 - INFO - Train Stats
+2024-05-19 17:27:50,861 - INFO - Epoch 87/100
+2024-05-19 17:27:53,799 - INFO - Train Stats
 Loss:
-  total: 1.0546767115592957
+  total: 1.0873803496360779
 Metrics:
-  svhn_top1_accuracy: 0.6325563490390778
-  svhn_top5_accuracy: 0.9472976326942444
+  svhn_top1_accuracy: 0.7286116778850555
+  svhn_top5_accuracy: 0.9486424326896667
 
-2024-05-10 12:26:10,528 - INFO - Validation Stats
+2024-05-19 17:28:10,454 - INFO - Validation Stats
 Loss:
-  total: 2.5015646671426706
+  total: 2.675957700301861
 Metrics:
-  svhn_top1_accuracy: 0.29083153759611063
-  svhn_top5_accuracy: 0.7108746407360866
+  svhn_top1_accuracy: 0.1940822557642542
+  svhn_top5_accuracy: 0.6137212648473936
 
-2024-05-10 12:26:10,528 - INFO - Epoch 28/200
-2024-05-10 12:26:10,757 - INFO - Train Stats
+2024-05-19 17:28:10,455 - INFO - Epoch 88/100
+2024-05-19 17:28:13,365 - INFO - Train Stats
 Loss:
-  total: 0.9510949552059174
+  total: 1.0904784798622131
 Metrics:
-  svhn_top1_accuracy: 0.6989625990390778
+  svhn_top1_accuracy: 0.7133708894252777
+  svhn_top5_accuracy: 0.9355788826942444
+
+2024-05-19 17:28:30,157 - INFO - Validation Stats
+Loss:
+  total: 2.70114148896316
+Metrics:
+  svhn_top1_accuracy: 0.19202586212034883
+  svhn_top5_accuracy: 0.6142600579508419
+
+2024-05-19 17:28:30,158 - INFO - Epoch 89/100
+2024-05-19 17:28:33,103 - INFO - Train Stats
+Loss:
+  total: 1.104519248008728
+Metrics:
+  svhn_top1_accuracy: 0.7432761192321777
+  svhn_top5_accuracy: 0.9398693740367889
+
+2024-05-19 17:28:48,797 - INFO - Validation Stats
+Loss:
+  total: 2.731889901490047
+Metrics:
+  svhn_top1_accuracy: 0.1921605603962109
+  svhn_top5_accuracy: 0.6152029458818764
+
+2024-05-19 17:28:48,797 - INFO - Epoch 90/100
+2024-05-19 17:28:51,828 - INFO - Train Stats
+Loss:
+  total: 1.099161982536316
+Metrics:
+  svhn_top1_accuracy: 0.7116419076919556
+  svhn_top5_accuracy: 0.9234759211540222
+
+2024-05-19 17:29:07,811 - INFO - Validation Stats
+Loss:
+  total: 2.74702905375382
+Metrics:
+  svhn_top1_accuracy: 0.19242995694793505
+  svhn_top5_accuracy: 0.6187410200464314
+
+2024-05-19 17:29:08,134 - INFO - Epoch 91/100
+2024-05-19 17:29:11,049 - INFO - Train Stats
+Loss:
+  total: 1.0459968447685242
+Metrics:
+  svhn_top1_accuracy: 0.7512807250022888
+  svhn_top5_accuracy: 0.9353867769241333
+
+2024-05-19 17:29:27,159 - INFO - Validation Stats
+Loss:
+  total: 2.7781073841555366
+Metrics:
+  svhn_top1_accuracy: 0.19533046000990376
+  svhn_top5_accuracy: 0.6161458338129109
+
+2024-05-19 17:29:27,160 - INFO - Epoch 92/100
+2024-05-19 17:29:30,184 - INFO - Train Stats
+Loss:
+  total: 1.0621173977851868
+Metrics:
+  svhn_top1_accuracy: 0.7399462163448334
   svhn_top5_accuracy: 0.9478739798069
 
-2024-05-10 12:26:11,383 - INFO - Validation Stats
+2024-05-19 17:29:47,914 - INFO - Validation Stats
 Loss:
-  total: 2.4683456050938575
+  total: 2.748343048424556
 Metrics:
-  svhn_top1_accuracy: 0.29419899449266235
-  svhn_top5_accuracy: 0.7143767959085005
+  svhn_top1_accuracy: 0.19044540231597834
+  svhn_top5_accuracy: 0.6135865665715317
 
-2024-05-10 12:26:11,383 - INFO - Epoch 29/200
-2024-05-10 12:26:11,974 - INFO - Train Stats
+2024-05-19 17:29:47,915 - INFO - Epoch 93/100
+2024-05-19 17:29:50,861 - INFO - Train Stats
 Loss:
-  total: 0.9363617897033691
+  total: 1.0359423160552979
 Metrics:
-  svhn_top1_accuracy: 0.7071593105792999
-  svhn_top5_accuracy: 0.9681736826896667
+  svhn_top1_accuracy: 0.7522412836551666
+  svhn_top5_accuracy: 0.9400614798069
 
-2024-05-10 12:26:15,421 - INFO - Validation Stats
+2024-05-19 17:30:08,582 - INFO - Validation Stats
 Loss:
-  total: 2.433380805212876
+  total: 2.77027649715029
 Metrics:
-  svhn_top1_accuracy: 0.2938308191710505
-  svhn_top5_accuracy: 0.7191271555834803
+  svhn_top1_accuracy: 0.18687140813161587
+  svhn_top5_accuracy: 0.6177262931034483
 
-2024-05-10 12:26:15,421 - INFO - Epoch 30/200
-2024-05-10 12:26:16,028 - INFO - Train Stats
+2024-05-19 17:30:08,583 - INFO - Epoch 94/100
+2024-05-19 17:30:11,524 - INFO - Train Stats
 Loss:
-  total: 0.9059013724327087
+  total: 1.0080977976322174
 Metrics:
-  svhn_top1_accuracy: 0.6839139461517334
-  svhn_top5_accuracy: 0.9683657884597778
+  svhn_top1_accuracy: 0.7747182250022888
+  svhn_top5_accuracy: 0.9554943740367889
 
-2024-05-10 12:26:16,842 - INFO - Validation Stats
+2024-05-19 17:30:28,680 - INFO - Validation Stats
 Loss:
-  total: 2.4937105672112825
+  total: 2.7656384994243752
 Metrics:
-  svhn_top1_accuracy: 0.29083153759611063
-  svhn_top5_accuracy: 0.7095994969894146
+  svhn_top1_accuracy: 0.1891253593152967
+  svhn_top5_accuracy: 0.6165499286404972
 
-2024-05-10 12:26:16,871 - INFO - Epoch 31/200
-2024-05-10 12:26:17,642 - INFO - Train Stats
+2024-05-19 17:30:28,681 - INFO - Epoch 95/100
+2024-05-19 17:30:31,664 - INFO - Train Stats
 Loss:
-  total: 0.8847331404685974
+  total: 1.0180930495262146
 Metrics:
-  svhn_top1_accuracy: 0.7280353605747223
-  svhn_top5_accuracy: 0.9720799326896667
+  svhn_top1_accuracy: 0.7719646394252777
+  svhn_top5_accuracy: 0.9361552298069
 
-2024-05-10 12:26:18,338 - INFO - Validation Stats
+2024-05-19 17:30:49,352 - INFO - Validation Stats
 Loss:
-  total: 2.522193123554361
+  total: 2.72574442008446
 Metrics:
-  svhn_top1_accuracy: 0.29608477035473135
-  svhn_top5_accuracy: 0.7103717676524458
+  svhn_top1_accuracy: 0.19181932483253808
+  svhn_top5_accuracy: 0.6182022269429832
 
-2024-05-10 12:26:18,339 - INFO - Epoch 32/200
-2024-05-10 12:26:18,633 - INFO - Train Stats
+2024-05-19 17:30:49,352 - INFO - Epoch 96/100
+2024-05-19 17:30:52,290 - INFO - Train Stats
 Loss:
-  total: 0.8804164230823517
+  total: 1.0012692511081696
 Metrics:
-  svhn_top1_accuracy: 0.7395619750022888
-  svhn_top5_accuracy: 0.9718877971172333
+  svhn_top1_accuracy: 0.7713883221149445
+  svhn_top5_accuracy: 0.9517802298069
 
-2024-05-10 12:26:19,407 - INFO - Validation Stats
+2024-05-19 17:31:09,625 - INFO - Validation Stats
 Loss:
-  total: 2.5866656344512413
+  total: 2.7370200732658647
 Metrics:
-  svhn_top1_accuracy: 0.3029184626608059
-  svhn_top5_accuracy: 0.7180136493567763
+  svhn_top1_accuracy: 0.19387571847644344
+  svhn_top5_accuracy: 0.6188757183222935
 
-2024-05-10 12:26:19,407 - INFO - Epoch 33/200
-2024-05-10 12:26:19,654 - INFO - Train Stats
+2024-05-19 17:31:09,626 - INFO - Epoch 97/100
+2024-05-19 17:31:12,560 - INFO - Train Stats
 Loss:
-  total: 0.8134495317935944
+  total: 1.0048065781593323
 Metrics:
-  svhn_top1_accuracy: 0.7354636192321777
-  svhn_top5_accuracy: 0.9718877971172333
+  svhn_top1_accuracy: 0.7442366778850555
+  svhn_top5_accuracy: 0.9441598355770111
 
-2024-05-10 12:26:21,513 - INFO - Validation Stats
+2024-05-19 17:31:30,209 - INFO - Validation Stats
 Loss:
-  total: 2.41507586528515
+  total: 2.7848010556451204
 Metrics:
-  svhn_top1_accuracy: 0.3096533764539094
-  svhn_top5_accuracy: 0.7348599135875702
+  svhn_top1_accuracy: 0.19447737071534682
+  svhn_top5_accuracy: 0.6149335493301523
 
-2024-05-10 12:26:21,513 - INFO - Epoch 34/200
-2024-05-10 12:26:21,786 - INFO - Train Stats
+2024-05-19 17:31:30,210 - INFO - Epoch 98/100
+2024-05-19 17:31:33,171 - INFO - Train Stats
 Loss:
-  total: 0.7513902187347412
+  total: 0.9821560084819794
 Metrics:
-  svhn_top1_accuracy: 0.7799692749977112
-  svhn_top5_accuracy: 0.9599769413471222
+  svhn_top1_accuracy: 0.7842597365379333
+  svhn_top5_accuracy: 0.9558785855770111
 
-2024-05-10 12:26:22,489 - INFO - Validation Stats
+2024-05-19 17:31:50,416 - INFO - Validation Stats
 Loss:
-  total: 2.5037829300452925
+  total: 2.8015772309796563
 Metrics:
-  svhn_top1_accuracy: 0.30534303162632315
-  svhn_top5_accuracy: 0.7312230601392943
+  svhn_top1_accuracy: 0.19603089089023656
+  svhn_top5_accuracy: 0.6119701872611868
 
-2024-05-10 12:26:22,489 - INFO - Epoch 35/200
-2024-05-10 12:26:22,816 - INFO - Train Stats
+2024-05-19 17:31:50,417 - INFO - Epoch 99/100
+2024-05-19 17:31:53,378 - INFO - Train Stats
 Loss:
-  total: 0.8151060342788696
+  total: 0.9749977290630341
 Metrics:
-  svhn_top1_accuracy: 0.7288037836551666
-  svhn_top5_accuracy: 0.9837986826896667
+  svhn_top1_accuracy: 0.7803534865379333
+  svhn_top5_accuracy: 0.9564549326896667
 
-2024-05-10 12:26:23,524 - INFO - Validation Stats
+2024-05-19 17:32:11,731 - INFO - Validation Stats
 Loss:
-  total: 2.750992832512691
+  total: 2.7959111476766654
 Metrics:
-  svhn_top1_accuracy: 0.2968211207410385
-  svhn_top5_accuracy: 0.7144396551724138
+  svhn_top1_accuracy: 0.19357040241874499
+  svhn_top5_accuracy: 0.6164152303646351
 
-2024-05-10 12:26:23,524 - INFO - Epoch 36/200
-2024-05-10 12:26:23,844 - INFO - Train Stats
+2024-05-19 17:32:11,732 - INFO - Epoch 100/100
+2024-05-19 17:32:14,634 - INFO - Train Stats
 Loss:
-  total: 0.7159792184829712
+  total: 1.0049124360084534
 Metrics:
-  svhn_top1_accuracy: 0.7604380249977112
-  svhn_top5_accuracy: 0.9802766442298889
+  svhn_top1_accuracy: 0.7430840134620667
+  svhn_top5_accuracy: 0.9400614798069
 
-2024-05-10 12:26:24,736 - INFO - Validation Stats
+2024-05-19 17:32:32,278 - INFO - Validation Stats
 Loss:
-  total: 2.761782983253742
+  total: 2.7710274704571427
 Metrics:
-  svhn_top1_accuracy: 0.2911637931548316
-  svhn_top5_accuracy: 0.7114134338395349
+  svhn_top1_accuracy: 0.1956627155686247
+  svhn_top5_accuracy: 0.6190104165981556
 
-2024-05-10 12:26:24,737 - INFO - Epoch 37/200
-2024-05-10 12:26:25,444 - INFO - Train Stats
-Loss:
-  total: 0.6248665452003479
-Metrics:
-  svhn_top1_accuracy: 0.8035988807678223
-  svhn_top5_accuracy: 0.9918032884597778
-
-2024-05-10 12:26:28,336 - INFO - Validation Stats
-Loss:
-  total: 2.5583451904099563
-Metrics:
-  svhn_top1_accuracy: 0.30534303162632315
-  svhn_top5_accuracy: 0.7308459055834803
-
-2024-05-10 12:26:28,336 - INFO - Epoch 38/200
-2024-05-10 12:26:28,623 - INFO - Train Stats
-Loss:
-  total: 0.6217024922370911
-Metrics:
-  svhn_top1_accuracy: 0.8084656894207001
-  svhn_top5_accuracy: 0.9837986826896667
-
-2024-05-10 12:26:30,480 - INFO - Validation Stats
-Loss:
-  total: 2.5116498758052956
-Metrics:
-  svhn_top1_accuracy: 0.3151760057642542
-  svhn_top5_accuracy: 0.735964440066239
-
-2024-05-10 12:26:30,480 - INFO - Epoch 39/200
-2024-05-10 12:26:30,795 - INFO - Train Stats
-Loss:
-  total: 0.6279596388339996
-Metrics:
-  svhn_top1_accuracy: 0.7754866778850555
-  svhn_top5_accuracy: 0.9841828942298889
-
-2024-05-10 12:26:31,381 - INFO - Validation Stats
-Loss:
-  total: 2.653710336520754
-Metrics:
-  svhn_top1_accuracy: 0.3026490661090818
-  svhn_top5_accuracy: 0.7283225573342422
-
-2024-05-10 12:26:31,381 - INFO - Epoch 40/200
-2024-05-10 12:26:31,605 - INFO - Train Stats
-Loss:
-  total: 0.6371098458766937
-Metrics:
-  svhn_top1_accuracy: 0.7930327951908112
-  svhn_top5_accuracy: 0.9918032884597778
-
-2024-05-10 12:26:32,657 - INFO - Validation Stats
-Loss:
-  total: 2.687085299656309
-Metrics:
-  svhn_top1_accuracy: 0.30203843399368485
-  svhn_top5_accuracy: 0.7399425290781876
-
-2024-05-10 12:26:32,658 - INFO - Epoch 41/200
-2024-05-10 12:26:32,900 - INFO - Train Stats
-Loss:
-  total: 0.5284000933170319
-Metrics:
-  svhn_top1_accuracy: 0.8516265451908112
-  svhn_top5_accuracy: 0.9878970384597778
-
-2024-05-10 12:26:33,508 - INFO - Validation Stats
-Loss:
-  total: 2.709908329207322
-Metrics:
-  svhn_top1_accuracy: 0.3163882902470128
-  svhn_top5_accuracy: 0.7313487786671211
-
-2024-05-10 12:26:33,508 - INFO - Epoch 42/200
-2024-05-10 12:26:33,725 - INFO - Train Stats
-Loss:
-  total: 0.5008277595043182
-Metrics:
-  svhn_top1_accuracy: 0.8361936509609222
-  svhn_top5_accuracy: 0.9959016442298889
-
-2024-05-10 12:26:34,363 - INFO - Validation Stats
-Loss:
-  total: 2.741605351711142
-Metrics:
-  svhn_top1_accuracy: 0.3165229885228749
-  svhn_top5_accuracy: 0.7383890090317562
-
-2024-05-10 12:26:34,363 - INFO - Epoch 43/200
-2024-05-10 12:26:34,610 - INFO - Train Stats
-Loss:
-  total: 0.47508373856544495
-Metrics:
-  svhn_top1_accuracy: 0.8594390451908112
-  svhn_top5_accuracy: 0.99609375
-
-2024-05-10 12:26:35,372 - INFO - Validation Stats
-Loss:
-  total: 2.588175189906153
-Metrics:
-  svhn_top1_accuracy: 0.32955280177552126
-  svhn_top5_accuracy: 0.7453933193765837
-
-2024-05-10 12:26:35,372 - INFO - Epoch 44/200
-2024-05-10 12:26:35,694 - INFO - Train Stats
-Loss:
-  total: 0.4674203544855118
-Metrics:
-  svhn_top1_accuracy: 0.8635374009609222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:36,512 - INFO - Validation Stats
-Loss:
-  total: 2.6249801002699753
-Metrics:
-  svhn_top1_accuracy: 0.33056752897542097
-  svhn_top5_accuracy: 0.7489673135609463
-
-2024-05-10 12:26:36,513 - INFO - Epoch 45/200
-2024-05-10 12:26:36,759 - INFO - Train Stats
-Loss:
-  total: 0.40866291522979736
-Metrics:
-  svhn_top1_accuracy: 0.860399603843689
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:37,604 - INFO - Validation Stats
-Loss:
-  total: 2.794358697430841
-Metrics:
-  svhn_top1_accuracy: 0.32679597725128307
-  svhn_top5_accuracy: 0.739637212506656
-
-2024-05-10 12:26:37,605 - INFO - Epoch 46/200
-2024-05-10 12:26:37,928 - INFO - Train Stats
-Loss:
-  total: 0.4102944880723953
-Metrics:
-  svhn_top1_accuracy: 0.8922259211540222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:39,762 - INFO - Validation Stats
-Loss:
-  total: 2.861396144176352
-Metrics:
-  svhn_top1_accuracy: 0.32737068986070567
-  svhn_top5_accuracy: 0.7423042387797915
-
-2024-05-10 12:26:39,762 - INFO - Epoch 47/200
-2024-05-10 12:26:40,086 - INFO - Train Stats
-Loss:
-  total: 0.3676653802394867
-Metrics:
-  svhn_top1_accuracy: 0.9199538826942444
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:43,217 - INFO - Validation Stats
-Loss:
-  total: 2.9197606053845635
-Metrics:
-  svhn_top1_accuracy: 0.31998922418931436
-  svhn_top5_accuracy: 0.7401131463461909
-
-2024-05-10 12:26:43,217 - INFO - Epoch 48/200
-2024-05-10 12:26:44,043 - INFO - Train Stats
-Loss:
-  total: 0.3157994896173477
-Metrics:
-  svhn_top1_accuracy: 0.9156634211540222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:44,760 - INFO - Validation Stats
-Loss:
-  total: 2.955215256789635
-Metrics:
-  svhn_top1_accuracy: 0.31379310349965917
-  svhn_top5_accuracy: 0.7380567532161186
-
-2024-05-10 12:26:44,760 - INFO - Epoch 49/200
-2024-05-10 12:26:45,012 - INFO - Train Stats
-Loss:
-  total: 0.3374691903591156
-Metrics:
-  svhn_top1_accuracy: 0.8762167096138
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:45,616 - INFO - Validation Stats
-Loss:
-  total: 2.813704597538915
-Metrics:
-  svhn_top1_accuracy: 0.3281788795158781
-  svhn_top5_accuracy: 0.7561063221816359
-
-2024-05-10 12:26:45,616 - INFO - Epoch 50/200
-2024-05-10 12:26:45,880 - INFO - Train Stats
-Loss:
-  total: 0.31062905490398407
-Metrics:
-  svhn_top1_accuracy: 0.9045210182666779
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:46,505 - INFO - Validation Stats
-Loss:
-  total: 2.988524654815937
-Metrics:
-  svhn_top1_accuracy: 0.3168642243434643
-  svhn_top5_accuracy: 0.7607219825530874
-
-2024-05-10 12:26:46,505 - INFO - Epoch 51/200
-2024-05-10 12:26:46,755 - INFO - Train Stats
-Loss:
-  total: 0.2502627968788147
-Metrics:
-  svhn_top1_accuracy: 0.9439677298069
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:49,571 - INFO - Validation Stats
-Loss:
-  total: 3.1148245005772033
-Metrics:
-  svhn_top1_accuracy: 0.3122485634581796
-  svhn_top5_accuracy: 0.7580639370556536
-
-2024-05-10 12:26:49,572 - INFO - Epoch 52/200
-2024-05-10 12:26:49,821 - INFO - Train Stats
-Loss:
-  total: 0.2871636375784874
-Metrics:
-  svhn_top1_accuracy: 0.9209144413471222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:50,893 - INFO - Validation Stats
-Loss:
-  total: 3.0700511891266395
-Metrics:
-  svhn_top1_accuracy: 0.3280082617340417
-  svhn_top5_accuracy: 0.7592043825264635
-
-2024-05-10 12:26:50,893 - INFO - Epoch 53/200
-2024-05-10 12:26:51,142 - INFO - Train Stats
-Loss:
-  total: 0.25994298607110977
-Metrics:
-  svhn_top1_accuracy: 0.9318647682666779
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:51,753 - INFO - Validation Stats
-Loss:
-  total: 3.0000396473654387
-Metrics:
-  svhn_top1_accuracy: 0.3297593393202486
-  svhn_top5_accuracy: 0.7665140084151564
-
-2024-05-10 12:26:51,754 - INFO - Epoch 54/200
-2024-05-10 12:26:52,004 - INFO - Train Stats
-Loss:
-  total: 0.22651463747024536
-Metrics:
-  svhn_top1_accuracy: 0.9398693740367889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:52,602 - INFO - Validation Stats
-Loss:
-  total: 3.1849406423239874
-Metrics:
-  svhn_top1_accuracy: 0.3259249283321973
-  svhn_top5_accuracy: 0.7508171694032078
-
-2024-05-10 12:26:52,602 - INFO - Epoch 55/200
-2024-05-10 12:26:52,855 - INFO - Train Stats
-Loss:
-  total: 0.2456367164850235
-Metrics:
-  svhn_top1_accuracy: 0.9281506240367889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:53,448 - INFO - Validation Stats
-Loss:
-  total: 3.2226532738784264
-Metrics:
-  svhn_top1_accuracy: 0.3337015088262229
-  svhn_top5_accuracy: 0.7565104170092221
-
-2024-05-10 12:26:53,448 - INFO - Epoch 56/200
-2024-05-10 12:26:53,699 - INFO - Train Stats
-Loss:
-  total: 0.24779972434043884
-Metrics:
-  svhn_top1_accuracy: 0.9316726326942444
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:56,604 - INFO - Validation Stats
-Loss:
-  total: 3.20980599419824
-Metrics:
-  svhn_top1_accuracy: 0.33468031626323175
-  svhn_top5_accuracy: 0.7473509342506014
-
-2024-05-10 12:26:56,604 - INFO - Epoch 57/200
-2024-05-10 12:26:56,954 - INFO - Train Stats
-Loss:
-  total: 0.253334641456604
-Metrics:
-  svhn_top1_accuracy: 0.9353867769241333
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:26:57,717 - INFO - Validation Stats
-Loss:
-  total: 3.4468746185302734
-Metrics:
-  svhn_top1_accuracy: 0.33198635074599037
-  svhn_top5_accuracy: 0.7523706894496391
-
-2024-05-10 12:26:57,717 - INFO - Epoch 58/200
-2024-05-10 12:26:58,013 - INFO - Train Stats
-Loss:
-  total: 0.20440203696489334
-Metrics:
-  svhn_top1_accuracy: 0.9433913826942444
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:01,028 - INFO - Validation Stats
-Loss:
-  total: 3.2329658598735413
-Metrics:
-  svhn_top1_accuracy: 0.3360991380338011
-  svhn_top5_accuracy: 0.747288074986688
-
-2024-05-10 12:27:01,029 - INFO - Epoch 59/200
-2024-05-10 12:27:01,487 - INFO - Train Stats
-Loss:
-  total: 0.20237400382757187
-Metrics:
-  svhn_top1_accuracy: 0.9482581913471222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:03,445 - INFO - Validation Stats
-Loss:
-  total: 3.7972980655472854
-Metrics:
-  svhn_top1_accuracy: 0.31955818986070567
-  svhn_top5_accuracy: 0.7236081176790697
-
-2024-05-10 12:27:03,446 - INFO - Epoch 60/200
-2024-05-10 12:27:03,687 - INFO - Train Stats
-Loss:
-  total: 0.22431469708681107
-Metrics:
-  svhn_top1_accuracy: 0.9351946711540222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:04,463 - INFO - Validation Stats
-Loss:
-  total: 3.456899375751101
-Metrics:
-  svhn_top1_accuracy: 0.3278107041942662
-  svhn_top5_accuracy: 0.7411907325530874
-
-2024-05-10 12:27:04,494 - INFO - Epoch 61/200
-2024-05-10 12:27:04,885 - INFO - Train Stats
-Loss:
-  total: 0.21406979858875275
-Metrics:
-  svhn_top1_accuracy: 0.9275742769241333
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:05,735 - INFO - Validation Stats
-Loss:
-  total: 3.3402413088699867
-Metrics:
-  svhn_top1_accuracy: 0.335856681240016
-  svhn_top5_accuracy: 0.7535470549402565
-
-2024-05-10 12:27:05,735 - INFO - Epoch 62/200
-2024-05-10 12:27:06,355 - INFO - Train Stats
-Loss:
-  total: 0.16464196145534515
-Metrics:
-  svhn_top1_accuracy: 0.9642674326896667
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:09,622 - INFO - Validation Stats
-Loss:
-  total: 3.3110304372063997
-Metrics:
-  svhn_top1_accuracy: 0.3337643678332197
-  svhn_top5_accuracy: 0.7558369256299118
-
-2024-05-10 12:27:09,622 - INFO - Epoch 63/200
-2024-05-10 12:27:10,309 - INFO - Train Stats
-Loss:
-  total: 0.18479421734809875
-Metrics:
-  svhn_top1_accuracy: 0.9359631240367889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:13,544 - INFO - Validation Stats
-Loss:
-  total: 3.39628293596465
-Metrics:
-  svhn_top1_accuracy: 0.320869253113352
-  svhn_top5_accuracy: 0.7450610635609463
-
-2024-05-10 12:27:13,544 - INFO - Epoch 64/200
-2024-05-10 12:27:13,906 - INFO - Train Stats
-Loss:
-  total: 0.15883472561836243
-Metrics:
-  svhn_top1_accuracy: 0.9560706913471222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:15,664 - INFO - Validation Stats
-Loss:
-  total: 3.399453442672203
-Metrics:
-  svhn_top1_accuracy: 0.3287176726193264
-  svhn_top5_accuracy: 0.7479256463461909
-
-2024-05-10 12:27:15,664 - INFO - Epoch 65/200
-2024-05-10 12:27:16,079 - INFO - Train Stats
-Loss:
-  total: 0.12460717931389809
-Metrics:
-  svhn_top1_accuracy: 0.9757940471172333
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:18,039 - INFO - Validation Stats
-Loss:
-  total: 3.542872560435328
-Metrics:
-  svhn_top1_accuracy: 0.324137931240016
-  svhn_top5_accuracy: 0.7530441808289495
-
-2024-05-10 12:27:18,040 - INFO - Epoch 66/200
-2024-05-10 12:27:18,639 - INFO - Train Stats
-Loss:
-  total: 0.14592569321393967
-Metrics:
-  svhn_top1_accuracy: 0.9679815471172333
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:21,605 - INFO - Validation Stats
-Loss:
-  total: 3.5076526773386987
-Metrics:
-  svhn_top1_accuracy: 0.33181573296415395
-  svhn_top5_accuracy: 0.7683010060211708
-
-2024-05-10 12:27:21,614 - INFO - Epoch 67/200
-2024-05-10 12:27:21,945 - INFO - Train Stats
-Loss:
-  total: 0.12194793298840523
-Metrics:
-  svhn_top1_accuracy: 0.9837986826896667
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:24,851 - INFO - Validation Stats
-Loss:
-  total: 3.597757466908159
-Metrics:
-  svhn_top1_accuracy: 0.33160919541942663
-  svhn_top5_accuracy: 0.755396910782518
-
-2024-05-10 12:27:24,852 - INFO - Epoch 68/200
-2024-05-10 12:27:25,198 - INFO - Train Stats
-Loss:
-  total: 0.10011656582355499
-Metrics:
-  svhn_top1_accuracy: 0.9763703942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:25,835 - INFO - Validation Stats
-Loss:
-  total: 3.4947141326706985
-Metrics:
-  svhn_top1_accuracy: 0.33841594848139533
-  svhn_top5_accuracy: 0.7590696842506014
-
-2024-05-10 12:27:25,835 - INFO - Epoch 69/200
-2024-05-10 12:27:26,095 - INFO - Train Stats
-Loss:
-  total: 0.11299285665154457
-Metrics:
-  svhn_top1_accuracy: 0.9837986826896667
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:29,223 - INFO - Validation Stats
-Loss:
-  total: 3.3981277737124214
-Metrics:
-  svhn_top1_accuracy: 0.3393947559184042
-  svhn_top5_accuracy: 0.7647629308289495
-
-2024-05-10 12:27:29,223 - INFO - Epoch 70/200
-2024-05-10 12:27:30,020 - INFO - Train Stats
-Loss:
-  total: 0.09825717657804489
-Metrics:
-  svhn_top1_accuracy: 0.9841828942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:32,648 - INFO - Validation Stats
-Loss:
-  total: 3.481950961310288
-Metrics:
-  svhn_top1_accuracy: 0.33541666690645544
-  svhn_top5_accuracy: 0.7585668101392943
-
-2024-05-10 12:27:32,648 - INFO - Epoch 71/200
-2024-05-10 12:27:32,977 - INFO - Train Stats
-Loss:
-  total: 0.09172157943248749
-Metrics:
-  svhn_top1_accuracy: 0.984375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:33,588 - INFO - Validation Stats
-Loss:
-  total: 3.5550713826870095
-Metrics:
-  svhn_top1_accuracy: 0.33858656626323175
-  svhn_top5_accuracy: 0.757282686644587
-
-2024-05-10 12:27:33,588 - INFO - Epoch 72/200
-2024-05-10 12:27:34,279 - INFO - Train Stats
-Loss:
-  total: 0.10757637768983841
-Metrics:
-  svhn_top1_accuracy: 0.9798924326896667
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:37,213 - INFO - Validation Stats
-Loss:
-  total: 3.4830922340524606
-Metrics:
-  svhn_top1_accuracy: 0.3368983479409382
-  svhn_top5_accuracy: 0.767726292897915
-
-2024-05-10 12:27:37,213 - INFO - Epoch 73/200
-2024-05-10 12:27:37,869 - INFO - Train Stats
-Loss:
-  total: 0.10116909816861153
-Metrics:
-  svhn_top1_accuracy: 0.9722720384597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:38,772 - INFO - Validation Stats
-Loss:
-  total: 3.505397652757579
-Metrics:
-  svhn_top1_accuracy: 0.34855423867702484
-  svhn_top5_accuracy: 0.7742546694032078
-
-2024-05-10 12:27:38,772 - INFO - Epoch 74/200
-2024-05-10 12:27:39,120 - INFO - Train Stats
-Loss:
-  total: 0.10301801934838295
-Metrics:
-  svhn_top1_accuracy: 0.9761782884597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:39,739 - INFO - Validation Stats
-Loss:
-  total: 3.410237094451641
-Metrics:
-  svhn_top1_accuracy: 0.34582435365380915
-  svhn_top5_accuracy: 0.775538792897915
-
-2024-05-10 12:27:39,740 - INFO - Epoch 75/200
-2024-05-10 12:27:39,978 - INFO - Train Stats
-Loss:
-  total: 0.10040448606014252
-Metrics:
-  svhn_top1_accuracy: 0.9839907884597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:40,905 - INFO - Validation Stats
-Loss:
-  total: 3.4201727817798484
-Metrics:
-  svhn_top1_accuracy: 0.3467672415848436
-  svhn_top5_accuracy: 0.7732130032161186
-
-2024-05-10 12:27:40,906 - INFO - Epoch 76/200
-2024-05-10 12:27:41,142 - INFO - Train Stats
-Loss:
-  total: 0.08695124089717865
-Metrics:
-  svhn_top1_accuracy: 0.9800845384597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:41,953 - INFO - Validation Stats
-Loss:
-  total: 3.4196227377858657
-Metrics:
-  svhn_top1_accuracy: 0.3481142243434643
-  svhn_top5_accuracy: 0.7735811780238974
-
-2024-05-10 12:27:41,953 - INFO - Epoch 77/200
-2024-05-10 12:27:42,286 - INFO - Train Stats
-Loss:
-  total: 0.10957320779561996
-Metrics:
-  svhn_top1_accuracy: 0.9718877971172333
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:45,318 - INFO - Validation Stats
-Loss:
-  total: 3.653551200340534
-Metrics:
-  svhn_top1_accuracy: 0.3045707617340417
-  svhn_top5_accuracy: 0.7474227732625501
-
-2024-05-10 12:27:45,319 - INFO - Epoch 78/200
-2024-05-10 12:27:45,643 - INFO - Train Stats
-Loss:
-  total: 0.24610628187656403
-Metrics:
-  svhn_top1_accuracy: 0.9357710182666779
-  svhn_top5_accuracy: 0.9959016442298889
-
-2024-05-10 12:27:46,355 - INFO - Validation Stats
-Loss:
-  total: 3.5286525611219735
-Metrics:
-  svhn_top1_accuracy: 0.33622485656162787
-  svhn_top5_accuracy: 0.7487697560211708
-
-2024-05-10 12:27:46,355 - INFO - Epoch 79/200
-2024-05-10 12:27:46,923 - INFO - Train Stats
-Loss:
-  total: 0.140401192009449
-Metrics:
-  svhn_top1_accuracy: 0.9597848355770111
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:50,305 - INFO - Validation Stats
-Loss:
-  total: 3.60308628246702
-Metrics:
-  svhn_top1_accuracy: 0.335856681240016
-  svhn_top5_accuracy: 0.7471892957029671
-
-2024-05-10 12:27:50,305 - INFO - Epoch 80/200
-2024-05-10 12:27:50,665 - INFO - Train Stats
-Loss:
-  total: 0.1811675876379013
-Metrics:
-  svhn_top1_accuracy: 0.9558785855770111
-  svhn_top5_accuracy: 0.9959016442298889
-
-2024-05-10 12:27:51,305 - INFO - Validation Stats
-Loss:
-  total: 3.4790687314395248
-Metrics:
-  svhn_top1_accuracy: 0.3398976295158781
-  svhn_top5_accuracy: 0.7602909484813953
-
-2024-05-10 12:27:51,305 - INFO - Epoch 81/200
-2024-05-10 12:27:51,574 - INFO - Train Stats
-Loss:
-  total: 0.1504056677222252
-Metrics:
-  svhn_top1_accuracy: 0.9681736826896667
-  svhn_top5_accuracy: 0.99609375
-
-2024-05-10 12:27:52,202 - INFO - Validation Stats
-Loss:
-  total: 3.429124922587954
-Metrics:
-  svhn_top1_accuracy: 0.34535739956230954
-  svhn_top5_accuracy: 0.7633530888064154
-
-2024-05-10 12:27:52,202 - INFO - Epoch 82/200
-2024-05-10 12:27:52,456 - INFO - Train Stats
-Loss:
-  total: 0.1393321417272091
-Metrics:
-  svhn_top1_accuracy: 0.9681736826896667
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:53,072 - INFO - Validation Stats
-Loss:
-  total: 3.4415374254358224
-Metrics:
-  svhn_top1_accuracy: 0.3480513650795509
-  svhn_top5_accuracy: 0.7630836922546913
-
-2024-05-10 12:27:53,072 - INFO - Epoch 83/200
-2024-05-10 12:27:53,310 - INFO - Train Stats
-Loss:
-  total: 0.09089983254671097
-Metrics:
-  svhn_top1_accuracy: 0.9802766442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:54,009 - INFO - Validation Stats
-Loss:
-  total: 3.4754662965906076
-Metrics:
-  svhn_top1_accuracy: 0.34818606335541297
-  svhn_top5_accuracy: 0.7665858474271051
-
-2024-05-10 12:27:54,010 - INFO - Epoch 84/200
-2024-05-10 12:27:54,345 - INFO - Train Stats
-Loss:
-  total: 0.10534468665719032
-Metrics:
-  svhn_top1_accuracy: 0.9716956913471222
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:56,793 - INFO - Validation Stats
-Loss:
-  total: 3.45950290663489
-Metrics:
-  svhn_top1_accuracy: 0.34980244266575783
-  svhn_top5_accuracy: 0.7691810346882919
-
-2024-05-10 12:27:56,793 - INFO - Epoch 85/200
-2024-05-10 12:27:57,129 - INFO - Train Stats
-Loss:
-  total: 0.0827714055776596
-Metrics:
-  svhn_top1_accuracy: 0.9880891442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:27:58,174 - INFO - Validation Stats
-Loss:
-  total: 3.4786866245598627
-Metrics:
-  svhn_top1_accuracy: 0.35070941109081794
-  svhn_top5_accuracy: 0.7722790950331194
-
-2024-05-10 12:27:58,175 - INFO - Epoch 86/200
-2024-05-10 12:27:58,935 - INFO - Train Stats
-Loss:
-  total: 0.06929468177258968
-Metrics:
-  svhn_top1_accuracy: 0.9921875
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:02,348 - INFO - Validation Stats
-Loss:
-  total: 3.501729180072916
-Metrics:
-  svhn_top1_accuracy: 0.3509788076425421
-  svhn_top5_accuracy: 0.7705908767108259
-
-2024-05-10 12:28:02,348 - INFO - Epoch 87/200
-2024-05-10 12:28:02,719 - INFO - Train Stats
-Loss:
-  total: 0.04641922377049923
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:03,346 - INFO - Validation Stats
-Loss:
-  total: 3.530203161568477
-Metrics:
-  svhn_top1_accuracy: 0.34865301744691257
-  svhn_top5_accuracy: 0.770725574986688
-
-2024-05-10 12:28:03,347 - INFO - Epoch 88/200
-2024-05-10 12:28:03,605 - INFO - Train Stats
-Loss:
-  total: 0.05035359412431717
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:04,247 - INFO - Validation Stats
-Loss:
-  total: 3.5533502965137878
-Metrics:
-  svhn_top1_accuracy: 0.34767421000990373
-  svhn_top5_accuracy: 0.7692438939522053
-
-2024-05-10 12:28:04,247 - INFO - Epoch 89/200
-2024-05-10 12:28:04,508 - INFO - Train Stats
-Loss:
-  total: 0.06361174769699574
-Metrics:
-  svhn_top1_accuracy: 0.9921875
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:05,088 - INFO - Validation Stats
-Loss:
-  total: 3.5832565735126365
-Metrics:
-  svhn_top1_accuracy: 0.3460578306995589
-  svhn_top5_accuracy: 0.7685704025728949
-
-2024-05-10 12:28:05,088 - INFO - Epoch 90/200
-2024-05-10 12:28:05,317 - INFO - Train Stats
-Loss:
-  total: 0.04566477611660957
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:05,906 - INFO - Validation Stats
-Loss:
-  total: 3.601206356081469
-Metrics:
-  svhn_top1_accuracy: 0.3460578306995589
-  svhn_top5_accuracy: 0.7670887215384121
-
-2024-05-10 12:28:05,939 - INFO - Epoch 91/200
-2024-05-10 12:28:06,216 - INFO - Train Stats
-Loss:
-  total: 0.057292018085718155
-Metrics:
-  svhn_top1_accuracy: 0.9880891442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:09,219 - INFO - Validation Stats
-Loss:
-  total: 3.6135474648968926
-Metrics:
-  svhn_top1_accuracy: 0.34888649449266235
-  svhn_top5_accuracy: 0.7672593388064154
-
-2024-05-10 12:28:09,220 - INFO - Epoch 92/200
-2024-05-10 12:28:09,898 - INFO - Train Stats
-Loss:
-  total: 0.05772331543266773
-Metrics:
-  svhn_top1_accuracy: 0.9837986826896667
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:13,072 - INFO - Validation Stats
-Loss:
-  total: 3.605023577295501
-Metrics:
-  svhn_top1_accuracy: 0.3478089082857658
-  svhn_top5_accuracy: 0.7691451146684843
-
-2024-05-10 12:28:13,072 - INFO - Epoch 93/200
-2024-05-10 12:28:13,420 - INFO - Train Stats
-Loss:
-  total: 0.052380532026290894
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:14,287 - INFO - Validation Stats
-Loss:
-  total: 3.601481992622902
-Metrics:
-  svhn_top1_accuracy: 0.34807830483748997
-  svhn_top5_accuracy: 0.7689744974004811
-
-2024-05-10 12:28:14,287 - INFO - Epoch 94/200
-2024-05-10 12:28:14,544 - INFO - Train Stats
-Loss:
-  total: 0.04012029618024826
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:15,184 - INFO - Validation Stats
-Loss:
-  total: 3.5919540586142706
-Metrics:
-  svhn_top1_accuracy: 0.34831178162632315
-  svhn_top5_accuracy: 0.7680316094694466
-
-2024-05-10 12:28:15,184 - INFO - Epoch 95/200
-2024-05-10 12:28:15,432 - INFO - Train Stats
-Loss:
-  total: 0.04025975428521633
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:16,046 - INFO - Validation Stats
-Loss:
-  total: 3.584273157448604
-Metrics:
-  svhn_top1_accuracy: 0.3503322557642542
-  svhn_top5_accuracy: 0.7701867818832397
-
-2024-05-10 12:28:16,046 - INFO - Epoch 96/200
-2024-05-10 12:28:16,295 - INFO - Train Stats
-Loss:
-  total: 0.044211072847247124
-Metrics:
-  svhn_top1_accuracy: 0.9836065471172333
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:19,293 - INFO - Validation Stats
-Loss:
-  total: 3.583396751305153
-Metrics:
-  svhn_top1_accuracy: 0.3503322557642542
-  svhn_top5_accuracy: 0.7697826870556536
-
-2024-05-10 12:28:19,293 - INFO - Epoch 97/200
-2024-05-10 12:28:19,639 - INFO - Train Stats
-Loss:
-  total: 0.06380289793014526
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:21,508 - INFO - Validation Stats
-Loss:
-  total: 3.6014826379973313
-Metrics:
-  svhn_top1_accuracy: 0.353367457102085
-  svhn_top5_accuracy: 0.7695132905039294
-
-2024-05-10 12:28:21,508 - INFO - Epoch 98/200
-2024-05-10 12:28:21,895 - INFO - Train Stats
-Loss:
-  total: 0.047427065670490265
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:22,546 - INFO - Validation Stats
-Loss:
-  total: 3.5925377442918975
-Metrics:
-  svhn_top1_accuracy: 0.35192169557357655
-  svhn_top5_accuracy: 0.7700520836073776
-
-2024-05-10 12:28:22,546 - INFO - Epoch 99/200
-2024-05-10 12:28:22,822 - INFO - Train Stats
-Loss:
-  total: 0.043432071805000305
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:23,419 - INFO - Validation Stats
-Loss:
-  total: 3.5799604078819014
-Metrics:
-  svhn_top1_accuracy: 0.3531339800563352
-  svhn_top5_accuracy: 0.7717043819098637
-
-2024-05-10 12:28:23,420 - INFO - Epoch 100/200
-2024-05-10 12:28:23,812 - INFO - Train Stats
-Loss:
-  total: 0.03679416608065367
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:24,522 - INFO - Validation Stats
-Loss:
-  total: 3.5880711736350226
-Metrics:
-  svhn_top1_accuracy: 0.352729885228749
-  svhn_top5_accuracy: 0.7715696836340016
-
-2024-05-10 12:28:24,522 - INFO - Epoch 101/200
-2024-05-10 12:28:25,098 - INFO - Train Stats
-Loss:
-  total: 0.041102729737758636
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:25,736 - INFO - Validation Stats
-Loss:
-  total: 3.590217323138796
-Metrics:
-  svhn_top1_accuracy: 0.3531339800563352
-  svhn_top5_accuracy: 0.7725125715650362
-
-2024-05-10 12:28:25,736 - INFO - Epoch 102/200
-2024-05-10 12:28:25,979 - INFO - Train Stats
-Loss:
-  total: 0.04501892812550068
-Metrics:
-  svhn_top1_accuracy: 0.9880891442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:26,837 - INFO - Validation Stats
-Loss:
-  total: 3.5907798347801996
-Metrics:
-  svhn_top1_accuracy: 0.35138290247012827
-  svhn_top5_accuracy: 0.7729166663926224
-
-2024-05-10 12:28:26,838 - INFO - Epoch 103/200
-2024-05-10 12:28:27,189 - INFO - Train Stats
-Loss:
-  total: 0.0355784771963954
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:27,785 - INFO - Validation Stats
-Loss:
-  total: 3.587550192043699
-Metrics:
-  svhn_top1_accuracy: 0.3509788076425421
-  svhn_top5_accuracy: 0.7704920974271051
-
-2024-05-10 12:28:27,785 - INFO - Epoch 104/200
-2024-05-10 12:28:28,021 - INFO - Train Stats
-Loss:
-  total: 0.029160484671592712
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:28,636 - INFO - Validation Stats
-Loss:
-  total: 3.6019927920966315
-Metrics:
-  svhn_top1_accuracy: 0.3521551726193264
-  svhn_top5_accuracy: 0.7695492094960706
-
-2024-05-10 12:28:28,637 - INFO - Epoch 105/200
-2024-05-10 12:28:29,224 - INFO - Train Stats
-Loss:
-  total: 0.02683281060308218
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:30,672 - INFO - Validation Stats
-Loss:
-  total: 3.615838544122104
-Metrics:
-  svhn_top1_accuracy: 0.3506734915848436
-  svhn_top5_accuracy: 0.7684357042970329
-
-2024-05-10 12:28:30,672 - INFO - Epoch 106/200
-2024-05-10 12:28:30,905 - INFO - Train Stats
-Loss:
-  total: 0.037327537313103676
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:33,884 - INFO - Validation Stats
-Loss:
-  total: 3.625439738405162
-Metrics:
-  svhn_top1_accuracy: 0.3489224139986367
-  svhn_top5_accuracy: 0.7672234198142742
-
-2024-05-10 12:28:33,884 - INFO - Epoch 107/200
-2024-05-10 12:28:34,280 - INFO - Train Stats
-Loss:
-  total: 0.03788159042596817
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:34,963 - INFO - Validation Stats
-Loss:
-  total: 3.631606648708212
-Metrics:
-  svhn_top1_accuracy: 0.3489224139986367
-  svhn_top5_accuracy: 0.7677622129177225
-
-2024-05-10 12:28:34,964 - INFO - Epoch 108/200
-2024-05-10 12:28:35,222 - INFO - Train Stats
-Loss:
-  total: 0.03840163163840771
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:35,893 - INFO - Validation Stats
-Loss:
-  total: 3.6188827999706925
-Metrics:
-  svhn_top1_accuracy: 0.34865301744691257
-  svhn_top5_accuracy: 0.7689744974004811
-
-2024-05-10 12:28:35,893 - INFO - Epoch 109/200
-2024-05-10 12:28:36,144 - INFO - Train Stats
-Loss:
-  total: 0.03133377339690924
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:36,937 - INFO - Validation Stats
-Loss:
-  total: 3.618531342210441
-Metrics:
-  svhn_top1_accuracy: 0.34865301744691257
-  svhn_top5_accuracy: 0.7697467670358461
-
-2024-05-10 12:28:36,937 - INFO - Epoch 110/200
-2024-05-10 12:28:37,363 - INFO - Train Stats
-Loss:
-  total: 0.029260247945785522
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:40,493 - INFO - Validation Stats
-Loss:
-  total: 3.6248219917560447
-Metrics:
-  svhn_top1_accuracy: 0.34797952606760224
-  svhn_top5_accuracy: 0.7701867818832397
-
-2024-05-10 12:28:40,493 - INFO - Epoch 111/200
-2024-05-10 12:28:41,233 - INFO - Train Stats
-Loss:
-  total: 0.03221716545522213
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:42,185 - INFO - Validation Stats
-Loss:
-  total: 3.631462183491937
-Metrics:
-  svhn_top1_accuracy: 0.3482489226193264
-  svhn_top5_accuracy: 0.7702227008753809
-
-2024-05-10 12:28:42,185 - INFO - Epoch 112/200
-2024-05-10 12:28:42,488 - INFO - Train Stats
-Loss:
-  total: 0.029021529480814934
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:45,542 - INFO - Validation Stats
-Loss:
-  total: 3.6316141342294626
-Metrics:
-  svhn_top1_accuracy: 0.3481142243434643
-  svhn_top5_accuracy: 0.7680675284615879
-
-2024-05-10 12:28:45,542 - INFO - Epoch 113/200
-2024-05-10 12:28:46,190 - INFO - Train Stats
-Loss:
-  total: 0.03356476500630379
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:49,052 - INFO - Validation Stats
-Loss:
-  total: 3.6475526628823114
-Metrics:
-  svhn_top1_accuracy: 0.3485183191710505
-  svhn_top5_accuracy: 0.7692798129443464
-
-2024-05-10 12:28:49,052 - INFO - Epoch 114/200
-2024-05-10 12:28:49,391 - INFO - Train Stats
-Loss:
-  total: 0.028134267777204514
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:52,585 - INFO - Validation Stats
-Loss:
-  total: 3.6547995723527054
-Metrics:
-  svhn_top1_accuracy: 0.349461207102085
-  svhn_top5_accuracy: 0.7688757181167603
-
-2024-05-10 12:28:52,585 - INFO - Epoch 115/200
-2024-05-10 12:28:52,932 - INFO - Train Stats
-Loss:
-  total: 0.027272929437458515
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:53,664 - INFO - Validation Stats
-Loss:
-  total: 3.653104095623411
-Metrics:
-  svhn_top1_accuracy: 0.349461207102085
-  svhn_top5_accuracy: 0.768705100848757
-
-2024-05-10 12:28:53,664 - INFO - Epoch 116/200
-2024-05-10 12:28:53,906 - INFO - Train Stats
-Loss:
-  total: 0.02456512115895748
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:55,898 - INFO - Validation Stats
-Loss:
-  total: 3.638419689803288
-Metrics:
-  svhn_top1_accuracy: 0.3502693967572574
-  svhn_top5_accuracy: 0.7684357042970329
-
-2024-05-10 12:28:55,899 - INFO - Epoch 117/200
-2024-05-10 12:28:56,210 - INFO - Train Stats
-Loss:
-  total: 0.03179753012955189
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:28:59,297 - INFO - Validation Stats
-Loss:
-  total: 3.6246344097729386
-Metrics:
-  svhn_top1_accuracy: 0.35117636518231754
-  svhn_top5_accuracy: 0.7685704025728949
-
-2024-05-10 12:28:59,297 - INFO - Epoch 118/200
-2024-05-10 12:28:59,748 - INFO - Train Stats
-Loss:
-  total: 0.02855917438864708
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:01,866 - INFO - Validation Stats
-Loss:
-  total: 3.613199756063264
-Metrics:
-  svhn_top1_accuracy: 0.35346623587197273
-  svhn_top5_accuracy: 0.7685704025728949
-
-2024-05-10 12:29:01,866 - INFO - Epoch 119/200
-2024-05-10 12:29:02,565 - INFO - Train Stats
-Loss:
-  total: 0.028346102684736252
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:05,667 - INFO - Validation Stats
-Loss:
-  total: 3.6198346039344527
-Metrics:
-  svhn_top1_accuracy: 0.35413972725128307
-  svhn_top5_accuracy: 0.7685704025728949
-
-2024-05-10 12:29:05,667 - INFO - Epoch 120/200
-2024-05-10 12:29:06,354 - INFO - Train Stats
-Loss:
-  total: 0.03520123567432165
-Metrics:
-  svhn_top1_accuracy: 0.9918032884597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:07,089 - INFO - Validation Stats
-Loss:
-  total: 3.627797550168531
-Metrics:
-  svhn_top1_accuracy: 0.3553520117340417
-  svhn_top5_accuracy: 0.7688397991246191
-
-2024-05-10 12:29:07,124 - INFO - Epoch 121/200
-2024-05-10 12:29:07,506 - INFO - Train Stats
-Loss:
-  total: 0.021667051129043102
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:08,264 - INFO - Validation Stats
-Loss:
-  total: 3.6183670553667793
-Metrics:
-  svhn_top1_accuracy: 0.35525323296415395
-  svhn_top5_accuracy: 0.7689744974004811
-
-2024-05-10 12:29:08,264 - INFO - Epoch 122/200
-2024-05-10 12:29:08,918 - INFO - Train Stats
-Loss:
-  total: 0.034757668152451515
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:09,706 - INFO - Validation Stats
-Loss:
-  total: 3.6237252909561684
-Metrics:
-  svhn_top1_accuracy: 0.3543103450331195
-  svhn_top5_accuracy: 0.7689385773806736
-
-2024-05-10 12:29:09,707 - INFO - Epoch 123/200
-2024-05-10 12:29:10,136 - INFO - Train Stats
-Loss:
-  total: 0.026943068951368332
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:13,047 - INFO - Validation Stats
-Loss:
-  total: 3.6347582216920524
-Metrics:
-  svhn_top1_accuracy: 0.3526939657227746
-  svhn_top5_accuracy: 0.7689385773806736
-
-2024-05-10 12:29:13,047 - INFO - Epoch 124/200
-2024-05-10 12:29:13,304 - INFO - Train Stats
-Loss:
-  total: 0.025069410912692547
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:16,212 - INFO - Validation Stats
-Loss:
-  total: 3.6347655016800453
-Metrics:
-  svhn_top1_accuracy: 0.35350215537794705
-  svhn_top5_accuracy: 0.7692079739323978
-
-2024-05-10 12:29:16,212 - INFO - Epoch 125/200
-2024-05-10 12:29:16,562 - INFO - Train Stats
-Loss:
-  total: 0.046611933037638664
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:19,631 - INFO - Validation Stats
-Loss:
-  total: 3.6397096987428337
-Metrics:
-  svhn_top1_accuracy: 0.35471443986070567
-  svhn_top5_accuracy: 0.7688038791048115
-
-2024-05-10 12:29:19,631 - INFO - Epoch 126/200
-2024-05-10 12:29:20,289 - INFO - Train Stats
-Loss:
-  total: 0.030117269605398178
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:20,991 - INFO - Validation Stats
-Loss:
-  total: 3.641745143923266
-Metrics:
-  svhn_top1_accuracy: 0.35404094848139533
-  svhn_top5_accuracy: 0.7685344825530874
-
-2024-05-10 12:29:20,992 - INFO - Epoch 127/200
-2024-05-10 12:29:21,214 - INFO - Train Stats
-Loss:
-  total: 0.0340117858722806
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:24,108 - INFO - Validation Stats
-Loss:
-  total: 3.654282680873213
-Metrics:
-  svhn_top1_accuracy: 0.353367457102085
-  svhn_top5_accuracy: 0.767591594622053
-
-2024-05-10 12:29:24,108 - INFO - Epoch 128/200
-2024-05-10 12:29:24,428 - INFO - Train Stats
-Loss:
-  total: 0.021966755390167236
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:25,170 - INFO - Validation Stats
-Loss:
-  total: 3.656992192926078
-Metrics:
-  svhn_top1_accuracy: 0.35309806055036086
-  svhn_top5_accuracy: 0.767591594622053
-
-2024-05-10 12:29:25,170 - INFO - Epoch 129/200
-2024-05-10 12:29:25,400 - INFO - Train Stats
-Loss:
-  total: 0.03206813707947731
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:26,023 - INFO - Validation Stats
-Loss:
-  total: 3.6519924566663544
-Metrics:
-  svhn_top1_accuracy: 0.3531968393202486
-  svhn_top5_accuracy: 0.7686691808289495
-
-2024-05-10 12:29:26,023 - INFO - Epoch 130/200
-2024-05-10 12:29:26,400 - INFO - Train Stats
-Loss:
-  total: 0.02252219896763563
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:29,633 - INFO - Validation Stats
-Loss:
-  total: 3.65344526849944
-Metrics:
-  svhn_top1_accuracy: 0.3522539513892141
-  svhn_top5_accuracy: 0.7679956894496391
-
-2024-05-10 12:29:29,633 - INFO - Epoch 131/200
-2024-05-10 12:29:29,978 - INFO - Train Stats
-Loss:
-  total: 0.025276469066739082
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:30,619 - INFO - Validation Stats
-Loss:
-  total: 3.6629621735934554
-Metrics:
-  svhn_top1_accuracy: 0.3525233479409382
-  svhn_top5_accuracy: 0.7674568963461909
-
-2024-05-10 12:29:30,620 - INFO - Epoch 132/200
-2024-05-10 12:29:31,057 - INFO - Train Stats
-Loss:
-  total: 0.023487599566578865
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:33,965 - INFO - Validation Stats
-Loss:
-  total: 3.6696114457886795
-Metrics:
-  svhn_top1_accuracy: 0.3532327588262229
-  svhn_top5_accuracy: 0.7671874997944668
-
-2024-05-10 12:29:33,966 - INFO - Epoch 133/200
-2024-05-10 12:29:34,294 - INFO - Train Stats
-Loss:
-  total: 0.027980787679553032
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:34,938 - INFO - Validation Stats
-Loss:
-  total: 3.6627097047608475
-Metrics:
-  svhn_top1_accuracy: 0.3541756467572574
-  svhn_top5_accuracy: 0.7674568963461909
-
-2024-05-10 12:29:34,938 - INFO - Epoch 134/200
-2024-05-10 12:29:35,213 - INFO - Train Stats
-Loss:
-  total: 0.020780717022717
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:35,856 - INFO - Validation Stats
-Loss:
-  total: 3.6558955537861793
-Metrics:
-  svhn_top1_accuracy: 0.35471443986070567
-  svhn_top5_accuracy: 0.7693426722082598
-
-2024-05-10 12:29:35,857 - INFO - Epoch 135/200
-2024-05-10 12:29:36,255 - INFO - Train Stats
-Loss:
-  total: 0.025752332992851734
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:36,992 - INFO - Validation Stats
-Loss:
-  total: 3.668579442747708
-Metrics:
-  svhn_top1_accuracy: 0.35511853468829185
-  svhn_top5_accuracy: 0.7688038791048115
-
-2024-05-10 12:29:36,992 - INFO - Epoch 136/200
-2024-05-10 12:29:37,237 - INFO - Train Stats
-Loss:
-  total: 0.022064036689698696
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:37,864 - INFO - Validation Stats
-Loss:
-  total: 3.6668464233135354
-Metrics:
-  svhn_top1_accuracy: 0.35471443986070567
-  svhn_top5_accuracy: 0.7683997842772253
-
-2024-05-10 12:29:37,864 - INFO - Epoch 137/200
-2024-05-10 12:29:38,171 - INFO - Train Stats
-Loss:
-  total: 0.02551476377993822
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:38,896 - INFO - Validation Stats
-Loss:
-  total: 3.67698702318915
-Metrics:
-  svhn_top1_accuracy: 0.3541756467572574
-  svhn_top5_accuracy: 0.7669181032427426
-
-2024-05-10 12:29:38,896 - INFO - Epoch 138/200
-2024-05-10 12:29:39,157 - INFO - Train Stats
-Loss:
-  total: 0.03278209920972586
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:39,744 - INFO - Validation Stats
-Loss:
-  total: 3.667966295932901
-Metrics:
-  svhn_top1_accuracy: 0.35400502897542097
-  svhn_top5_accuracy: 0.7669181032427426
-
-2024-05-10 12:29:39,744 - INFO - Epoch 139/200
-2024-05-10 12:29:40,013 - INFO - Train Stats
-Loss:
-  total: 0.027290324680507183
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:40,680 - INFO - Validation Stats
-Loss:
-  total: 3.662866214226032
-Metrics:
-  svhn_top1_accuracy: 0.35400502897542097
-  svhn_top5_accuracy: 0.7673221980703289
-
-2024-05-10 12:29:40,680 - INFO - Epoch 140/200
-2024-05-10 12:29:41,017 - INFO - Train Stats
-Loss:
-  total: 0.02855795808136463
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:41,674 - INFO - Validation Stats
-Loss:
-  total: 3.6578923874887925
-Metrics:
-  svhn_top1_accuracy: 0.35333153759611063
-  svhn_top5_accuracy: 0.767726292897915
-
-2024-05-10 12:29:41,674 - INFO - Epoch 141/200
-2024-05-10 12:29:41,927 - INFO - Train Stats
-Loss:
-  total: 0.021526766009628773
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:42,560 - INFO - Validation Stats
-Loss:
-  total: 3.6514564752578735
-Metrics:
-  svhn_top1_accuracy: 0.35279274449266235
-  svhn_top5_accuracy: 0.7685344825530874
-
-2024-05-10 12:29:42,560 - INFO - Epoch 142/200
-2024-05-10 12:29:42,792 - INFO - Train Stats
-Loss:
-  total: 0.031608473509550095
-Metrics:
-  svhn_top1_accuracy: 0.9918032884597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:43,415 - INFO - Validation Stats
-Loss:
-  total: 3.6636929512023926
-Metrics:
-  svhn_top1_accuracy: 0.35279274449266235
-  svhn_top5_accuracy: 0.7692079739323978
-
-2024-05-10 12:29:43,415 - INFO - Epoch 143/200
-2024-05-10 12:29:43,646 - INFO - Train Stats
-Loss:
-  total: 0.03908770531415939
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:44,269 - INFO - Validation Stats
-Loss:
-  total: 3.66405044752976
-Metrics:
-  svhn_top1_accuracy: 0.3530621410443865
-  svhn_top5_accuracy: 0.7685344825530874
-
-2024-05-10 12:29:44,269 - INFO - Epoch 144/200
-2024-05-10 12:29:44,524 - INFO - Train Stats
-Loss:
-  total: 0.022235321812331676
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:45,158 - INFO - Validation Stats
-Loss:
-  total: 3.6688835867520035
-Metrics:
-  svhn_top1_accuracy: 0.3522539513892141
-  svhn_top5_accuracy: 0.7693426722082598
-
-2024-05-10 12:29:45,159 - INFO - Epoch 145/200
-2024-05-10 12:29:45,395 - INFO - Train Stats
-Loss:
-  total: 0.035240587778389454
-Metrics:
-  svhn_top1_accuracy: 0.9921875
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:46,006 - INFO - Validation Stats
-Loss:
-  total: 3.6618952956692925
-Metrics:
-  svhn_top1_accuracy: 0.35198455483748997
-  svhn_top5_accuracy: 0.7697467670358461
-
-2024-05-10 12:29:46,006 - INFO - Epoch 146/200
-2024-05-10 12:29:46,234 - INFO - Train Stats
-Loss:
-  total: 0.02423089276999235
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:47,627 - INFO - Validation Stats
-Loss:
-  total: 3.6538975074373443
-Metrics:
-  svhn_top1_accuracy: 0.35184985656162787
-  svhn_top5_accuracy: 0.7706896549668806
-
-2024-05-10 12:29:47,627 - INFO - Epoch 147/200
-2024-05-10 12:29:47,893 - INFO - Train Stats
-Loss:
-  total: 0.01869176235049963
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:48,503 - INFO - Validation Stats
-Loss:
-  total: 3.650312123627498
-Metrics:
-  svhn_top1_accuracy: 0.35198455483748997
-  svhn_top5_accuracy: 0.7710937497944668
-
-2024-05-10 12:29:48,503 - INFO - Epoch 148/200
-2024-05-10 12:29:48,752 - INFO - Train Stats
-Loss:
-  total: 0.022034666500985622
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:49,425 - INFO - Validation Stats
-Loss:
-  total: 3.6481228285822374
-Metrics:
-  svhn_top1_accuracy: 0.3531968393202486
-  svhn_top5_accuracy: 0.7713631463461909
-
-2024-05-10 12:29:49,425 - INFO - Epoch 149/200
-2024-05-10 12:29:49,659 - INFO - Train Stats
-Loss:
-  total: 0.024448313750326633
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:50,263 - INFO - Validation Stats
-Loss:
-  total: 3.6489712698706267
-Metrics:
-  svhn_top1_accuracy: 0.35292744276852445
-  svhn_top5_accuracy: 0.7713631463461909
-
-2024-05-10 12:29:50,264 - INFO - Epoch 150/200
-2024-05-10 12:29:50,522 - INFO - Train Stats
-Loss:
-  total: 0.033182197250425816
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:51,121 - INFO - Validation Stats
-Loss:
-  total: 3.6446052419728248
-Metrics:
-  svhn_top1_accuracy: 0.35292744276852445
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:29:51,157 - INFO - Epoch 151/200
-2024-05-10 12:29:51,457 - INFO - Train Stats
-Loss:
-  total: 0.02699474897235632
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:52,320 - INFO - Validation Stats
-Loss:
-  total: 3.645182753431386
-Metrics:
-  svhn_top1_accuracy: 0.35400502897542097
-  svhn_top5_accuracy: 0.7706896549668806
-
-2024-05-10 12:29:52,321 - INFO - Epoch 152/200
-2024-05-10 12:29:52,572 - INFO - Train Stats
-Loss:
-  total: 0.02178151160478592
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:53,777 - INFO - Validation Stats
-Loss:
-  total: 3.642027739820809
-Metrics:
-  svhn_top1_accuracy: 0.35400502897542097
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:29:53,778 - INFO - Epoch 153/200
-2024-05-10 12:29:54,004 - INFO - Train Stats
-Loss:
-  total: 0.022103901021182537
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:54,615 - INFO - Validation Stats
-Loss:
-  total: 3.645054603445119
-Metrics:
-  svhn_top1_accuracy: 0.3538703306995589
-  svhn_top5_accuracy: 0.7705549566910185
-
-2024-05-10 12:29:54,616 - INFO - Epoch 154/200
-2024-05-10 12:29:54,851 - INFO - Train Stats
-Loss:
-  total: 0.021197265945374966
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:55,686 - INFO - Validation Stats
-Loss:
-  total: 3.6379403533606696
-Metrics:
-  svhn_top1_accuracy: 0.35467852035473135
-  svhn_top5_accuracy: 0.7705549566910185
-
-2024-05-10 12:29:55,687 - INFO - Epoch 155/200
-2024-05-10 12:29:56,028 - INFO - Train Stats
-Loss:
-  total: 0.026093424297869205
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:56,638 - INFO - Validation Stats
-Loss:
-  total: 3.6435337272183648
-Metrics:
-  svhn_top1_accuracy: 0.3536009341478348
-  svhn_top5_accuracy: 0.7708243532427426
-
-2024-05-10 12:29:56,638 - INFO - Epoch 156/200
-2024-05-10 12:29:56,888 - INFO - Train Stats
-Loss:
-  total: 0.02691452018916607
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:57,513 - INFO - Validation Stats
-Loss:
-  total: 3.6445324133182395
-Metrics:
-  svhn_top1_accuracy: 0.3538703306995589
-  svhn_top5_accuracy: 0.7708243532427426
-
-2024-05-10 12:29:57,513 - INFO - Epoch 157/200
-2024-05-10 12:29:57,783 - INFO - Train Stats
-Loss:
-  total: 0.022909807041287422
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:58,399 - INFO - Validation Stats
-Loss:
-  total: 3.645374495407631
-Metrics:
-  svhn_top1_accuracy: 0.3542744255271451
-  svhn_top5_accuracy: 0.7706896549668806
-
-2024-05-10 12:29:58,399 - INFO - Epoch 158/200
-2024-05-10 12:29:58,661 - INFO - Train Stats
-Loss:
-  total: 0.03819611482322216
-Metrics:
-  svhn_top1_accuracy: 0.9918032884597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:29:59,253 - INFO - Validation Stats
-Loss:
-  total: 3.6462078464442285
-Metrics:
-  svhn_top1_accuracy: 0.35454382207886925
-  svhn_top5_accuracy: 0.7710937497944668
-
-2024-05-10 12:29:59,253 - INFO - Epoch 159/200
-2024-05-10 12:29:59,514 - INFO - Train Stats
-Loss:
-  total: 0.020845716819167137
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:00,110 - INFO - Validation Stats
-Loss:
-  total: 3.652027187676265
-Metrics:
-  svhn_top1_accuracy: 0.35508261518231754
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:30:00,110 - INFO - Epoch 160/200
-2024-05-10 12:30:00,354 - INFO - Train Stats
-Loss:
-  total: 0.043142806738615036
-Metrics:
-  svhn_top1_accuracy: 0.9921875
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:00,954 - INFO - Validation Stats
-Loss:
-  total: 3.6466144158922393
-Metrics:
-  svhn_top1_accuracy: 0.35400502897542097
-  svhn_top5_accuracy: 0.771497844622053
-
-2024-05-10 12:30:00,954 - INFO - Epoch 161/200
-2024-05-10 12:30:01,225 - INFO - Train Stats
-Loss:
-  total: 0.018596909940242767
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:01,826 - INFO - Validation Stats
-Loss:
-  total: 3.6602568749723763
-Metrics:
-  svhn_top1_accuracy: 0.3530621410443865
-  svhn_top5_accuracy: 0.771497844622053
-
-2024-05-10 12:30:01,827 - INFO - Epoch 162/200
-2024-05-10 12:30:02,202 - INFO - Train Stats
-Loss:
-  total: 0.04295257851481438
-Metrics:
-  svhn_top1_accuracy: 0.9877049326896667
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:03,929 - INFO - Validation Stats
-Loss:
-  total: 3.6685747648107596
-Metrics:
-  svhn_top1_accuracy: 0.35346623587197273
-  svhn_top5_accuracy: 0.7705549566910185
-
-2024-05-10 12:30:03,929 - INFO - Epoch 163/200
-2024-05-10 12:30:04,187 - INFO - Train Stats
-Loss:
-  total: 0.03001340664923191
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:04,777 - INFO - Validation Stats
-Loss:
-  total: 3.673312627035996
-Metrics:
-  svhn_top1_accuracy: 0.3526580462168003
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:30:04,777 - INFO - Epoch 164/200
-2024-05-10 12:30:05,013 - INFO - Train Stats
-Loss:
-  total: 0.02267416939139366
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:05,615 - INFO - Validation Stats
-Loss:
-  total: 3.6648778997618576
-Metrics:
-  svhn_top1_accuracy: 0.35279274449266235
-  svhn_top5_accuracy: 0.7706896549668806
-
-2024-05-10 12:30:05,615 - INFO - Epoch 165/200
-2024-05-10 12:30:05,949 - INFO - Train Stats
-Loss:
-  total: 0.025571036152541637
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:09,044 - INFO - Validation Stats
-Loss:
-  total: 3.6584742850270766
-Metrics:
-  svhn_top1_accuracy: 0.3531968393202486
-  svhn_top5_accuracy: 0.7713631463461909
-
-2024-05-10 12:30:09,044 - INFO - Epoch 166/200
-2024-05-10 12:30:09,465 - INFO - Train Stats
-Loss:
-  total: 0.028864223510026932
-Metrics:
-  svhn_top1_accuracy: 0.9918032884597778
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:11,756 - INFO - Validation Stats
-Loss:
-  total: 3.6650922216218094
-Metrics:
-  svhn_top1_accuracy: 0.3530621410443865
-  svhn_top5_accuracy: 0.7713631463461909
-
-2024-05-10 12:30:11,757 - INFO - Epoch 167/200
-2024-05-10 12:30:12,068 - INFO - Train Stats
-Loss:
-  total: 0.02248964924365282
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:12,849 - INFO - Validation Stats
-Loss:
-  total: 3.671435134164218
-Metrics:
-  svhn_top1_accuracy: 0.35346623587197273
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:30:12,849 - INFO - Epoch 168/200
-2024-05-10 12:30:13,457 - INFO - Train Stats
-Loss:
-  total: 0.026394368149340153
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:14,717 - INFO - Validation Stats
-Loss:
-  total: 3.659791403803332
-Metrics:
-  svhn_top1_accuracy: 0.35346623587197273
-  svhn_top5_accuracy: 0.7712284480703289
-
-2024-05-10 12:30:14,717 - INFO - Epoch 169/200
-2024-05-10 12:30:15,021 - INFO - Train Stats
-Loss:
-  total: 0.024502159096300602
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:17,945 - INFO - Validation Stats
-Loss:
-  total: 3.6672798559583466
-Metrics:
-  svhn_top1_accuracy: 0.35333153759611063
-  svhn_top5_accuracy: 0.7710937497944668
-
-2024-05-10 12:30:17,945 - INFO - Epoch 170/200
-2024-05-10 12:30:18,297 - INFO - Train Stats
-Loss:
-  total: 0.02031420823186636
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:18,869 - INFO - Validation Stats
-Loss:
-  total: 3.6689648463808258
-Metrics:
-  svhn_top1_accuracy: 0.3534303161090818
-  svhn_top5_accuracy: 0.7712284480703289
-
-2024-05-10 12:30:18,870 - INFO - Epoch 171/200
-2024-05-10 12:30:19,122 - INFO - Train Stats
-Loss:
-  total: 0.028053130954504013
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:19,812 - INFO - Validation Stats
-Loss:
-  total: 3.663035742167769
-Metrics:
-  svhn_top1_accuracy: 0.3542744255271451
-  svhn_top5_accuracy: 0.7708243532427426
-
-2024-05-10 12:30:19,812 - INFO - Epoch 172/200
-2024-05-10 12:30:20,056 - INFO - Train Stats
-Loss:
-  total: 0.029361765831708908
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:20,844 - INFO - Validation Stats
-Loss:
-  total: 3.657458157374941
-Metrics:
-  svhn_top1_accuracy: 0.35467852035473135
-  svhn_top5_accuracy: 0.7705549566910185
-
-2024-05-10 12:30:20,844 - INFO - Epoch 173/200
-2024-05-10 12:30:21,180 - INFO - Train Stats
-Loss:
-  total: 0.016721656545996666
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:21,842 - INFO - Validation Stats
-Loss:
-  total: 3.656891173329847
-Metrics:
-  svhn_top1_accuracy: 0.3536009341478348
-  svhn_top5_accuracy: 0.7710937497944668
-
-2024-05-10 12:30:21,842 - INFO - Epoch 174/200
-2024-05-10 12:30:22,081 - INFO - Train Stats
-Loss:
-  total: 0.027822477743029594
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:22,696 - INFO - Validation Stats
-Loss:
-  total: 3.6540997521630647
-Metrics:
-  svhn_top1_accuracy: 0.35508261518231754
-  svhn_top5_accuracy: 0.7712284480703289
-
-2024-05-10 12:30:22,697 - INFO - Epoch 175/200
-2024-05-10 12:30:22,938 - INFO - Train Stats
-Loss:
-  total: 0.038211390376091
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:23,496 - INFO - Validation Stats
-Loss:
-  total: 3.65434965182995
-Metrics:
-  svhn_top1_accuracy: 0.35508261518231754
-  svhn_top5_accuracy: 0.7723419542970329
-
-2024-05-10 12:30:23,496 - INFO - Epoch 176/200
-2024-05-10 12:30:23,711 - INFO - Train Stats
-Loss:
-  total: 0.026979404501616955
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:24,284 - INFO - Validation Stats
-Loss:
-  total: 3.6437369954997094
-Metrics:
-  svhn_top1_accuracy: 0.3548132186305934
-  svhn_top5_accuracy: 0.7708243532427426
-
-2024-05-10 12:30:24,284 - INFO - Epoch 177/200
-2024-05-10 12:30:24,556 - INFO - Train Stats
-Loss:
-  total: 0.019848540425300598
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:25,111 - INFO - Validation Stats
-Loss:
-  total: 3.636912798059398
-Metrics:
-  svhn_top1_accuracy: 0.35467852035473135
-  svhn_top5_accuracy: 0.7712284480703289
-
-2024-05-10 12:30:25,111 - INFO - Epoch 178/200
-2024-05-10 12:30:25,345 - INFO - Train Stats
-Loss:
-  total: 0.015593485441058874
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:25,944 - INFO - Validation Stats
-Loss:
-  total: 3.64032192065798
-Metrics:
-  svhn_top1_accuracy: 0.3544091238030072
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:30:25,944 - INFO - Epoch 179/200
-2024-05-10 12:30:26,181 - INFO - Train Stats
-Loss:
-  total: 0.024949674494564533
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:27,074 - INFO - Validation Stats
-Loss:
-  total: 3.640527314153211
-Metrics:
-  svhn_top1_accuracy: 0.3548132186305934
-  svhn_top5_accuracy: 0.7706896549668806
-
-2024-05-10 12:30:27,074 - INFO - Epoch 180/200
-2024-05-10 12:30:27,538 - INFO - Train Stats
-Loss:
-  total: 0.020485743414610624
-Metrics:
-  svhn_top1_accuracy: 0.99609375
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:30,740 - INFO - Validation Stats
-Loss:
-  total: 3.6374340221799653
-Metrics:
-  svhn_top1_accuracy: 0.35494791690645544
-  svhn_top5_accuracy: 0.7710937497944668
-
-2024-05-10 12:30:30,771 - INFO - Epoch 181/200
-2024-05-10 12:30:31,127 - INFO - Train Stats
-Loss:
-  total: 0.040857262909412384
-Metrics:
-  svhn_top1_accuracy: 0.9841828942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:34,257 - INFO - Validation Stats
-Loss:
-  total: 3.640899423895211
-Metrics:
-  svhn_top1_accuracy: 0.3561602013892141
-  svhn_top5_accuracy: 0.7704202584151564
-
-2024-05-10 12:30:34,257 - INFO - Epoch 182/200
-2024-05-10 12:30:34,730 - INFO - Train Stats
-Loss:
-  total: 0.020995070226490498
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:37,943 - INFO - Validation Stats
-Loss:
-  total: 3.6442821971301376
-Metrics:
-  svhn_top1_accuracy: 0.35494791690645544
-  svhn_top5_accuracy: 0.7706896549668806
-
-2024-05-10 12:30:37,944 - INFO - Epoch 183/200
-2024-05-10 12:30:38,278 - INFO - Train Stats
-Loss:
-  total: 0.023787657730281353
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:38,930 - INFO - Validation Stats
-Loss:
-  total: 3.644554721898046
-Metrics:
-  svhn_top1_accuracy: 0.35589080483748997
-  svhn_top5_accuracy: 0.7698814653117081
-
-2024-05-10 12:30:38,930 - INFO - Epoch 184/200
-2024-05-10 12:30:39,264 - INFO - Train Stats
-Loss:
-  total: 0.031352171674370766
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:42,000 - INFO - Validation Stats
-Loss:
-  total: 3.64636663321791
-Metrics:
-  svhn_top1_accuracy: 0.35575610656162787
-  svhn_top5_accuracy: 0.7706896549668806
-
-2024-05-10 12:30:42,000 - INFO - Epoch 185/200
-2024-05-10 12:30:42,316 - INFO - Train Stats
-Loss:
-  total: 0.03031043242663145
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:42,936 - INFO - Validation Stats
-Loss:
-  total: 3.6533191162964394
-Metrics:
-  svhn_top1_accuracy: 0.3552173134581796
-  svhn_top5_accuracy: 0.771632542897915
-
-2024-05-10 12:30:42,936 - INFO - Epoch 186/200
-2024-05-10 12:30:43,260 - INFO - Train Stats
-Loss:
-  total: 0.02613229677081108
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:43,986 - INFO - Validation Stats
-Loss:
-  total: 3.6578827726429908
-Metrics:
-  svhn_top1_accuracy: 0.35494791690645544
-  svhn_top5_accuracy: 0.7723060342772253
-
-2024-05-10 12:30:43,986 - INFO - Epoch 187/200
-2024-05-10 12:30:44,231 - INFO - Train Stats
-Loss:
-  total: 0.020677678752690554
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:47,072 - INFO - Validation Stats
-Loss:
-  total: 3.654629403147204
-Metrics:
-  svhn_top1_accuracy: 0.35575610656162787
-  svhn_top5_accuracy: 0.771767241173777
-
-2024-05-10 12:30:47,072 - INFO - Epoch 188/200
-2024-05-10 12:30:47,459 - INFO - Train Stats
-Loss:
-  total: 0.029569762758910656
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:48,365 - INFO - Validation Stats
-Loss:
-  total: 3.659669641790719
-Metrics:
-  svhn_top1_accuracy: 0.35629489966507616
-  svhn_top5_accuracy: 0.7719019394496391
-
-2024-05-10 12:30:48,366 - INFO - Epoch 189/200
-2024-05-10 12:30:48,655 - INFO - Train Stats
-Loss:
-  total: 0.028386052697896957
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:51,460 - INFO - Validation Stats
-Loss:
-  total: 3.658031755480273
-Metrics:
-  svhn_top1_accuracy: 0.356025503113352
-  svhn_top5_accuracy: 0.7719019394496391
-
-2024-05-10 12:30:51,460 - INFO - Epoch 190/200
-2024-05-10 12:30:52,100 - INFO - Train Stats
-Loss:
-  total: 0.02717836108058691
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:55,118 - INFO - Validation Stats
-Loss:
-  total: 3.6557536659569574
-Metrics:
-  svhn_top1_accuracy: 0.3552173134581796
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:30:55,118 - INFO - Epoch 191/200
-2024-05-10 12:30:55,785 - INFO - Train Stats
-Loss:
-  total: 0.028864292427897453
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:58,735 - INFO - Validation Stats
-Loss:
-  total: 3.6645657481818366
-Metrics:
-  svhn_top1_accuracy: 0.3552173134581796
-  svhn_top5_accuracy: 0.7713631463461909
-
-2024-05-10 12:30:58,736 - INFO - Epoch 192/200
-2024-05-10 12:30:59,058 - INFO - Train Stats
-Loss:
-  total: 0.021911422722041607
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:30:59,759 - INFO - Validation Stats
-Loss:
-  total: 3.66354081137427
-Metrics:
-  svhn_top1_accuracy: 0.356025503113352
-  svhn_top5_accuracy: 0.7709590515186047
-
-2024-05-10 12:30:59,760 - INFO - Epoch 193/200
-2024-05-10 12:31:00,072 - INFO - Train Stats
-Loss:
-  total: 0.02178197167813778
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:02,937 - INFO - Validation Stats
-Loss:
-  total: 3.664857806830571
-Metrics:
-  svhn_top1_accuracy: 0.3556214082857658
-  svhn_top5_accuracy: 0.7719019394496391
-
-2024-05-10 12:31:02,937 - INFO - Epoch 194/200
-2024-05-10 12:31:03,356 - INFO - Train Stats
-Loss:
-  total: 0.028413360007107258
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:06,120 - INFO - Validation Stats
-Loss:
-  total: 3.665753993494757
-Metrics:
-  svhn_top1_accuracy: 0.3544091238030072
-  svhn_top5_accuracy: 0.7713631463461909
-
-2024-05-10 12:31:06,121 - INFO - Epoch 195/200
-2024-05-10 12:31:06,366 - INFO - Train Stats
-Loss:
-  total: 0.023754366673529148
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:08,166 - INFO - Validation Stats
-Loss:
-  total: 3.661626565045324
-Metrics:
-  svhn_top1_accuracy: 0.35575610656162787
-  svhn_top5_accuracy: 0.771767241173777
-
-2024-05-10 12:31:08,167 - INFO - Epoch 196/200
-2024-05-10 12:31:08,615 - INFO - Train Stats
-Loss:
-  total: 0.023700346238911152
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:09,215 - INFO - Validation Stats
-Loss:
-  total: 3.654313292996637
-Metrics:
-  svhn_top1_accuracy: 0.356025503113352
-  svhn_top5_accuracy: 0.7729795256565357
-
-2024-05-10 12:31:09,215 - INFO - Epoch 197/200
-2024-05-10 12:31:09,476 - INFO - Train Stats
-Loss:
-  total: 0.02650311589241028
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:11,110 - INFO - Validation Stats
-Loss:
-  total: 3.656876958649734
-Metrics:
-  svhn_top1_accuracy: 0.35589080483748997
-  svhn_top5_accuracy: 0.771767241173777
-
-2024-05-10 12:31:11,110 - INFO - Epoch 198/200
-2024-05-10 12:31:11,454 - INFO - Train Stats
-Loss:
-  total: 0.018069761339575052
-Metrics:
-  svhn_top1_accuracy: 1.0
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:12,834 - INFO - Validation Stats
-Loss:
-  total: 3.6615055182884477
-Metrics:
-  svhn_top1_accuracy: 0.3552173134581796
-  svhn_top5_accuracy: 0.7721713360013633
-
-2024-05-10 12:31:12,835 - INFO - Epoch 199/200
-2024-05-10 12:31:13,082 - INFO - Train Stats
-Loss:
-  total: 0.028948957100510597
-Metrics:
-  svhn_top1_accuracy: 0.9919953942298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:15,932 - INFO - Validation Stats
-Loss:
-  total: 3.662589928199505
-Metrics:
-  svhn_top1_accuracy: 0.35504669541942663
-  svhn_top5_accuracy: 0.7736530170358461
-
-2024-05-10 12:31:15,932 - INFO - Epoch 200/200
-2024-05-10 12:31:16,363 - INFO - Train Stats
-Loss:
-  total: 0.03279479779303074
-Metrics:
-  svhn_top1_accuracy: 0.9959016442298889
-  svhn_top5_accuracy: 1.0
-
-2024-05-10 12:31:17,074 - INFO - Validation Stats
-Loss:
-  total: 3.6691266257187416
-Metrics:
-  svhn_top1_accuracy: 0.35504669541942663
-  svhn_top5_accuracy: 0.7737877153117081
-
-2024-05-10 12:31:17,116 - INFO - Best validation loss: 2.185350535244777
-2024-05-10 12:31:17,162 - INFO - Best model saved to /home/up201905337/exploring-label-efficiency/weights/simclr_eval_svhn_wideresnet28_2_250l.pth
-2024-05-10 12:31:17,162 - INFO - Training took 343.8145887851715 seconds to complete
+2024-05-19 17:32:32,613 - INFO - Best validation loss: 2.2936292105707627
+2024-05-19 17:32:33,057 - INFO - Best model saved to /home/up201905337/exploring-label-efficiency/weights/simclr_eval_svhn_wideresnet28_2_250l.pth
+2024-05-19 17:32:33,059 - INFO - Training took 1913.2939658164978 seconds to complete

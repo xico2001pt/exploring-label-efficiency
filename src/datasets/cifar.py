@@ -90,7 +90,7 @@ def UnsupervisedCIFAR10(root, split, train_val_split=0.9):
 
 def LinearEvalCIFAR10(root, split, train_val_split=0.9):
     transform = v2.Compose([
-        v2.Resize(128),
+        v2.Resize(224),
     ])
     return CIFAR10Dataset(root, split=split, train_val_split=train_val_split, transform=transform)
 
@@ -99,6 +99,6 @@ def FineTuningTrainCIFAR10(root, split, train_val_split=0.9, num_labeled=4000):
     transform = v2.Compose([
         v2.RandomHorizontalFlip(),
         v2.RandomCrop(32, padding=4),
-        v2.Resize(128),
+        v2.Resize(224),
     ])
     return SemiSupervisedCIFAR10Dataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)

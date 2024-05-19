@@ -1,16 +1,16 @@
-name: simclr_eval_cifar10_wideresnet28_2_4000l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+name: byol_eval_cifar10_resnet50_1000l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
 
-model: cifar10_wideresnet28_2  # Name of model
+model: cifar10_resnet50  # Name of model
 
 sl_train:
-  train_dataset: fine_tuning_cifar10_4000l  # Dataset to use for training
+  train_dataset: fine_tuning_cifar10_1000l  # Dataset to use for training
   val_dataset: linear_eval_cifar10  # Dataset to use for validation
-  optimizer: simclr_cifar10_adam  # Optimizer
+  optimizer: byol_cifar10_adam  # Optimizer
   loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
   scheduler: null  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
-  model_weights_path: simclr_cifar10_wideresnet28_2_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
+  model_weights_path: byol_cifar10_resnet50_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
   hyperparameters:  # Hyperparameters for training
     epochs: 100  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
@@ -20,7 +20,7 @@ sl_train:
 
 test:
   test_dataset: linear_eval_cifar10  # Dataset to use for testing
-  model_weights_path: simclr_eval_cifar10_wideresnet28_2_4000l.pth  # Path to model weights (relative to weights folder). If null, config name is used
+  model_weights_path: byol_eval_cifar10_resnet50_1000l.pth  # Path to model weights (relative to weights folder). If null, config name is used
   loss: cross_entropy  # Loss function
   metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
   hyperparameters:  # Hyperparameters for testing

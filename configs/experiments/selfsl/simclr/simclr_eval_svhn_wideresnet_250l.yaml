@@ -5,14 +5,14 @@ model: svhn_wideresnet28_2  # Name of model
 sl_train:
   train_dataset: fine_tuning_svhn_250l  # Dataset to use for training
   val_dataset: linear_eval_svhn  # Dataset to use for validation
-  optimizer: supervised_wideresnet_svhn_sgd  # Optimizer
+  optimizer: simclr_svhn_adam  # Optimizer
   loss: cross_entropy  # Loss function
   metrics: [svhn_top1_accuracy, svhn_top5_accuracy]  # Metrics to evaluate
-  scheduler: supervised_wideresnet_svhn_lr  # Learning rate scheduler. Can be null
+  scheduler: null  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
   model_weights_path: simclr_svhn_wideresnet28_2_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
   hyperparameters:  # Hyperparameters for training
-    epochs: 200  # Number of training epochs
+    epochs: 100  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
     batch_size: 128  # Training batch size
     save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
