@@ -91,10 +91,10 @@ def _log_train_time(start_time, end_time, logger):
 def _load_model_weights(model, model_weights_path, logger):
     try:
         path = os.path.join(WEIGHTS_DIR, model_weights_path)
-        #path = os.path.join(LOGS_DIR, 'simclr_svhn_wideresnet28_2/checkpoints/best_checkpoint.pth')
+        model.load_state_dict(torch.load(path))
+        #path = os.path.join(LOGS_DIR, 'byol_cifar10_wideresnet28_2/checkpoints/latest_checkpoint.pth')
         #state = torch.load(path)
         #model.load_state_dict(state["model"])
-        model.load_state_dict(torch.load(path))
         logger.info("Model weights loaded successfully")
 
     except Exception:

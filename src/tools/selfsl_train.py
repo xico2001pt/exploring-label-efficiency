@@ -6,7 +6,7 @@ from ..trainers.selfsl_trainer import SelfSLTrainer
 from ..utils.loader import Loader
 from ..utils.logger import Logger
 from ..utils.constants import Constants as c, ROOT_DIR
-from ..utils.utils import _load_model, _get_device, _get_config_name, set_reproducibility
+from ..utils.utils import _load_model, _get_device, _get_config_name, set_reproducibility, backbone_getter
 from ..utils.train import TrainData
 
 
@@ -26,7 +26,7 @@ def _load_train_data(loader, train_config, model, logger):
     train_unlabeled_dataset, train_unlabeled_dataset_config = loader.load_dataset(train_dataset_name, "train")
     logger.log_config(c.Configurations.Parameters.TRAIN_DATASET_CONFIG_NAME, train_unlabeled_dataset_config)
 
-    optimizer, optimizer_config = loader.load_optimizer(optimizer_name, model.backbone)
+    optimizer, optimizer_config = loader.load_optimizer(optimizer_name, backbone_getter(model))
     logger.log_config(c.Configurations.Parameters.OPTIMIZER_CONFIG_NAME, optimizer_config)
 
     method, method_config = loader.load_selfsl_method(method_name)

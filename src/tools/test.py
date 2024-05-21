@@ -53,11 +53,11 @@ def _load_model_weights(model, model_weights_path, logger):
     try:
         path = os.path.join(WEIGHTS_DIR, model_weights_path)
         model.load_state_dict(torch.load(path))
-        #log = "simclr_eval_svhn_wideresnet28_2_1000l"
-        #path = os.path.join(LOGS_DIR, log, 'checkpoints', "best_checkpoint.pth")
+        #log = "byol_eval_cifar10_resnet50_2000l"
+        #path = os.path.join(LOGS_DIR, log, 'checkpoints', "latest_checkpoint.pth")
         #weights = torch.load(path)["model"]
         #model.load_state_dict(weights)
-        logger.info("Model weights loaded successfully")
+        #logger.info("Model weights loaded successfully")
 
     except Exception:
         logger.error("Failed to load model weights")
