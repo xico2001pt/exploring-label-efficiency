@@ -1,16 +1,16 @@
-name: sl_svhn_wideresnet28_2_1000l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+name: byol_eval_svhn_wideresnet28_2_500l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
 
 model: svhn_wideresnet28_2  # Name of model
 
 sl_train:
-  train_dataset: supervised_svhn_1000l  # Dataset to use for training
-  val_dataset: svhn  # Dataset to use for validation
-  optimizer: supervised_wideresnet_svhn_sgd  # Optimizer
+  train_dataset: fine_tuning_svhn_500l  # Dataset to use for training
+  val_dataset: linear_eval_svhn  # Dataset to use for validation
+  optimizer: byol_svhn_adam  # Optimizer
   loss: cross_entropy  # Loss function
   metrics: [svhn_top1_accuracy, svhn_top5_accuracy]  # Metrics to evaluate
-  scheduler: supervised_wideresnet_svhn_lr  # Learning rate scheduler. Can be null
+  scheduler: null  # Learning rate scheduler. Can be null
   stop_condition: null  # Condition to stop training. Can be null
-  model_weights_path: null  # Path to model weights (relative to weights folder). If null, no weights are loaded
+  model_weights_path: byol_svhn_wideresnet28_2_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
   hyperparameters:  # Hyperparameters for training
     epochs: 100  # Number of training epochs
     num_workers: 4  # Number of workers for data loading
@@ -19,8 +19,8 @@ sl_train:
     ema_decay: null  # Exponential moving average decay
 
 test:
-  test_dataset: svhn  # Dataset to use for testing
-  model_weights_path: sl_svhn_wideresnet28_2_1000l.pth  # Path to model weights (relative to weights folder). If null, config name is used
+  test_dataset: linear_eval_svhn  # Dataset to use for testing
+  model_weights_path: byol_eval_svhn_wideresnet28_2_500l.pth  # Path to model weights (relative to weights folder). If null, config name is used
   loss: cross_entropy  # Loss function
   metrics: [svhn_top1_accuracy, svhn_top5_accuracy]  # Metrics to evaluate
   hyperparameters:  # Hyperparameters for testing
