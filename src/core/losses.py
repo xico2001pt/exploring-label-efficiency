@@ -80,3 +80,20 @@ class BYOLLoss(nn.Module):
         y = F.normalize(y, dim=-1, p=2)
         loss = 2 - 2 * (x * y).sum(dim=-1)
         return {"total": loss} if self.return_dict else loss
+
+
+class InfoNCELoss(nn.Module):
+    def __init__(self, temperature=0.07, return_dict=True):
+        super(InfoNCELoss, self).__init__()
+        self.temperature = temperature
+        self.return_dict = return_dict
+        self.loss = nn.CrossEntropyLoss()
+
+    def forward(self, query, key, negative_samples):
+        score_pos = torch.bmm(query.unsqueeze(dim=1), key.unsqueeze(dim=-1)).squeeze(dim=-1)
+        score_neg = torch.mm(query, negative_samples.detach().t().contiguous())
+
+        out = torch.cat([score_pos, score_neg], dim=1)
+
+        loss = F.cross_entropy(out / self.temperature, torch.zeros(query.size(0), dtype=torch.long, device=query.device))
+        return {"total": loss} if self.return_dict else loss
