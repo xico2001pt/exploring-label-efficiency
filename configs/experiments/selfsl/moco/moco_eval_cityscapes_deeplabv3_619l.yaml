@@ -1,0 +1,28 @@
+name: moco_eval_cityscapes_deeplabv3_619l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+
+model: cityscapes_deeplabv3_resnet101  # Name of model
+
+sl_train:
+  train_dataset: fine_tuning_cityscapes_segmentation_619l  # Dataset to use for training
+  val_dataset: linear_eval_cityscapes  # Dataset to use for validation
+  optimizer: moco_cityscapes_adam  # Optimizer
+  loss: cityscapes_cross_entropy  # Loss function
+  metrics: [cityscapes_jaccard_macro, cityscapes_jaccard_micro, cityscapes_dice]  # Metrics to evaluate
+  scheduler: null  # Learning rate scheduler. Can be null
+  stop_condition: null  # Condition to stop training. Can be null
+  model_weights_path: moco_cityscapes_deeplabv3_resnet101_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
+  hyperparameters:  # Hyperparameters for training
+    epochs: 120  # Number of training epochs
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 16  # Training batch size
+    save_freq: 10  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: null  # Exponential moving average decay
+
+test:
+  test_dataset: linear_eval_cityscapes  # Dataset to use for testing
+  model_weights_path: moco_eval_cityscapes_deeplabv3_619l.pth  # Path to model weights (relative to weights folder). If null, config name is used
+  loss: cityscapes_cross_entropy  # Loss function
+  metrics: [cityscapes_jaccard_macro, cityscapes_jaccard_micro, cityscapes_dice]  # Metrics to evaluate
+  hyperparameters:  # Hyperparameters for testing
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 16  # Test batch size
