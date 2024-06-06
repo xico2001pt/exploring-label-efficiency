@@ -54,7 +54,7 @@ class ReMixMatch(SemiSLMethod):
             if self.rotation_classifier is None:
                 self.init_rotation_classifier(output.size(1))
 
-            if len(output.shape) > 2:  # TODO: Why is this necessary?
+            if len(output.shape) > 2:
                 output = output.mean([2, 3])
 
             self.embeddings = output
