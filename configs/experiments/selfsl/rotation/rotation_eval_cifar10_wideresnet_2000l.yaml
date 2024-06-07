@@ -1,0 +1,28 @@
+name: rotation_eval_cifar10_wideresnet28_2_2000l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+
+model: cifar10_wideresnet28_2  # Name of model
+
+sl_train:
+  train_dataset: fine_tuning_cifar10_2000l  # Dataset to use for training
+  val_dataset: linear_eval_cifar10  # Dataset to use for validation
+  optimizer: byol_cifar10_adam  # Optimizer
+  loss: cross_entropy  # Loss function
+  metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
+  scheduler: null  # Learning rate scheduler. Can be null
+  stop_condition: null  # Condition to stop training. Can be null
+  model_weights_path: rotation_cifar10_wideresnet28_2_pretrained.pth  # Path to model weights (relative to weights folder). If null, no weights are loaded
+  hyperparameters:  # Hyperparameters for training
+    epochs: 100  # Number of training epochs
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 128  # Training batch size
+    save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: null  # Exponential moving average decay
+
+test:
+  test_dataset: linear_eval_cifar10  # Dataset to use for testing
+  model_weights_path: rotation_eval_cifar10_wideresnet28_2_2000l.pth  # Path to model weights (relative to weights folder). If null, config name is used
+  loss: cross_entropy  # Loss function
+  metrics: [cifar10_top1_accuracy, cifar10_top5_accuracy]  # Metrics to evaluate
+  hyperparameters:  # Hyperparameters for testing
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 128  # Test batch size
