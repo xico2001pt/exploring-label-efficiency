@@ -1,0 +1,29 @@
+name: fixmatch_svhn_resnet50_500l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+
+model: svhn_resnet50  # Name of model
+
+semisl_train:
+  train_dataset: semi_supervised_svhn_500l  # Dataset to use for training
+  val_dataset: svhn  # Dataset to use for validation
+  optimizer: fixmatch_svhn_sgd  # Optimizer
+  method: fixmatch_svhn  # Semi-supervised method
+  val_loss: cross_entropy  # Loss function
+  metrics: [svhn_top1_accuracy, svhn_top5_accuracy]  # Metrics to evaluate
+  scheduler: fixmatch_cosine_lr  # Learning rate scheduler. Can be null
+  stop_condition: null  # Condition to stop training. Can be null
+  hyperparameters:  # Hyperparameters for training
+    epochs: 1000  # Number of training epochs
+    num_workers: 4  # Number of workers for data loading
+    labeled_batch_size: 16  # Training labeled batch size
+    unlabeled_batch_size: 112  # Training unlabeled batch size
+    save_freq: 30  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: 0.999  # Exponential moving average decay
+
+test:
+  test_dataset: svhn  # Dataset to use for testing
+  model_weights_path: fixmatch_svhn_resnet50_500l.pth  # Path to model weights (relative to weights folder). If null, config name is used
+  loss: cross_entropy  # Loss function
+  metrics: [svhn_top1_accuracy, svhn_top5_accuracy]  # Metrics to evaluate
+  hyperparameters:  # Hyperparameters for testing
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 128  # Test batch size
