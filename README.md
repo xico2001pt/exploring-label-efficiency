@@ -1,3 +1,3 @@
-# Exploring label efficiency with Semi-supervision and Self-supervision methods
+# Exploring Label Efficiency with Semi-Supervision and Self-Supervision Methods
 
 **WORK IN PROGRESS**

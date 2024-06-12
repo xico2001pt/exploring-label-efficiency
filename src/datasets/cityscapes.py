@@ -106,24 +106,24 @@ def SemiSupervisedCityscapesSeg(root, split='labeled', train_val_split=2475, num
 
 def UnsupervisedCityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
     transform = v2.Compose([
-        v2.Resize(int(128*1.05)),
-        v2.RandomCrop(128),
+        v2.Resize(int(512*1.05)),
+        v2.RandomCrop(512),
     ])
     return UnsupervisedCityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
 
 
 def LinearEvalCityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
     transform = v2.Compose([
-        v2.Resize(int(128*1.05)),
-        v2.RandomCrop(128),
+        v2.Resize(int(512*1.05)),
+        v2.RandomCrop(512),
     ])
     return CityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
 
 
 def FineTuningTrainCityscapesSeg(root, split='train', mode='fine', train_val_split=2475, num_labeled=372):
     transform = v2.Compose([
-        v2.Resize(int(128*1.05)),
-        v2.RandomCrop(128),
+        v2.Resize(int(512*1.05)),
+        v2.RandomCrop(512),
     ])
     return SemiSupervisedCityscapesSegDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
 
