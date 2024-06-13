@@ -58,6 +58,28 @@ def split_train_val_data(dataset, train_val_split):
     return random_split(dataset, [train_samples, val_samples], generator=generator)
 
 
+def split_train_val_test_data(data, train_val_test_split):
+    generator = np.random.RandomState(c.Miscellaneous.SEED)
+
+    if train_val_test_split[0] > 1:
+        train_samples = train_val_test_split[0]
+    else:
+        train_samples = int(train_val_test_split[0] * len(data))
+
+    if train_val_test_split[1] > 1:
+        val_samples = train_val_test_split[1]
+    else:
+        val_samples = int(train_val_test_split[1] * len(data))
+
+    ix = generator.choice(len(data), len(data), False)
+
+    train_indices = ix[:train_samples]
+    val_indices = ix[train_samples:train_samples+val_samples]
+    test_indices = ix[train_samples+val_samples:]
+
+    return [data[i] for i in train_indices], [data[i] for i in val_indices], [data[i] for i in test_indices]
+
+
 def classes_mean(input, class_dim=1):
     dims = tuple(i for i in range(len(input.shape)) if i != class_dim)
     return input.mean(dim=dims)
