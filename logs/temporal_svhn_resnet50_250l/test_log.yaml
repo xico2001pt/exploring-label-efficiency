@@ -1,0 +1,36 @@
+device: cuda
+duration: 13.808446168899536
+hyperparameters:
+  batch_size: 128
+  num_workers: 4
+loss:
+  args: {}
+  class: CrossEntropyLoss
+metrics:
+  svhn_top1_accuracy:
+    args:
+      num_classes: 10
+      task: multiclass
+      top_k: 1
+    class: Accuracy
+  svhn_top5_accuracy:
+    args:
+      num_classes: 10
+      task: multiclass
+      top_k: 5
+    class: Accuracy
+model:
+  args:
+    num_classes: 10
+  class: ResNet50
+test_dataset:
+  args:
+    root: ./data/
+    train_val_split: 0.9
+  class: SVHN
+test_history:
+  loss:
+    total: 2.369044030413908
+  metrics:
+    svhn_top1_accuracy: 0.23434946890555175
+    svhn_top5_accuracy: 0.646497140620269
