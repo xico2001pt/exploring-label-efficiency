@@ -108,7 +108,7 @@ def SimCLRSVHN(temperature, projection_dim, color_jitter_strength):
 def SimCLRCityscapes(temperature, projection_dim, color_jitter_strength):
     s = color_jitter_strength
     transform = v1.Compose([
-        v1.RandomResizedCrop(224),
+        v1.RandomResizedCrop(512),
         v1.RandomHorizontalFlip(p=0.5),
         v1.RandomApply([v1.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
         v1.RandomGrayscale(p=0.2),
