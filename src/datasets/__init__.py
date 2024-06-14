@@ -1,7 +1,7 @@
 from .cifar import CIFAR10, SemiSupervisedCIFAR10, UnsupervisedCIFAR10, LinearEvalCIFAR10, FineTuningTrainCIFAR10
 from .svhn import SVHN, SemiSupervisedSVHN, UnsupervisedSVHN, LinearEvalSVHN, FineTuningTrainSVHN
 from .cityscapes import CityscapesSeg, SemiSupervisedCityscapesSeg, UnsupervisedCityscapesSeg, LinearEvalCityscapesSeg, FineTuningTrainCityscapesSeg
-from .kitti import KittiSeg
+from .kitti import KittiSeg, SemiSupervisedKittiSeg, UnsupervisedKittiSeg
 
 classes = [
     CIFAR10,
@@ -23,4 +23,6 @@ classes = [
     FineTuningTrainCityscapesSeg,
 
     KittiSeg,
+    SemiSupervisedKittiSeg,
+    UnsupervisedKittiSeg,
 ]  # Add the dataset classes here

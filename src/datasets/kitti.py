@@ -27,8 +27,8 @@ class KittiSegDataset(torch.utils.data.Dataset):
 
         self.transform = transform
 
-        self.img_dir = os.path.join(root, 'semantics', 'training', 'image_2')
-        self.mask_dir = os.path.join(root, 'semantics', 'training', 'semantic')
+        self.img_dir = self.get_img_dir(root)
+        self.mask_dir = self.get_mask_dir(root)
         self.images = sorted(os.listdir(self.img_dir))
 
         train_test_splitted_data = split_train_val_test_data(self.images, train_val_test_split)
@@ -38,6 +38,12 @@ class KittiSegDataset(torch.utils.data.Dataset):
             self.images = train_test_splitted_data[1]
         else:
             self.images = train_test_splitted_data[2]
+    
+    def get_img_dir(self, root):
+        return os.path.join(root, 'semantics', 'training', 'image_2')
+    
+    def get_mask_dir(self, root):
+        return os.path.join(root, 'semantics', 'training', 'semantic')
 
     def _convert_target(self, target):
         copy = target.clone()
@@ -70,6 +76,58 @@ class KittiSegDataset(torch.utils.data.Dataset):
         return len(self.valid_classes) + 1  # +1 for ignore index
 
 
+class UnsupervisedKittiSegDataset(KittiSegDataset):
+    def __init__(self, root, split='train', transform=None):
+        super().__init__(root, split, [1.0, 0, 0], transform)
+
+    def get_img_dir(self, root):
+        return os.path.join(root, 'semantic', 'testing', 'image_2')
+
+    def __getitem__(self, index):
+        image = imread(os.path.join(self.img_dir, self.images[index]))
+
+        image = self.image_transform(image)
+
+        if self.transform is not None:
+            image = self.transform(image)
+
+        return image
+
+
+class SemiSupervisedKittiSegDataset(SemiSupervisedDataset):
+    def __init__(self, root, split='labeled', train_val_test_split=[0.7, 0.1, 0.2], num_labeled=70, transform=None):
+        if split == 'train':
+            split = 'labeled'
+
+        if split == 'labeled':
+            dataset = KittiSegDataset(root, 'train', train_val_test_split, transform)
+        else:
+            dataset = UnsupervisedKittiSegDataset(root, 'train', transform)
+            num_labeled = 0
+
+        super().__init__(dataset, split, num_labeled)
+
+
 def KittiSeg(root, split='train', train_val_test_split=[0.7, 0.1, 0.2]):
-    transform = v2.Resize((375, 1242))
+    transform = v2.Compose([
+        v2.Resize((int(188 * 1.05), int(621 * 1.05))),
+        v2.RandomCrop((188, 621)),
+    ])
     return KittiSegDataset(root, split, train_val_test_split, transform)
+
+
+def SemiSupervisedKittiSeg(root, split='labeled', train_val_test_split=[0.7, 0.1, 0.2], num_labeled=70):
+    transform = v2.Compose([
+        v2.Resize((int(188 * 1.05), int(621 * 1.05))),
+        v2.RandomCrop((188, 621)),
+    ])
+    return SemiSupervisedKittiSegDataset(root, split, train_val_test_split, num_labeled, transform)
+
+
+def UnsupervisedKittiSeg(root, split='train'):
+    transform = v2.Compose([
+        v2.Resize((int(188 * 1.05), int(621 * 1.05))),
+        v2.RandomCrop((188, 621)),
+    ])
+    return UnsupervisedDataset(root, split, transform)
+
