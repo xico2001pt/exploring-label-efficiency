@@ -1,11 +1,12 @@
 import os
 import torch
-from skimage.io import imread  # TODO: ADD TO REQUIREMENTS
+from skimage.io import imread
 from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
+from torch.utils.data import random_split
 
-from .semi_supervised import SemiSupervisedDataset
-from.unsupervised import UnsupervisedDataset
+from .unsupervised import UnsupervisedDataset
+from ..utils.constants import Constants as c
 from ..utils.utils import process_data_path, split_train_val_test_data
 
 
@@ -38,10 +39,10 @@ class KittiSegDataset(torch.utils.data.Dataset):
             self.images = train_test_splitted_data[1]
         else:
             self.images = train_test_splitted_data[2]
-    
+
     def get_img_dir(self, root):
         return os.path.join(root, 'semantics', 'training', 'image_2')
-    
+
     def get_mask_dir(self, root):
         return os.path.join(root, 'semantics', 'training', 'semantic')
 
@@ -76,36 +77,71 @@ class KittiSegDataset(torch.utils.data.Dataset):
         return len(self.valid_classes) + 1  # +1 for ignore index
 
 
-class UnsupervisedKittiSegDataset(KittiSegDataset):
+class UnsupervisedKittiSegDataset(torch.utils.data.Dataset):
     def __init__(self, root, split='train', transform=None):
-        super().__init__(root, split, [1.0, 0, 0], transform)
+        if split != 'train':
+            raise ValueError("split must be 'train'")
+
+        root = process_data_path(root)
+
+        self.transform = [
+            v2.Compose([v2.ToImage(), v2.ToDtype(torch.float32, scale=True)]),
+            v2.Normalize(
+                (0.3568, 0.3738, 0.3765),
+                (0.3206, 0.3210, 0.3233)
+            )
+        ]
+
+        if transform is not None:
+            self.transform.append(transform)
+
+        self.transform = v2.Compose(self.transform)
+
+        self.img_dir = self.get_img_dir(root)
+        self.images = sorted(os.listdir(self.img_dir))
 
     def get_img_dir(self, root):
-        return os.path.join(root, 'semantic', 'testing', 'image_2')
+        return os.path.join(root, 'object', 'training', 'image_2')
+
+    def __len__(self):
+        return len(self.images)
 
     def __getitem__(self, index):
         image = imread(os.path.join(self.img_dir, self.images[index]))
-
-        image = self.image_transform(image)
-
-        if self.transform is not None:
-            image = self.transform(image)
-
+        image = self.transform(image)
         return image
 
+    def get_input_size(self):
+        return tuple(self[0][0].shape)
 
-class SemiSupervisedKittiSegDataset(SemiSupervisedDataset):
+    def get_num_classes(self):
+        return len(self.valid_classes) + 1  # +1 for ignore index
+
+
+class SemiSupervisedKittiSegDataset(torch.utils.data.Dataset):
     def __init__(self, root, split='labeled', train_val_test_split=[0.7, 0.1, 0.2], num_labeled=70, transform=None):
         if split == 'train':
             split = 'labeled'
+        if split not in ['labeled', 'unlabeled']:
+            raise ValueError("split must be either 'labeled' or 'unlabeled'")
 
         if split == 'labeled':
             dataset = KittiSegDataset(root, 'train', train_val_test_split, transform)
+            generator = torch.Generator().manual_seed(c.Miscellaneous.SEED)
+            splitted_data = random_split(dataset, [num_labeled, len(dataset) - num_labeled], generator=generator)
+            self.dataset = splitted_data[0]
         else:
             dataset = UnsupervisedKittiSegDataset(root, 'train', transform)
-            num_labeled = 0
+            self.dataset = dataset
 
-        super().__init__(dataset, split, num_labeled)
+        self.get_input_size = dataset.get_input_size
+        self.get_num_classes = dataset.get_num_classes
+
+    def __len__(self):
+        return len(self.dataset)
+
+    def __getitem__(self, index):
+        return self.dataset[index]
 
 
 def KittiSeg(root, split='train', train_val_test_split=[0.7, 0.1, 0.2]):
@@ -130,4 +166,3 @@ def UnsupervisedKittiSeg(root, split='train'):
         v2.RandomCrop((188, 621)),
     ])
     return UnsupervisedDataset(root, split, transform)
-
