@@ -1,0 +1,60 @@
+2024-06-16 19:41:30,123 - INFO - Loading configuration files...
+2024-06-16 19:41:35,397 - INFO - Loading model configuration
+args:
+  backbone: resnet101
+  num_classes: 20
+class: DeepLabV3
+
+2024-06-16 19:41:35,580 - INFO - Loading test_dataset configuration
+args:
+  root: /data/auto/kitti
+  train_val_test_split:
+  - 0.7
+  - 0.1
+  - 0.2
+class: KittiSeg
+
+2024-06-16 19:41:35,594 - INFO - Loading loss configuration
+args:
+  ignore_index: 0
+class: CrossEntropyLoss
+
+2024-06-16 19:41:35,839 - INFO - Loading metrics configuration
+kitti_dice:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+  class: Dice
+kitti_jaccard_macro:
+  args:
+    average: macro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+kitti_jaccard_micro:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+
+2024-06-16 19:41:35,841 - INFO - Loading hyperparameters configuration
+batch_size: 16
+num_workers: 4
+
+2024-06-16 19:41:36,336 - INFO - Using device: cuda
+2024-06-16 19:41:39,832 - INFO - Model weights loaded successfully
+2024-06-16 19:41:47,167 - INFO - Test Stats
+Loss:
+  total: 0.5729987621307373
+Metrics:
+  kitti_dice: 0.8570986191431681
+  kitti_jaccard_macro: 0.37051446239153546
+  kitti_jaccard_micro: 0.764022707939148
+
+2024-06-16 19:41:47,168 - INFO - Testing took 7.331414461135864 seconds to complete

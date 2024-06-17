@@ -1,0 +1,29 @@
+name: pi_model_seg_kitti_deeplabv3_70l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+
+model: kitti_deeplabv3_resnet101  # Name of model
+
+semisl_train:
+  train_dataset: semi_supervised_kitti_segmentation_70l  # Dataset to use for training
+  val_dataset: kitti_segmentation  # Dataset to use for validation
+  optimizer: pi_model_seg_sgd  # Optimizer
+  method: pi_model_kitti_seg  # Semi-supervised method
+  val_loss: kitti_cross_entropy  # Loss function
+  metrics: [kitti_jaccard_macro, kitti_jaccard_micro, kitti_dice]  # Metrics to evaluate
+  scheduler: pi_model_seg_cosine_lr  # Learning rate scheduler. Can be null
+  stop_condition: null  # Condition to stop training. Can be null
+  hyperparameters:  # Hyperparameters for training
+    epochs: 120  # Number of training epochs
+    num_workers: 4  # Number of workers for data loading
+    labeled_batch_size: 2  # Training labeled batch size
+    unlabeled_batch_size: 6  # Training unlabeled batch size
+    save_freq: 10  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: 0.99  # Exponential moving average decay
+
+test:
+  test_dataset: kitti_segmentation  # Dataset to use for testing
+  model_weights_path: pi_model_seg_kitti_deeplabv3_70l.pth  # Path to model weights (relative to weights folder). If null, config name is used
+  loss: kitti_cross_entropy  # Loss function
+  metrics: [kitti_jaccard_macro, kitti_jaccard_micro, kitti_dice]  # Metrics to evaluate
+  hyperparameters:  # Hyperparameters for testing
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 16  # Test batch size

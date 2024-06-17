@@ -26,3 +26,20 @@ def MixMatchV2CityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, tem
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
     return MixMatchV2(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
+
+
+def MixMatchV2KittiSeg(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
+    labeled_transform = v2.Compose([
+        v2.Resize((int(188 * 1.05), int(621 * 1.05))),
+        v2.RandomCrop((188, 621)),
+        v2.RandomHorizontalFlip(),
+    ])
+    unlabeled_transform = InvariantRandAugment(2, 10)
+    supervised_loss = CrossEntropyLoss()
+    unsupervised_loss = MSELoss()
+
+    def process_targets(targets, num_classes):
+        targets = F.one_hot(targets, num_classes).float()
+        targets = targets.permute(0, 3, 1, 2)
+        return tv_tensors.Mask(targets)
+    return MixMatchV2(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)

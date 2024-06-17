@@ -95,3 +95,14 @@ def PiModelCityscapesSeg(w_max, unsupervised_weight_rampup_length):
     unsupervised_loss = MSELoss(reduction='mean')
 
     return PiModel(w_max, unsupervised_weight_rampup_length, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
+
+
+def PiModelKittiSeg(w_max, unsupervised_weight_rampup_length):
+    labeled_transform = v2.Identity()
+    unlabeled_transform = v2.Compose([
+        InvariantRandAugment(2, 10),
+    ])
+    supervised_loss = CrossEntropyLoss(reduction='mean')
+    unsupervised_loss = MSELoss(reduction='mean')
+
+    return PiModel(w_max, unsupervised_weight_rampup_length, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)

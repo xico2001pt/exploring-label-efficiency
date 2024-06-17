@@ -5,7 +5,6 @@ from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
 from torch.utils.data import random_split
 
-from .unsupervised import UnsupervisedDataset
 from ..utils.constants import Constants as c
 from ..utils.utils import process_data_path, split_train_val_test_data
 
@@ -115,7 +114,7 @@ class UnsupervisedKittiSegDataset(torch.utils.data.Dataset):
         return tuple(self[0][0].shape)
 
     def get_num_classes(self):
-        return len(self.valid_classes) + 1  # +1 for ignore index
+        return 20
 
 
 class SemiSupervisedKittiSegDataset(torch.utils.data.Dataset):
@@ -165,4 +164,4 @@ def UnsupervisedKittiSeg(root, split='train'):
         v2.Resize((int(188 * 1.05), int(621 * 1.05))),
         v2.RandomCrop((188, 621)),
     ])
-    return UnsupervisedDataset(root, split, transform)
+    return UnsupervisedKittiSegDataset(root, split, transform)

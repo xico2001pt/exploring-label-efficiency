@@ -39,3 +39,26 @@ def ReMixMatchV2CityscapesSeg(alpha, wu_max, wu1_max, wr, unsupervised_weight_ra
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
     return ReMixMatchV2(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets)
+
+
+def ReMixMatchV2KittiSeg(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
+    gt_labels = None
+    labeled_transform = v2.Compose([
+        v2.Resize((int(188 * 1.05), int(621 * 1.05))),
+        v2.RandomCrop((188, 621)),
+        v2.RandomHorizontalFlip(),
+    ])
+    weak_unlabeled_transform = v2.Identity()
+
+    strong_unlabeled_transform = v2.Compose([
+        InvariantRandAugment(2, 10),
+    ])
+    supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
+    unsupervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
+    rotation_loss = CrossEntropyLoss()
+
+    def process_targets(targets, num_classes):
+        targets = F.one_hot(targets, num_classes).float()
+        targets = targets.permute(0, 3, 1, 2)
+        return tv_tensors.Mask(targets)
+    return ReMixMatchV2(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets)
