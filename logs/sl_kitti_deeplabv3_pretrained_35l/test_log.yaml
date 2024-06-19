@@ -1,0 +1,53 @@
+device: cuda
+duration: 3.073355197906494
+hyperparameters:
+  batch_size: 16
+  num_workers: 4
+loss:
+  args:
+    ignore_index: 0
+  class: CrossEntropyLoss
+metrics:
+  kitti_dice:
+    args:
+      average: micro
+      ignore_index: 0
+      num_classes: 20
+    class: Dice
+  kitti_jaccard_macro:
+    args:
+      average: macro
+      ignore_index: 0
+      num_classes: 20
+      task: multiclass
+      validate_args: false
+    class: JaccardIndex
+  kitti_jaccard_micro:
+    args:
+      average: micro
+      ignore_index: 0
+      num_classes: 20
+      task: multiclass
+      validate_args: false
+    class: JaccardIndex
+model:
+  args:
+    backbone: resnet101
+    num_classes: 20
+    weights_backbone: DEFAULT
+  class: DeepLabV3
+test_dataset:
+  args:
+    root: /data/auto/kitti
+    train_val_test_split:
+    - 0.7
+    - 0.1
+    - 0.2
+  class: KittiSeg
+test_history:
+  loss:
+    total: 0.7480269074440002
+  metrics:
+    kitti_dice: 0.8224746982256571
+    kitti_jaccard_macro: 0.33091487487157184
+    kitti_jaccard_micro: 0.7183218797047933
