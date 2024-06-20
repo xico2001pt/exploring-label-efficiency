@@ -1,0 +1,37 @@
+device: cuda
+duration: 1.7734792232513428
+hyperparameters:
+  batch_size: 128
+  num_workers: 4
+loss:
+  args: {}
+  class: CrossEntropyLoss
+metrics:
+  cifar10_top1_accuracy:
+    args:
+      num_classes: 10
+      task: multiclass
+      top_k: 1
+    class: Accuracy
+  cifar10_top5_accuracy:
+    args:
+      num_classes: 10
+      task: multiclass
+      top_k: 5
+    class: Accuracy
+model:
+  args:
+    num_classes: 10
+    pretrained: true
+  class: ResNet50
+test_dataset:
+  args:
+    root: ./data/
+    train_val_split: 0.9
+  class: CIFAR10
+test_history:
+  loss:
+    total: 1.1783531625059587
+  metrics:
+    cifar10_top1_accuracy: 0.7529667721518988
+    cifar10_top5_accuracy: 0.9770569620253164
