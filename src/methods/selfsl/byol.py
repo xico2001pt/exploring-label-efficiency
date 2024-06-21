@@ -95,3 +95,20 @@ def BYOLCIFAR10(ema_decay, representation_size, prediction_size, projection_size
     projector = MultiLayerPerceptron(representation_size, hidden_size, projection_size)
     predictor = MultiLayerPerceptron(projection_size, hidden_size, prediction_size)
     return BYOL(transform, loss, projector, predictor, ema_decay)
+
+
+def BYOLKitti(ema_decay, representation_size, prediction_size, projection_size, hidden_size, image_size, color_jitter_strength):
+    s = color_jitter_strength
+    h, w = image_size
+    transform = v1.Compose([
+        v1.RandomApply([v1.ColorJitter(0.8 * s, 0.8 * s, 0.8 * s, 0.2 * s)], p=0.8),
+        v1.RandomGrayscale(p=0.2),
+        v1.RandomHorizontalFlip(p=0.5),
+        v1.RandomApply([v1.GaussianBlur((3, 3))], p=0.2),
+        v1.Resize((int(h * 1.05), int(w * 1.05))),
+        v1.RandomCrop((h, w)),
+    ])
+    loss = BYOLLoss()
+    projector = MultiLayerPerceptron(representation_size, hidden_size, projection_size)
+    predictor = MultiLayerPerceptron(projection_size, hidden_size, prediction_size)
+    return BYOL(transform, loss, projector, predictor, ema_decay)

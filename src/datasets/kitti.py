@@ -165,3 +165,19 @@ def UnsupervisedKittiSeg(root, split='train'):
         v2.RandomCrop((188, 621)),
     ])
     return UnsupervisedKittiSegDataset(root, split, transform)
+
+
+def LinearEvalKittiSeg(root, split='train', train_val_test_split=[0.7, 0.1, 0.2]):
+    transform = v2.Compose([
+        v2.Resize((int(188 * 1.05), int(621 * 1.05))),
+        v2.RandomCrop((188, 621)),
+    ])
+    return KittiSegDataset(root, split, train_val_test_split, transform)
+
+
+def FineTuningTrainKittiSeg(root, split='labeled', train_val_test_split=[0.7, 0.1, 0.2], num_labeled=70):
+    transform = v2.Compose([
+        v2.Resize((int(188 * 1.05), int(621 * 1.05))),
+        v2.RandomCrop((188, 621)),
+    ])
+    return SemiSupervisedKittiSegDataset(root, split, train_val_test_split, num_labeled, transform)
