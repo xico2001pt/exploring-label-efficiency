@@ -1,0 +1,19 @@
+name: byol_kitti_deeplabv3_mobilenet  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+
+model: kitti_deeplabv3_mobilenet  # Name of model
+
+selfsl_train:
+  train_dataset: unsupervised_kitti  # Dataset to use for training
+  model_weights_name: byol_kitti_deeplabv3_mobilenet_pretrained  # Filename to save model weights (relative to weights folder).
+  optimizer: byol_kitti_adam  # Optimizer
+  method: byol_kitti  # Semi-supervised method
+  metrics: []  # Metrics to evaluate
+  scheduler: null  # Learning rate scheduler. Can be null
+  stop_condition: null  # Condition to stop training. Can be null
+  hyperparameters:  # Hyperparameters for training
+    epochs: 50  # Number of training epochs
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 16  # Training batch size
+    max_num_samples: -1  # Maximum number of samples to use for training. If -1, all samples are used
+    save_freq: 5  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: null  # Exponential moving average decay
