@@ -1,0 +1,2500 @@
+2024-06-24 13:55:52,417 - INFO - Loading configuration files...
+2024-06-24 13:55:52,530 - INFO - Loading model configuration
+args:
+  backbone: mobilenet_v3_large
+  num_classes: 20
+class: DeepLabV3
+
+2024-06-24 13:55:52,542 - INFO - Loading train_dataset configuration
+args:
+  num_labeled: 35
+  root: /data/auto/kitti
+  train_val_test_split:
+  - 0.7
+  - 0.1
+  - 0.2
+class: SemiSupervisedKittiSeg
+
+2024-06-24 13:55:52,555 - INFO - Loading train_dataset configuration
+args:
+  num_labeled: 35
+  root: /data/auto/kitti
+  train_val_test_split:
+  - 0.7
+  - 0.1
+  - 0.2
+class: SemiSupervisedKittiSeg
+
+2024-06-24 13:55:52,565 - INFO - Loading val_dataset configuration
+args:
+  root: /data/auto/kitti
+  train_val_test_split:
+  - 0.7
+  - 0.1
+  - 0.2
+class: KittiSeg
+
+2024-06-24 13:55:52,637 - INFO - Loading optimizer configuration
+args:
+  lr: 0.01
+  momentum: 0.9
+  nesterov: true
+  weight_decay: 0.0005
+class: SGD
+
+2024-06-24 13:55:52,644 - INFO - Loading method configuration
+args:
+  alpha: 0.75
+  k: 2
+  temperature: 0.5
+  unsupervised_weight_rampup_length: 60
+  w_max: 75.0
+class: MixMatchV2KittiSeg
+
+2024-06-24 13:55:52,645 - INFO - Loading loss configuration
+args:
+  ignore_index: 0
+class: CrossEntropyLoss
+
+2024-06-24 13:55:52,660 - INFO - Loading metrics configuration
+kitti_dice:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+  class: Dice
+kitti_jaccard_macro:
+  args:
+    average: macro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+kitti_jaccard_micro:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+
+2024-06-24 13:55:52,663 - INFO - Loading scheduler configuration
+args:
+  T_max: 120
+class: CosineAnnealingLR
+
+2024-06-24 13:55:52,663 - INFO - Loading hyperparameters configuration
+ema_decay: 0.99
+epochs: 120
+labeled_batch_size: 2
+num_workers: 4
+save_freq: 10
+unlabeled_batch_size: 6
+
+2024-06-24 13:55:52,673 - INFO - Using device: cuda
+2024-06-24 13:55:52,759 - INFO - Training for 120 epochs
+2024-06-24 13:55:52,788 - INFO - Epoch 1/120
+2024-06-24 13:55:59,461 - INFO - Train Stats
+Loss:
+  supervised: 1.9530939600046944
+  total: 1.9530939600046944
+  unsupervised: 0.00637101148501696
+  unsupervised_weighted: 0.0
+Metrics:
+  kitti_dice: 0.4874672155608149
+  kitti_jaccard_macro: 0.10429162622484214
+  kitti_jaccard_micro: 0.3548590217662208
+
+2024-06-24 13:55:59,969 - INFO - Validation Stats
+Loss:
+  total: 1.4339836438496907
+Metrics:
+  kitti_dice: 0.6064550280570984
+  kitti_jaccard_macro: 0.1492400368054708
+  kitti_jaccard_micro: 0.4472086429595947
+
+2024-06-24 13:56:00,050 - INFO - Epoch 2/120
+2024-06-24 13:56:06,091 - INFO - Train Stats
+Loss:
+  supervised: 1.2459370423765743
+  total: 1.255866618717418
+  unsupervised: 0.007943668731433503
+  unsupervised_weighted: 0.009929585955379641
+Metrics:
+  kitti_dice: 0.653750198728898
+  kitti_jaccard_macro: 0.20376859254696789
+  kitti_jaccard_micro: 0.5197147323804743
+
+2024-06-24 13:56:06,516 - INFO - Validation Stats
+Loss:
+  total: 1.0648792386054993
+Metrics:
+  kitti_dice: 0.691882312297821
+  kitti_jaccard_macro: 0.19891031086444855
+  kitti_jaccard_micro: 0.544959306716919
+
+2024-06-24 13:56:06,629 - INFO - Epoch 3/120
+2024-06-24 13:56:12,680 - INFO - Train Stats
+Loss:
+  supervised: 1.0592786143807804
+  total: 1.076071981121512
+  unsupervised: 0.006717349375214647
+  unsupervised_weighted: 0.016793373205205974
+Metrics:
+  kitti_dice: 0.723143623155706
+  kitti_jaccard_macro: 0.24538235278690562
+  kitti_jaccard_micro: 0.5895396909293007
+
+2024-06-24 13:56:13,104 - INFO - Validation Stats
+Loss:
+  total: 1.0178815921147664
+Metrics:
+  kitti_dice: 0.7010183731714884
+  kitti_jaccard_macro: 0.21047585705916086
+  kitti_jaccard_micro: 0.5558150410652161
+
+2024-06-24 13:56:13,216 - INFO - Epoch 4/120
+2024-06-24 13:56:19,298 - INFO - Train Stats
+Loss:
+  supervised: 0.9676797179614797
+  total: 0.990386401905733
+  unsupervised: 0.006055118050426245
+  unsupervised_weighted: 0.022706692600074935
+Metrics:
+  kitti_dice: 0.7327143339549794
+  kitti_jaccard_macro: 0.2651253307566923
+  kitti_jaccard_micro: 0.6093657542677486
+
+2024-06-24 13:56:19,722 - INFO - Validation Stats
+Loss:
+  total: 0.9782320857048035
+Metrics:
+  kitti_dice: 0.6888907551765442
+  kitti_jaccard_macro: 0.1969845493634542
+  kitti_jaccard_micro: 0.541676272948583
+
+2024-06-24 13:56:19,916 - INFO - Epoch 5/120
+2024-06-24 13:56:26,022 - INFO - Train Stats
+Loss:
+  supervised: 0.9278655472923728
+  total: 0.9569121529074276
+  unsupervised: 0.005809317753814599
+  unsupervised_weighted: 0.02904658852254643
+Metrics:
+  kitti_dice: 0.7360676562084871
+  kitti_jaccard_macro: 0.25214456372401295
+  kitti_jaccard_micro: 0.6053612512700698
+
+2024-06-24 13:56:26,437 - INFO - Validation Stats
+Loss:
+  total: 0.9608239134152731
+Metrics:
+  kitti_dice: 0.7194945414861044
+  kitti_jaccard_macro: 0.21993395189444223
+  kitti_jaccard_micro: 0.5773360729217529
+
+2024-06-24 13:56:26,559 - INFO - Epoch 6/120
+2024-06-24 13:56:32,681 - INFO - Train Stats
+Loss:
+  supervised: 0.8918918230954338
+  total: 0.9209061072153204
+  unsupervised: 0.004642284146564848
+  unsupervised_weighted: 0.029014276011901742
+Metrics:
+  kitti_dice: 0.745286927503698
+  kitti_jaccard_macro: 0.2556788237655864
+  kitti_jaccard_micro: 0.6194102255737081
+
+2024-06-24 13:56:33,111 - INFO - Validation Stats
+Loss:
+  total: 0.9389385978380839
+Metrics:
+  kitti_dice: 0.7275604009628296
+  kitti_jaccard_macro: 0.22680726647377014
+  kitti_jaccard_micro: 0.5862608353296915
+
+2024-06-24 13:56:33,224 - INFO - Epoch 7/120
+2024-06-24 13:56:39,387 - INFO - Train Stats
+Loss:
+  supervised: 0.8193967710523045
+  total: 0.8486481782268075
+  unsupervised: 0.003900187651571982
+  unsupervised_weighted: 0.029251407284070465
+Metrics:
+  kitti_dice: 0.7571317483397091
+  kitti_jaccard_macro: 0.2744114381425521
+  kitti_jaccard_micro: 0.6365148653002346
+
+2024-06-24 13:56:39,816 - INFO - Validation Stats
+Loss:
+  total: 0.9262420535087585
+Metrics:
+  kitti_dice: 0.7137540380160013
+  kitti_jaccard_macro: 0.23755480845769247
+  kitti_jaccard_micro: 0.570209821065267
+
+2024-06-24 13:56:40,005 - INFO - Epoch 8/120
+2024-06-24 13:56:46,196 - INFO - Train Stats
+Loss:
+  supervised: 0.83240087593303
+  total: 0.8690549924093134
+  unsupervised: 0.004189042675801937
+  unsupervised_weighted: 0.036654123598161864
+Metrics:
+  kitti_dice: 0.7642943263053894
+  kitti_jaccard_macro: 0.27580717994886284
+  kitti_jaccard_micro: 0.6389394981019637
+
+2024-06-24 13:56:46,613 - INFO - Validation Stats
+Loss:
+  total: 1.0362919767697651
+Metrics:
+  kitti_dice: 0.694024125734965
+  kitti_jaccard_macro: 0.23352888723214468
+  kitti_jaccard_micro: 0.5463700294494629
+
+2024-06-24 13:56:46,613 - INFO - Epoch 9/120
+2024-06-24 13:56:52,797 - INFO - Train Stats
+Loss:
+  supervised: 0.8242931401028353
+  total: 0.8520897732061499
+  unsupervised: 0.0027796638006454006
+  unsupervised_weighted: 0.027796638033845845
+Metrics:
+  kitti_dice: 0.7443191163680133
+  kitti_jaccard_macro: 0.2648320443489972
+  kitti_jaccard_micro: 0.6180646366932813
+
+2024-06-24 13:56:53,226 - INFO - Validation Stats
+Loss:
+  total: 1.0938985347747803
+Metrics:
+  kitti_dice: 0.6713116765022278
+  kitti_jaccard_macro: 0.2292992870012919
+  kitti_jaccard_micro: 0.517483671506246
+
+2024-06-24 13:56:53,226 - INFO - Epoch 10/120
+2024-06-24 13:56:59,456 - INFO - Train Stats
+Loss:
+  supervised: 0.7517642904730404
+  total: 0.7829313944367802
+  unsupervised: 0.002770409172893885
+  unsupervised_weighted: 0.03116710264893139
+Metrics:
+  kitti_dice: 0.7947632530156303
+  kitti_jaccard_macro: 0.312052466413554
+  kitti_jaccard_micro: 0.6772404839010799
+
+2024-06-24 13:56:59,886 - INFO - Validation Stats
+Loss:
+  total: 0.9165765643119812
+Metrics:
+  kitti_dice: 0.7295335133870443
+  kitti_jaccard_macro: 0.24290872613588968
+  kitti_jaccard_micro: 0.5894365708033243
+
+2024-06-24 13:57:00,156 - INFO - Epoch 11/120
+2024-06-24 13:57:06,399 - INFO - Train Stats
+Loss:
+  supervised: 0.7338575282517601
+  total: 0.7612015254357282
+  unsupervised: 0.0021875194849117715
+  unsupervised_weighted: 0.027343993458677742
+Metrics:
+  kitti_dice: 0.7846782593166127
+  kitti_jaccard_macro: 0.29968155394582185
+  kitti_jaccard_micro: 0.6727544858175165
+
+2024-06-24 13:57:06,826 - INFO - Validation Stats
+Loss:
+  total: 0.9883540471394857
+Metrics:
+  kitti_dice: 0.6995141704877218
+  kitti_jaccard_macro: 0.24154953161875406
+  kitti_jaccard_micro: 0.551836351553599
+
+2024-06-24 13:57:06,827 - INFO - Epoch 12/120
+2024-06-24 13:57:13,099 - INFO - Train Stats
+Loss:
+  supervised: 0.7512037894305061
+  total: 0.7859344517483431
+  unsupervised: 0.0025258659700150878
+  unsupervised_weighted: 0.034730657277738344
+Metrics:
+  kitti_dice: 0.7810469409998726
+  kitti_jaccard_macro: 0.30102475425776315
+  kitti_jaccard_micro: 0.6702610289349276
+
+2024-06-24 13:57:13,526 - INFO - Validation Stats
+Loss:
+  total: 0.9544294476509094
+Metrics:
+  kitti_dice: 0.7191210985183716
+  kitti_jaccard_macro: 0.23878794411818186
+  kitti_jaccard_micro: 0.5758763154347738
+
+2024-06-24 13:57:13,526 - INFO - Epoch 13/120
+2024-06-24 13:57:19,821 - INFO - Train Stats
+Loss:
+  supervised: 0.7008499397951014
+  total: 0.7343219273230609
+  unsupervised: 0.0022314659059595537
+  unsupervised_weighted: 0.03347198851406574
+Metrics:
+  kitti_dice: 0.7902628569041982
+  kitti_jaccard_macro: 0.3122151756987852
+  kitti_jaccard_micro: 0.6759054748451009
+
+2024-06-24 13:57:20,249 - INFO - Validation Stats
+Loss:
+  total: 0.8942069411277771
+Metrics:
+  kitti_dice: 0.7320729295412699
+  kitti_jaccard_macro: 0.25598350663979846
+  kitti_jaccard_micro: 0.5919008453687032
+
+2024-06-24 13:57:20,439 - INFO - Epoch 14/120
+2024-06-24 13:57:26,744 - INFO - Train Stats
+Loss:
+  supervised: 0.7483884306514964
+  total: 0.7866814171566683
+  unsupervised: 0.0023564912433571674
+  unsupervised_weighted: 0.03829298256074681
+Metrics:
+  kitti_dice: 0.8042498441303477
+  kitti_jaccard_macro: 0.31830862164497375
+  kitti_jaccard_micro: 0.7012779186753666
+
+2024-06-24 13:57:27,174 - INFO - Validation Stats
+Loss:
+  total: 0.9047812819480896
+Metrics:
+  kitti_dice: 0.7289533615112305
+  kitti_jaccard_macro: 0.251661092042923
+  kitti_jaccard_micro: 0.589427133401235
+
+2024-06-24 13:57:27,174 - INFO - Epoch 15/120
+2024-06-24 13:57:33,505 - INFO - Train Stats
+Loss:
+  supervised: 0.7410467617651996
+  total: 0.7867090106010437
+  unsupervised: 0.002609270850799101
+  unsupervised_weighted: 0.04566224018002257
+Metrics:
+  kitti_dice: 0.775116015883053
+  kitti_jaccard_macro: 0.30128230943399315
+  kitti_jaccard_micro: 0.6573613163302926
+
+2024-06-24 13:57:33,938 - INFO - Validation Stats
+Loss:
+  total: 0.8649377226829529
+Metrics:
+  kitti_dice: 0.7460971275965372
+  kitti_jaccard_macro: 0.25714177389939624
+  kitti_jaccard_micro: 0.611456553141276
+
+2024-06-24 13:57:34,052 - INFO - Epoch 16/120
+2024-06-24 13:57:40,395 - INFO - Train Stats
+Loss:
+  supervised: 0.7154940734891331
+  total: 0.7501612130333396
+  unsupervised: 0.0018489142290919142
+  unsupervised_weighted: 0.03466714173555374
+Metrics:
+  kitti_dice: 0.7975981025134816
+  kitti_jaccard_macro: 0.32048344349159913
+  kitti_jaccard_micro: 0.6884856820106506
+
+2024-06-24 13:57:40,823 - INFO - Validation Stats
+Loss:
+  total: 1.010920226573944
+Metrics:
+  kitti_dice: 0.6873992085456848
+  kitti_jaccard_macro: 0.23742586374282837
+  kitti_jaccard_micro: 0.537150373061498
+
+2024-06-24 13:57:40,823 - INFO - Epoch 17/120
+2024-06-24 13:57:47,189 - INFO - Train Stats
+Loss:
+  supervised: 0.694055504658643
+  total: 0.7283841091043809
+  unsupervised: 0.0017164301346330082
+  unsupervised_weighted: 0.03432860280222753
+Metrics:
+  kitti_dice: 0.80555220561869
+  kitti_jaccard_macro: 0.3326860578621135
+  kitti_jaccard_micro: 0.6961365114240086
+
+2024-06-24 13:57:47,615 - INFO - Validation Stats
+Loss:
+  total: 1.047077238559723
+Metrics:
+  kitti_dice: 0.6807273825009664
+  kitti_jaccard_macro: 0.24588285386562347
+  kitti_jaccard_micro: 0.52884840965271
+
+2024-06-24 13:57:47,615 - INFO - Epoch 18/120
+2024-06-24 13:57:53,991 - INFO - Train Stats
+Loss:
+  supervised: 0.6323106271379134
+  total: 0.6665187635842491
+  unsupervised: 0.0016097946859457914
+  unsupervised_weighted: 0.03420813688460518
+Metrics:
+  kitti_dice: 0.8135077322230619
+  kitti_jaccard_macro: 0.34277476808604074
+  kitti_jaccard_micro: 0.7057020751868978
+
+2024-06-24 13:57:54,421 - INFO - Validation Stats
+Loss:
+  total: 0.8872001568476359
+Metrics:
+  kitti_dice: 0.7312694191932678
+  kitti_jaccard_macro: 0.2569465438524882
+  kitti_jaccard_micro: 0.5910193125406901
+
+2024-06-24 13:57:54,422 - INFO - Epoch 19/120
+2024-06-24 13:58:00,804 - INFO - Train Stats
+Loss:
+  supervised: 0.7393617928028107
+  total: 0.7736642132787144
+  unsupervised: 0.0015245518469087342
+  unsupervised_weighted: 0.03430241631234393
+Metrics:
+  kitti_dice: 0.7964426559560439
+  kitti_jaccard_macro: 0.30537136162028594
+  kitti_jaccard_micro: 0.6821745984694537
+
+2024-06-24 13:58:01,232 - INFO - Validation Stats
+Loss:
+  total: 0.9637181560198466
+Metrics:
+  kitti_dice: 0.7133899132410685
+  kitti_jaccard_macro: 0.25751925508181256
+  kitti_jaccard_micro: 0.5683102210362753
+
+2024-06-24 13:58:01,232 - INFO - Epoch 20/120
+2024-06-24 13:58:07,651 - INFO - Train Stats
+Loss:
+  supervised: 0.6419052078443415
+  total: 0.672696928767597
+  unsupervised: 0.0012964935843175387
+  unsupervised_weighted: 0.03079172278590062
+Metrics:
+  kitti_dice: 0.8189433111863977
+  kitti_jaccard_macro: 0.3300708935541265
+  kitti_jaccard_micro: 0.7115571148255292
+
+2024-06-24 13:58:08,072 - INFO - Validation Stats
+Loss:
+  total: 1.0465597907702129
+Metrics:
+  kitti_dice: 0.6939804951349894
+  kitti_jaccard_macro: 0.24457413951555887
+  kitti_jaccard_micro: 0.545114795366923
+
+2024-06-24 13:58:08,184 - INFO - Epoch 21/120
+2024-06-24 13:58:14,611 - INFO - Train Stats
+Loss:
+  supervised: 0.627009251538445
+  total: 0.6590912149232977
+  unsupervised: 0.0012832783566623489
+  unsupervised_weighted: 0.03208195900215822
+Metrics:
+  kitti_dice: 0.8047641094993142
+  kitti_jaccard_macro: 0.3186881182824864
+  kitti_jaccard_micro: 0.7002891494947321
+
+2024-06-24 13:58:15,040 - INFO - Validation Stats
+Loss:
+  total: 1.177600125471751
+Metrics:
+  kitti_dice: 0.6314858794212341
+  kitti_jaccard_macro: 0.2181640863418579
+  kitti_jaccard_micro: 0.47328758239746094
+
+2024-06-24 13:58:15,040 - INFO - Epoch 22/120
+2024-06-24 13:58:21,456 - INFO - Train Stats
+Loss:
+  supervised: 0.6885835055042716
+  total: 0.7299306480323567
+  unsupervised: 0.0015751294011031004
+  unsupervised_weighted: 0.04134714658207753
+Metrics:
+  kitti_dice: 0.7910828590393066
+  kitti_jaccard_macro: 0.3367409215253942
+  kitti_jaccard_micro: 0.6837091586169075
+
+2024-06-24 13:58:21,883 - INFO - Validation Stats
+Loss:
+  total: 0.9542641441027323
+Metrics:
+  kitti_dice: 0.71818874279658
+  kitti_jaccard_macro: 0.2621307174364726
+  kitti_jaccard_micro: 0.5755004088083903
+
+2024-06-24 13:58:21,883 - INFO - Epoch 23/120
+2024-06-24 13:58:28,324 - INFO - Train Stats
+Loss:
+  supervised: 0.6584441994919497
+  total: 0.6966968809857088
+  unsupervised: 0.0013910064487444127
+  unsupervised_weighted: 0.038252677111064684
+Metrics:
+  kitti_dice: 0.8051168427747839
+  kitti_jaccard_macro: 0.3314176938113044
+  kitti_jaccard_micro: 0.7050712494289174
+
+2024-06-24 13:58:28,758 - INFO - Validation Stats
+Loss:
+  total: 1.0050642291704814
+Metrics:
+  kitti_dice: 0.7090933322906494
+  kitti_jaccard_macro: 0.2583813816308975
+  kitti_jaccard_micro: 0.5629656712214152
+
+2024-06-24 13:58:28,758 - INFO - Epoch 24/120
+2024-06-24 13:58:35,233 - INFO - Train Stats
+Loss:
+  supervised: 0.7026312105795917
+  total: 0.7427833115353304
+  unsupervised: 0.001396594979964635
+  unsupervised_weighted: 0.040152105776702654
+Metrics:
+  kitti_dice: 0.8189555862370659
+  kitti_jaccard_macro: 0.3324639700791415
+  kitti_jaccard_micro: 0.7136034422061023
+
+2024-06-24 13:58:35,661 - INFO - Validation Stats
+Loss:
+  total: 0.9734538396199545
+Metrics:
+  kitti_dice: 0.7304504911104838
+  kitti_jaccard_macro: 0.2605689465999603
+  kitti_jaccard_micro: 0.5891184012095133
+
+2024-06-24 13:58:35,661 - INFO - Epoch 25/120
+2024-06-24 13:58:42,136 - INFO - Train Stats
+Loss:
+  supervised: 0.681973827235839
+  total: 0.7210651425754323
+  unsupervised: 0.0013030437882715726
+  unsupervised_weighted: 0.03909131358651554
+Metrics:
+  kitti_dice: 0.799959123134613
+  kitti_jaccard_macro: 0.3347760999903959
+  kitti_jaccard_micro: 0.6971104250234716
+
+2024-06-24 13:58:42,570 - INFO - Validation Stats
+Loss:
+  total: 0.9911779959996542
+Metrics:
+  kitti_dice: 0.7015902797381083
+  kitti_jaccard_macro: 0.24624458452065787
+  kitti_jaccard_micro: 0.5548113584518433
+
+2024-06-24 13:58:42,570 - INFO - Epoch 26/120
+2024-06-24 13:58:49,049 - INFO - Train Stats
+Loss:
+  supervised: 0.5979613574112163
+  total: 0.6405429875149447
+  unsupervised: 0.0013626120601068525
+  unsupervised_weighted: 0.042581627254976946
+Metrics:
+  kitti_dice: 0.8311658571748173
+  kitti_jaccard_macro: 0.35158125267309304
+  kitti_jaccard_micro: 0.7268460638382855
+
+2024-06-24 13:58:49,474 - INFO - Validation Stats
+Loss:
+  total: 1.0123913884162903
+Metrics:
+  kitti_dice: 0.6997801860173544
+  kitti_jaccard_macro: 0.250045379002889
+  kitti_jaccard_micro: 0.5526851415634155
+
+2024-06-24 13:58:49,474 - INFO - Epoch 27/120
+2024-06-24 13:58:55,960 - INFO - Train Stats
+Loss:
+  supervised: 0.5854081546559053
+  total: 0.6309122583445381
+  unsupervised: 0.001400126438752255
+  unsupervised_weighted: 0.045504109714837634
+Metrics:
+  kitti_dice: 0.8296262131017798
+  kitti_jaccard_macro: 0.3600428358596914
+  kitti_jaccard_micro: 0.7286415415651658
+
+2024-06-24 13:58:56,387 - INFO - Validation Stats
+Loss:
+  total: 1.0243455171585083
+Metrics:
+  kitti_dice: 0.7000072598457336
+  kitti_jaccard_macro: 0.25612201790014905
+  kitti_jaccard_micro: 0.5516809423764547
+
+2024-06-24 13:58:56,387 - INFO - Epoch 28/120
+2024-06-24 13:59:02,888 - INFO - Train Stats
+Loss:
+  supervised: 0.5977716533576741
+  total: 0.6454764709753149
+  unsupervised: 0.001413475934361272
+  unsupervised_weighted: 0.04770481279667686
+Metrics:
+  kitti_dice: 0.822091256870943
+  kitti_jaccard_macro: 0.3615502960541669
+  kitti_jaccard_micro: 0.7182029064963845
+
+2024-06-24 13:59:03,318 - INFO - Validation Stats
+Loss:
+  total: 0.9498412013053894
+Metrics:
+  kitti_dice: 0.7328156431516012
+  kitti_jaccard_macro: 0.26710841556390125
+  kitti_jaccard_micro: 0.5942450960477194
+
+2024-06-24 13:59:03,318 - INFO - Epoch 29/120
+2024-06-24 13:59:09,825 - INFO - Train Stats
+Loss:
+  supervised: 0.6103585923419279
+  total: 0.657574474811554
+  unsupervised: 0.001349025049849468
+  unsupervised_weighted: 0.04721587677212322
+Metrics:
+  kitti_dice: 0.8220885045388165
+  kitti_jaccard_macro: 0.34557391440167146
+  kitti_jaccard_micro: 0.7163454504574046
+
+2024-06-24 13:59:10,265 - INFO - Validation Stats
+Loss:
+  total: 0.9760001103083292
+Metrics:
+  kitti_dice: 0.7268006602923075
+  kitti_jaccard_macro: 0.24679876367251077
+  kitti_jaccard_micro: 0.5840491652488708
+
+2024-06-24 13:59:10,265 - INFO - Epoch 30/120
+2024-06-24 13:59:16,787 - INFO - Train Stats
+Loss:
+  supervised: 0.5789259304018581
+  total: 0.6230224283302531
+  unsupervised: 0.001216455184690216
+  unsupervised_weighted: 0.04409650066757903
+Metrics:
+  kitti_dice: 0.8301270183394936
+  kitti_jaccard_macro: 0.3590712740140803
+  kitti_jaccard_micro: 0.7270927639568553
+
+2024-06-24 13:59:17,218 - INFO - Validation Stats
+Loss:
+  total: 0.9256662726402283
+Metrics:
+  kitti_dice: 0.7512253721555074
+  kitti_jaccard_macro: 0.267816295226415
+  kitti_jaccard_micro: 0.6167226831118265
+
+2024-06-24 13:59:17,414 - INFO - Epoch 31/120
+2024-06-24 13:59:23,914 - INFO - Train Stats
+Loss:
+  supervised: 0.5961913115837995
+  total: 0.6442119636956383
+  unsupervised: 0.0012805506566484623
+  unsupervised_weighted: 0.048020649482222164
+Metrics:
+  kitti_dice: 0.8426069161471199
+  kitti_jaccard_macro: 0.3965602061327766
+  kitti_jaccard_micro: 0.7458038189831901
+
+2024-06-24 13:59:24,346 - INFO - Validation Stats
+Loss:
+  total: 0.9860670765240988
+Metrics:
+  kitti_dice: 0.7361149191856384
+  kitti_jaccard_macro: 0.2704966813325882
+  kitti_jaccard_micro: 0.5963287949562073
+
+2024-06-24 13:59:24,346 - INFO - Epoch 32/120
+2024-06-24 13:59:30,915 - INFO - Train Stats
+Loss:
+  supervised: 0.5793501156217912
+  total: 0.6280194661196541
+  unsupervised: 0.0012559833087246208
+  unsupervised_weighted: 0.04866935312747955
+Metrics:
+  kitti_dice: 0.838940276819117
+  kitti_jaccard_macro: 0.3634682771037607
+  kitti_jaccard_micro: 0.7381281537168166
+
+2024-06-24 13:59:31,352 - INFO - Validation Stats
+Loss:
+  total: 0.992935836315155
+Metrics:
+  kitti_dice: 0.7300137281417847
+  kitti_jaccard_macro: 0.2638300061225891
+  kitti_jaccard_micro: 0.5893179774284363
+
+2024-06-24 13:59:31,352 - INFO - Epoch 33/120
+2024-06-24 13:59:37,943 - INFO - Train Stats
+Loss:
+  supervised: 0.5992864493061515
+  total: 0.6486252844333649
+  unsupervised: 0.0012334707905264461
+  unsupervised_weighted: 0.049338831401923126
+Metrics:
+  kitti_dice: 0.8183256212402793
+  kitti_jaccard_macro: 0.34511807473266826
+  kitti_jaccard_micro: 0.711889864767299
+
+2024-06-24 13:59:38,375 - INFO - Validation Stats
+Loss:
+  total: 0.9972531000773112
+Metrics:
+  kitti_dice: 0.7598396341005961
+  kitti_jaccard_macro: 0.27063023050626117
+  kitti_jaccard_micro: 0.6266956726710001
+
+2024-06-24 13:59:38,375 - INFO - Epoch 34/120
+2024-06-24 13:59:44,973 - INFO - Train Stats
+Loss:
+  supervised: 0.6583618854775148
+  total: 0.7074218778049245
+  unsupervised: 0.001189333205248284
+  unsupervised_weighted: 0.04905999462832423
+Metrics:
+  kitti_dice: 0.7989842646262225
+  kitti_jaccard_macro: 0.34087811235119314
+  kitti_jaccard_micro: 0.6832410062060637
+
+2024-06-24 13:59:45,404 - INFO - Validation Stats
+Loss:
+  total: 1.001671314239502
+Metrics:
+  kitti_dice: 0.7307015061378479
+  kitti_jaccard_macro: 0.2657652199268341
+  kitti_jaccard_micro: 0.5888793667157491
+
+2024-06-24 13:59:45,404 - INFO - Epoch 35/120
+2024-06-24 13:59:52,020 - INFO - Train Stats
+Loss:
+  supervised: 0.5830827776123496
+  total: 0.6313558028024786
+  unsupervised: 0.0011358358486391166
+  unsupervised_weighted: 0.04827302343705121
+Metrics:
+  kitti_dice: 0.8423288148992202
+  kitti_jaccard_macro: 0.39655040467486663
+  kitti_jaccard_micro: 0.7442845386617324
+
+2024-06-24 13:59:52,457 - INFO - Validation Stats
+Loss:
+  total: 0.977622926235199
+Metrics:
+  kitti_dice: 0.7165682117144266
+  kitti_jaccard_macro: 0.2612379143635432
+  kitti_jaccard_micro: 0.573001503944397
+
+2024-06-24 13:59:52,457 - INFO - Epoch 36/120
+2024-06-24 13:59:59,059 - INFO - Train Stats
+Loss:
+  supervised: 0.5381336597835317
+  total: 0.5937991738319397
+  unsupervised: 0.0012723544667310575
+  unsupervised_weighted: 0.05566550769350108
+Metrics:
+  kitti_dice: 0.8559401385924396
+  kitti_jaccard_macro: 0.3931221891851986
+  kitti_jaccard_micro: 0.7640878698405098
+
+2024-06-24 13:59:59,496 - INFO - Validation Stats
+Loss:
+  total: 0.9692878127098083
+Metrics:
+  kitti_dice: 0.7214046915372213
+  kitti_jaccard_macro: 0.2652050207058589
+  kitti_jaccard_micro: 0.5784582098325094
+
+2024-06-24 13:59:59,496 - INFO - Epoch 37/120
+2024-06-24 14:00:06,118 - INFO - Train Stats
+Loss:
+  supervised: 0.6136379802928251
+  total: 0.6725273167385775
+  unsupervised: 0.0013086519834092434
+  unsupervised_weighted: 0.05888933973277316
+Metrics:
+  kitti_dice: 0.8050465653924381
+  kitti_jaccard_macro: 0.3364356081275379
+  kitti_jaccard_micro: 0.694878537865246
+
+2024-06-24 14:00:06,551 - INFO - Validation Stats
+Loss:
+  total: 0.9547950228055319
+Metrics:
+  kitti_dice: 0.7396360238393148
+  kitti_jaccard_macro: 0.27029722432295483
+  kitti_jaccard_micro: 0.6004226803779602
+
+2024-06-24 14:00:06,551 - INFO - Epoch 38/120
+2024-06-24 14:00:13,188 - INFO - Train Stats
+Loss:
+  supervised: 0.580982555361355
+  total: 0.6448866426944733
+  unsupervised: 0.0013817100689801224
+  unsupervised_weighted: 0.06390409083927379
+Metrics:
+  kitti_dice: 0.8323328565148747
+  kitti_jaccard_macro: 0.37665509476381187
+  kitti_jaccard_micro: 0.7316472337526434
+
+2024-06-24 14:00:13,619 - INFO - Validation Stats
+Loss:
+  total: 0.9269387125968933
+Metrics:
+  kitti_dice: 0.7562848329544067
+  kitti_jaccard_macro: 0.27727893988291424
+  kitti_jaccard_micro: 0.6246466040611267
+
+2024-06-24 14:00:13,619 - INFO - Epoch 39/120
+2024-06-24 14:00:20,283 - INFO - Train Stats
+Loss:
+  supervised: 0.5788725263932172
+  total: 0.6377367920735303
+  unsupervised: 0.001239247599561863
+  unsupervised_weighted: 0.0588642608593492
+Metrics:
+  kitti_dice: 0.8334030999856836
+  kitti_jaccard_macro: 0.3665037391816868
+  kitti_jaccard_micro: 0.7325978384298437
+
+2024-06-24 14:00:20,714 - INFO - Validation Stats
+Loss:
+  total: 1.1295317808787029
+Metrics:
+  kitti_dice: 0.660984734694163
+  kitti_jaccard_macro: 0.23842377960681915
+  kitti_jaccard_micro: 0.5064054230848948
+
+2024-06-24 14:00:20,715 - INFO - Epoch 40/120
+2024-06-24 14:00:27,388 - INFO - Train Stats
+Loss:
+  supervised: 0.5673132950768751
+  total: 0.6291759873137754
+  unsupervised: 0.001268978151903652
+  unsupervised_weighted: 0.061862684348050284
+Metrics:
+  kitti_dice: 0.8272387665860793
+  kitti_jaccard_macro: 0.36698157734730663
+  kitti_jaccard_micro: 0.7378843584481407
+
+2024-06-24 14:00:27,823 - INFO - Validation Stats
+Loss:
+  total: 1.0160179336865742
+Metrics:
+  kitti_dice: 0.7038110295931498
+  kitti_jaccard_macro: 0.2661556005477905
+  kitti_jaccard_micro: 0.5567109485467275
+
+2024-06-24 14:00:27,935 - INFO - Epoch 41/120
+2024-06-24 14:00:34,615 - INFO - Train Stats
+Loss:
+  supervised: 0.6002237148144666
+  total: 0.6644293911316815
+  unsupervised: 0.0012841135818127763
+  unsupervised_weighted: 0.0642056785085622
+Metrics:
+  kitti_dice: 0.8243917963084053
+  kitti_jaccard_macro: 0.3725061925018535
+  kitti_jaccard_micro: 0.7206426403101753
+
+2024-06-24 14:00:35,048 - INFO - Validation Stats
+Loss:
+  total: 1.0405560533205669
+Metrics:
+  kitti_dice: 0.7064498464266459
+  kitti_jaccard_macro: 0.2643282860517502
+  kitti_jaccard_micro: 0.5599092642466227
+
+2024-06-24 14:00:35,048 - INFO - Epoch 42/120
+2024-06-24 14:00:41,763 - INFO - Train Stats
+Loss:
+  supervised: 0.5596056948689854
+  total: 0.6215252192581401
+  unsupervised: 0.001208185899646624
+  unsupervised_weighted: 0.06191952789531035
+Metrics:
+  kitti_dice: 0.8230262679212234
+  kitti_jaccard_macro: 0.36949162711115446
+  kitti_jaccard_micro: 0.7176284982877619
+
+2024-06-24 14:00:42,193 - INFO - Validation Stats
+Loss:
+  total: 0.9813811381657919
+Metrics:
+  kitti_dice: 0.7171711524327596
+  kitti_jaccard_macro: 0.2629044900337855
+  kitti_jaccard_micro: 0.5749188860257467
+
+2024-06-24 14:00:42,194 - INFO - Epoch 43/120
+2024-06-24 14:00:48,894 - INFO - Train Stats
+Loss:
+  supervised: 0.5870087287005257
+  total: 0.6624992542407092
+  unsupervised: 0.0014379147666177766
+  unsupervised_weighted: 0.07549052532104884
+Metrics:
+  kitti_dice: 0.8150734200197107
+  kitti_jaccard_macro: 0.3670764981823809
+  kitti_jaccard_micro: 0.724017504383536
+
+2024-06-24 14:00:49,322 - INFO - Validation Stats
+Loss:
+  total: 0.9532773892084757
+Metrics:
+  kitti_dice: 0.7390070954958597
+  kitti_jaccard_macro: 0.27421219150225323
+  kitti_jaccard_micro: 0.6010789672533671
+
+2024-06-24 14:00:49,323 - INFO - Epoch 44/120
+2024-06-24 14:00:56,043 - INFO - Train Stats
+Loss:
+  supervised: 0.550795761977925
+  total: 0.6161282816353966
+  unsupervised: 0.001215488656752688
+  unsupervised_weighted: 0.06533251571304657
+Metrics:
+  kitti_dice: 0.8373243282823002
+  kitti_jaccard_macro: 0.3798190521843293
+  kitti_jaccard_micro: 0.7390600127332351
+
+2024-06-24 14:00:56,475 - INFO - Validation Stats
+Loss:
+  total: 1.0756782094637554
+Metrics:
+  kitti_dice: 0.6750349402427673
+  kitti_jaccard_macro: 0.24014766017595926
+  kitti_jaccard_micro: 0.5233308176199595
+
+2024-06-24 14:00:56,475 - INFO - Epoch 45/120
+2024-06-24 14:01:03,181 - INFO - Train Stats
+Loss:
+  supervised: 0.613278164583094
+  total: 0.6758627838948194
+  unsupervised: 0.0011379021521219436
+  unsupervised_weighted: 0.06258461821605177
+Metrics:
+  kitti_dice: 0.833268007811378
+  kitti_jaccard_macro: 0.37906811167212096
+  kitti_jaccard_micro: 0.7324764693484587
+
+2024-06-24 14:01:03,612 - INFO - Validation Stats
+Loss:
+  total: 0.9726500709851583
+Metrics:
+  kitti_dice: 0.7323188980420431
+  kitti_jaccard_macro: 0.2726036508878072
+  kitti_jaccard_micro: 0.5919609665870667
+
+2024-06-24 14:01:03,612 - INFO - Epoch 46/120
+2024-06-24 14:01:10,347 - INFO - Train Stats
+Loss:
+  supervised: 0.5150307820123785
+  total: 0.5783642355133506
+  unsupervised: 0.001125928117236232
+  unsupervised_weighted: 0.06333345700712766
+Metrics:
+  kitti_dice: 0.8505381836610681
+  kitti_jaccard_macro: 0.393900033305673
+  kitti_jaccard_micro: 0.759412919773775
+
+2024-06-24 14:01:10,784 - INFO - Validation Stats
+Loss:
+  total: 0.9991763035456339
+Metrics:
+  kitti_dice: 0.7244367798169454
+  kitti_jaccard_macro: 0.2671858121951421
+  kitti_jaccard_micro: 0.5817500154177347
+
+2024-06-24 14:01:10,784 - INFO - Epoch 47/120
+2024-06-24 14:01:17,502 - INFO - Train Stats
+Loss:
+  supervised: 0.5444113962790545
+  total: 0.6113258617765763
+  unsupervised: 0.0011637298088959034
+  unsupervised_weighted: 0.066914463744444
+Metrics:
+  kitti_dice: 0.8618304589215446
+  kitti_jaccard_macro: 0.40457724122440114
+  kitti_jaccard_micro: 0.7710483144311344
+
+2024-06-24 14:01:17,933 - INFO - Validation Stats
+Loss:
+  total: 0.9775752425193787
+Metrics:
+  kitti_dice: 0.7397051652272543
+  kitti_jaccard_macro: 0.2715400258700053
+  kitti_jaccard_micro: 0.6013749639193217
+
+2024-06-24 14:01:17,933 - INFO - Epoch 48/120
+2024-06-24 14:01:24,652 - INFO - Train Stats
+Loss:
+  supervised: 0.5666074665153727
+  total: 0.6317263806567472
+  unsupervised: 0.0011084069881369086
+  unsupervised_weighted: 0.06511891041608418
+Metrics:
+  kitti_dice: 0.8341049551963806
+  kitti_jaccard_macro: 0.38380103426821094
+  kitti_jaccard_micro: 0.7452037597403807
+
+2024-06-24 14:01:25,083 - INFO - Validation Stats
+Loss:
+  total: 1.064001480738322
+Metrics:
+  kitti_dice: 0.6935197114944458
+  kitti_jaccard_macro: 0.25381115078926086
+  kitti_jaccard_micro: 0.5449723502000173
+
+2024-06-24 14:01:25,083 - INFO - Epoch 49/120
+2024-06-24 14:01:31,794 - INFO - Train Stats
+Loss:
+  supervised: 0.5743741620989407
+  total: 0.6481633817448336
+  unsupervised: 0.001229820478543201
+  unsupervised_weighted: 0.07378923016435959
+Metrics:
+  kitti_dice: 0.8332603223183576
+  kitti_jaccard_macro: 0.37953637452686534
+  kitti_jaccard_micro: 0.7348018954781925
+
+2024-06-24 14:01:32,225 - INFO - Validation Stats
+Loss:
+  total: 0.9602728883425394
+Metrics:
+  kitti_dice: 0.7337220311164856
+  kitti_jaccard_macro: 0.27248931924502057
+  kitti_jaccard_micro: 0.5957633058230082
+
+2024-06-24 14:01:32,225 - INFO - Epoch 50/120
+2024-06-24 14:01:38,974 - INFO - Train Stats
+Loss:
+  supervised: 0.5742078686461729
+  total: 0.6521490742178524
+  unsupervised: 0.0012725095011239104
+  unsupervised_weighted: 0.07794120666735313
+Metrics:
+  kitti_dice: 0.8535756223341998
+  kitti_jaccard_macro: 0.40702952356899486
+  kitti_jaccard_micro: 0.7591444464290843
+
+2024-06-24 14:01:39,402 - INFO - Validation Stats
+Loss:
+  total: 0.9837876756985983
+Metrics:
+  kitti_dice: 0.7183011571566263
+  kitti_jaccard_macro: 0.2598998049894969
+  kitti_jaccard_micro: 0.5752635796864828
+
+2024-06-24 14:01:39,516 - INFO - Epoch 51/120
+2024-06-24 14:01:46,226 - INFO - Train Stats
+Loss:
+  supervised: 0.5328547253328211
+  total: 0.5996487999663633
+  unsupervised: 0.0010687052546178594
+  unsupervised_weighted: 0.06679407857796725
+Metrics:
+  kitti_dice: 0.8452476438354043
+  kitti_jaccard_macro: 0.4036773206556545
+  kitti_jaccard_micro: 0.7492119459544911
+
+2024-06-24 14:01:46,662 - INFO - Validation Stats
+Loss:
+  total: 0.9334834814071655
+Metrics:
+  kitti_dice: 0.7385367353757223
+  kitti_jaccard_macro: 0.2696104943752289
+  kitti_jaccard_micro: 0.600910504659017
+
+2024-06-24 14:01:46,662 - INFO - Epoch 52/120
+2024-06-24 14:01:53,377 - INFO - Train Stats
+Loss:
+  supervised: 0.5143379095722648
+  total: 0.5824338145115796
+  unsupervised: 0.0010681710829136565
+  unsupervised_weighted: 0.06809590581585379
+Metrics:
+  kitti_dice: 0.861537358340095
+  kitti_jaccard_macro: 0.4076278507709503
+  kitti_jaccard_micro: 0.7712088577887591
+
+2024-06-24 14:01:53,814 - INFO - Validation Stats
+Loss:
+  total: 0.9537021120389303
+Metrics:
+  kitti_dice: 0.7364614208539327
+  kitti_jaccard_macro: 0.27141185601552326
+  kitti_jaccard_micro: 0.5988146662712097
+
+2024-06-24 14:01:53,814 - INFO - Epoch 53/120
+2024-06-24 14:02:00,563 - INFO - Train Stats
+Loss:
+  supervised: 0.5040586327805239
+  total: 0.5729486539083368
+  unsupervised: 0.0010598464423845358
+  unsupervised_weighted: 0.06889001893646576
+Metrics:
+  kitti_dice: 0.870633907177869
+  kitti_jaccard_macro: 0.42115818051730886
+  kitti_jaccard_micro: 0.7861976483288933
+
+2024-06-24 14:02:00,996 - INFO - Validation Stats
+Loss:
+  total: 0.9300627708435059
+Metrics:
+  kitti_dice: 0.7460651199022929
+  kitti_jaccard_macro: 0.2732744763294856
+  kitti_jaccard_micro: 0.6107191443443298
+
+2024-06-24 14:02:00,996 - INFO - Epoch 54/120
+2024-06-24 14:02:07,736 - INFO - Train Stats
+Loss:
+  supervised: 0.5436303177300621
+  total: 0.6223518147188074
+  unsupervised: 0.0011882490293561097
+  unsupervised_weighted: 0.07872149896095781
+Metrics:
+  kitti_dice: 0.8353119176976821
+  kitti_jaccard_macro: 0.38286082008305716
+  kitti_jaccard_micro: 0.738953734145445
+
+2024-06-24 14:02:08,169 - INFO - Validation Stats
+Loss:
+  total: 0.9504345456759135
+Metrics:
+  kitti_dice: 0.7349114616711935
+  kitti_jaccard_macro: 0.2711266080538432
+  kitti_jaccard_micro: 0.5960263212521871
+
+2024-06-24 14:02:08,169 - INFO - Epoch 55/120
+2024-06-24 14:02:14,887 - INFO - Train Stats
+Loss:
+  supervised: 0.5252237828338847
+  total: 0.6109144389629364
+  unsupervised: 0.0012694911325953023
+  unsupervised_weighted: 0.0856906508698183
+Metrics:
+  kitti_dice: 0.8294949776986066
+  kitti_jaccard_macro: 0.4053701109745923
+  kitti_jaccard_micro: 0.7299447024569792
+
+2024-06-24 14:02:15,367 - INFO - Validation Stats
+Loss:
+  total: 0.9086101651191711
+Metrics:
+  kitti_dice: 0.7556508779525757
+  kitti_jaccard_macro: 0.28219035267829895
+  kitti_jaccard_micro: 0.6229851444562277
+
+2024-06-24 14:02:15,367 - INFO - Epoch 56/120
+2024-06-24 14:02:22,099 - INFO - Train Stats
+Loss:
+  supervised: 0.5393827881883172
+  total: 0.6247576860820546
+  unsupervised: 0.00124181666657986
+  unsupervised_weighted: 0.08537489592152483
+Metrics:
+  kitti_dice: 0.8432627811151392
+  kitti_jaccard_macro: 0.38468623687239256
+  kitti_jaccard_micro: 0.7491951970493093
+
+2024-06-24 14:02:22,532 - INFO - Validation Stats
+Loss:
+  total: 0.9934700131416321
+Metrics:
+  kitti_dice: 0.7399782339731852
+  kitti_jaccard_macro: 0.27078909675280255
+  kitti_jaccard_micro: 0.6020600001017252
+
+2024-06-24 14:02:22,532 - INFO - Epoch 57/120
+2024-06-24 14:02:29,254 - INFO - Train Stats
+Loss:
+  supervised: 0.5569344040225533
+  total: 0.6485610989963307
+  unsupervised: 0.0013089526944574626
+  unsupervised_weighted: 0.0916266881806009
+Metrics:
+  kitti_dice: 0.8535011340590084
+  kitti_jaccard_macro: 0.41157769455629234
+  kitti_jaccard_micro: 0.7598198476959678
+
+2024-06-24 14:02:29,687 - INFO - Validation Stats
+Loss:
+  total: 0.9551163117090861
+Metrics:
+  kitti_dice: 0.7485927144686381
+  kitti_jaccard_macro: 0.27607165773709613
+  kitti_jaccard_micro: 0.6139463384946188
+
+2024-06-24 14:02:29,688 - INFO - Epoch 58/120
+2024-06-24 14:02:36,401 - INFO - Train Stats
+Loss:
+  supervised: 0.5587100561927346
+  total: 0.6430593974450055
+  unsupervised: 0.0011838503243565997
+  unsupervised_weighted: 0.08434933621217222
+Metrics:
+  kitti_dice: 0.837131423108718
+  kitti_jaccard_macro: 0.38273685469346885
+  kitti_jaccard_micro: 0.7472751421086928
+
+2024-06-24 14:02:36,842 - INFO - Validation Stats
+Loss:
+  total: 0.994076689084371
+Metrics:
+  kitti_dice: 0.7263699173927307
+  kitti_jaccard_macro: 0.2677234361569087
+  kitti_jaccard_micro: 0.5851264993349711
+
+2024-06-24 14:02:36,842 - INFO - Epoch 59/120
+2024-06-24 14:02:43,575 - INFO - Train Stats
+Loss:
+  supervised: 0.5242986188215368
+  total: 0.6133388017906862
+  unsupervised: 0.0012281404274022754
+  unsupervised_weighted: 0.0890401799012633
+Metrics:
+  kitti_dice: 0.8585570594843697
+  kitti_jaccard_macro: 0.3930175584905288
+  kitti_jaccard_micro: 0.7653168615172891
+
+2024-06-24 14:02:44,015 - INFO - Validation Stats
+Loss:
+  total: 0.9424181977907816
+Metrics:
+  kitti_dice: 0.7443950573603312
+  kitti_jaccard_macro: 0.2765922198692958
+  kitti_jaccard_micro: 0.6095010836919149
+
+2024-06-24 14:02:44,015 - INFO - Epoch 60/120
+2024-06-24 14:02:50,732 - INFO - Train Stats
+Loss:
+  supervised: 0.5724528361769283
+  total: 0.6485706690479728
+  unsupervised: 0.0010321061263847
+  unsupervised_weighted: 0.07611782673527212
+Metrics:
+  kitti_dice: 0.839255574871512
+  kitti_jaccard_macro: 0.39092769868233623
+  kitti_jaccard_micro: 0.7406849580652574
+
+2024-06-24 14:02:51,168 - INFO - Validation Stats
+Loss:
+  total: 0.9248316685358683
+Metrics:
+  kitti_dice: 0.742596427599589
+  kitti_jaccard_macro: 0.28025565048058826
+  kitti_jaccard_micro: 0.6066297292709351
+
+2024-06-24 14:02:51,317 - INFO - Epoch 61/120
+2024-06-24 14:02:58,033 - INFO - Train Stats
+Loss:
+  supervised: 0.5957423921893624
+  total: 0.6780629385920132
+  unsupervised: 0.0010976073167779867
+  unsupervised_weighted: 0.0823205490322674
+Metrics:
+  kitti_dice: 0.8444290231255924
+  kitti_jaccard_macro: 0.3836972976432127
+  kitti_jaccard_micro: 0.7476089491563684
+
+2024-06-24 14:02:58,476 - INFO - Validation Stats
+Loss:
+  total: 0.8961524566014608
+Metrics:
+  kitti_dice: 0.7469594478607178
+  kitti_jaccard_macro: 0.27828729152679443
+  kitti_jaccard_micro: 0.6130485733350118
+
+2024-06-24 14:02:58,476 - INFO - Epoch 62/120
+2024-06-24 14:03:05,212 - INFO - Train Stats
+Loss:
+  supervised: 0.5361523207496194
+  total: 0.6139878578045789
+  unsupervised: 0.001037807169589488
+  unsupervised_weighted: 0.07783553771236364
+Metrics:
+  kitti_dice: 0.8538921966272242
+  kitti_jaccard_macro: 0.42779872873250174
+  kitti_jaccard_micro: 0.7613600737908307
+
+2024-06-24 14:03:05,652 - INFO - Validation Stats
+Loss:
+  total: 0.9097381432851156
+Metrics:
+  kitti_dice: 0.7543676495552063
+  kitti_jaccard_macro: 0.2797762254873912
+  kitti_jaccard_micro: 0.6211613814036051
+
+2024-06-24 14:03:05,652 - INFO - Epoch 63/120
+2024-06-24 14:03:12,359 - INFO - Train Stats
+Loss:
+  supervised: 0.5566784248632544
+  total: 0.6485937605885899
+  unsupervised: 0.0012255378327715922
+  unsupervised_weighted: 0.09191533682100914
+Metrics:
+  kitti_dice: 0.837308736408458
+  kitti_jaccard_macro: 0.3858804702758789
+  kitti_jaccard_micro: 0.7511005331488216
+
+2024-06-24 14:03:12,793 - INFO - Validation Stats
+Loss:
+  total: 0.9982123176256815
+Metrics:
+  kitti_dice: 0.7209743857383728
+  kitti_jaccard_macro: 0.26361719767252606
+  kitti_jaccard_micro: 0.5795426567395529
+
+2024-06-24 14:03:12,793 - INFO - Epoch 64/120
+2024-06-24 14:03:19,517 - INFO - Train Stats
+Loss:
+  supervised: 0.5794774206245646
+  total: 0.6688586175441742
+  unsupervised: 0.0011917493607410613
+  unsupervised_weighted: 0.0893812015214387
+Metrics:
+  kitti_dice: 0.8169345014235553
+  kitti_jaccard_macro: 0.34815289430758534
+  kitti_jaccard_micro: 0.712068217642167
+
+2024-06-24 14:03:19,948 - INFO - Validation Stats
+Loss:
+  total: 0.9640475114186605
+Metrics:
+  kitti_dice: 0.7258838216463724
+  kitti_jaccard_macro: 0.2702537178993225
+  kitti_jaccard_micro: 0.584917684396108
+
+2024-06-24 14:03:19,948 - INFO - Epoch 65/120
+2024-06-24 14:03:26,689 - INFO - Train Stats
+Loss:
+  supervised: 0.5301941896186155
+  total: 0.615175766103408
+  unsupervised: 0.0011330876766484888
+  unsupervised_weighted: 0.08498157560825348
+Metrics:
+  kitti_dice: 0.8381663385559531
+  kitti_jaccard_macro: 0.4121403150698718
+  kitti_jaccard_micro: 0.7448112701668459
+
+2024-06-24 14:03:27,127 - INFO - Validation Stats
+Loss:
+  total: 0.8775941530863444
+Metrics:
+  kitti_dice: 0.7606898347536722
+  kitti_jaccard_macro: 0.2824809749921163
+  kitti_jaccard_micro: 0.6303910414377848
+
+2024-06-24 14:03:27,127 - INFO - Epoch 66/120
+2024-06-24 14:03:33,829 - INFO - Train Stats
+Loss:
+  supervised: 0.5617090077961192
+  total: 0.6413714657811558
+  unsupervised: 0.0010621660313678578
+  unsupervised_weighted: 0.07966245206839898
+Metrics:
+  kitti_dice: 0.8482751565821031
+  kitti_jaccard_macro: 0.39453532590585594
+  kitti_jaccard_micro: 0.7517521942363066
+
+2024-06-24 14:03:34,263 - INFO - Validation Stats
+Loss:
+  total: 0.9199761946996053
+Metrics:
+  kitti_dice: 0.7451504270235697
+  kitti_jaccard_macro: 0.27826515833536786
+  kitti_jaccard_micro: 0.6097203691800436
+
+2024-06-24 14:03:34,263 - INFO - Epoch 67/120
+2024-06-24 14:03:40,979 - INFO - Train Stats
+Loss:
+  supervised: 0.5059792750021991
+  total: 0.5902742235099568
+  unsupervised: 0.0011239327603321085
+  unsupervised_weighted: 0.08429495639660779
+Metrics:
+  kitti_dice: 0.8514451139113483
+  kitti_jaccard_macro: 0.3979114101213567
+  kitti_jaccard_micro: 0.7569624781608582
+
+2024-06-24 14:03:41,416 - INFO - Validation Stats
+Loss:
+  total: 0.9222274820009867
+Metrics:
+  kitti_dice: 0.7432026664415995
+  kitti_jaccard_macro: 0.27890004714330036
+  kitti_jaccard_micro: 0.6075838804244995
+
+2024-06-24 14:03:41,416 - INFO - Epoch 68/120
+2024-06-24 14:03:48,136 - INFO - Train Stats
+Loss:
+  supervised: 0.5366014978464912
+  total: 0.61657554787748
+  unsupervised: 0.001066320582621676
+  unsupervised_weighted: 0.07997404323781238
+Metrics:
+  kitti_dice: 0.8729175048715928
+  kitti_jaccard_macro: 0.4291689869235544
+  kitti_jaccard_micro: 0.7897438722498277
+
+2024-06-24 14:03:48,573 - INFO - Validation Stats
+Loss:
+  total: 0.8888352314631144
+Metrics:
+  kitti_dice: 0.7603657841682434
+  kitti_jaccard_macro: 0.28493893643220264
+  kitti_jaccard_micro: 0.6297286947568258
+
+2024-06-24 14:03:48,573 - INFO - Epoch 69/120
+2024-06-24 14:03:55,298 - INFO - Train Stats
+Loss:
+  supervised: 0.5229849394629983
+  total: 0.6046387342845693
+  unsupervised: 0.0010887172196389122
+  unsupervised_weighted: 0.0816537910962806
+Metrics:
+  kitti_dice: 0.8520153515479144
+  kitti_jaccard_macro: 0.397512996021439
+  kitti_jaccard_micro: 0.7573349721291486
+
+2024-06-24 14:03:55,727 - INFO - Validation Stats
+Loss:
+  total: 0.9505590001742045
+Metrics:
+  kitti_dice: 0.7437205910682678
+  kitti_jaccard_macro: 0.2768765240907669
+  kitti_jaccard_micro: 0.6066296497980753
+
+2024-06-24 14:03:55,727 - INFO - Epoch 70/120
+2024-06-24 14:04:02,408 - INFO - Train Stats
+Loss:
+  supervised: 0.5309524167986477
+  total: 0.6083804018357221
+  unsupervised: 0.0010323732173727715
+  unsupervised_weighted: 0.0774279918302508
+Metrics:
+  kitti_dice: 0.8550254001336939
+  kitti_jaccard_macro: 0.414235136088203
+  kitti_jaccard_micro: 0.7637140610638786
+
+2024-06-24 14:04:02,840 - INFO - Validation Stats
+Loss:
+  total: 0.9224731922149658
+Metrics:
+  kitti_dice: 0.7453599174817404
+  kitti_jaccard_macro: 0.28052042921384174
+  kitti_jaccard_micro: 0.609585185845693
+
+2024-06-24 14:04:02,961 - INFO - Epoch 71/120
+2024-06-24 14:04:09,671 - INFO - Train Stats
+Loss:
+  supervised: 0.5635650508544024
+  total: 0.6639738889301524
+  unsupervised: 0.0013387844185618794
+  unsupervised_weighted: 0.10040883150170832
+Metrics:
+  kitti_dice: 0.8423951303257662
+  kitti_jaccard_macro: 0.3922565544352812
+  kitti_jaccard_micro: 0.7572812858749839
+
+2024-06-24 14:04:10,102 - INFO - Validation Stats
+Loss:
+  total: 0.9205922285715739
+Metrics:
+  kitti_dice: 0.7559516032536825
+  kitti_jaccard_macro: 0.2821797728538513
+  kitti_jaccard_micro: 0.6227810581525167
+
+2024-06-24 14:04:10,102 - INFO - Epoch 72/120
+2024-06-24 14:04:16,771 - INFO - Train Stats
+Loss:
+  supervised: 0.5355450440855587
+  total: 0.6221910259302925
+  unsupervised: 0.0011552796658018932
+  unsupervised_weighted: 0.08664597527069204
+Metrics:
+  kitti_dice: 0.8588764667510986
+  kitti_jaccard_macro: 0.41509539940777945
+  kitti_jaccard_micro: 0.7660458648906034
+
+2024-06-24 14:04:17,212 - INFO - Validation Stats
+Loss:
+  total: 0.9384768406550089
+Metrics:
+  kitti_dice: 0.7377427617708842
+  kitti_jaccard_macro: 0.2710929860671361
+  kitti_jaccard_micro: 0.5994843045870463
+
+2024-06-24 14:04:17,212 - INFO - Epoch 73/120
+2024-06-24 14:04:23,848 - INFO - Train Stats
+Loss:
+  supervised: 0.4832472240223604
+  total: 0.5590458792798659
+  unsupervised: 0.0010106487179120235
+  unsupervised_weighted: 0.07579865438096664
+Metrics:
+  kitti_dice: 0.8648662882692674
+  kitti_jaccard_macro: 0.41819606283131766
+  kitti_jaccard_micro: 0.7777476906776428
+
+2024-06-24 14:04:24,286 - INFO - Validation Stats
+Loss:
+  total: 0.9874909520149231
+Metrics:
+  kitti_dice: 0.7289241751035055
+  kitti_jaccard_macro: 0.2706858813762665
+  kitti_jaccard_micro: 0.5883265932401022
+
+2024-06-24 14:04:24,286 - INFO - Epoch 74/120
+2024-06-24 14:04:30,940 - INFO - Train Stats
+Loss:
+  supervised: 0.482155954136568
+  total: 0.5700347931946025
+  unsupervised: 0.0011717177728903206
+  unsupervised_weighted: 0.08787883270312757
+Metrics:
+  kitti_dice: 0.8660946523441988
+  kitti_jaccard_macro: 0.4082997669191921
+  kitti_jaccard_micro: 0.7791452618206248
+
+2024-06-24 14:04:31,365 - INFO - Validation Stats
+Loss:
+  total: 0.9402085145314535
+Metrics:
+  kitti_dice: 0.7434309323628744
+  kitti_jaccard_macro: 0.2755117019017537
+  kitti_jaccard_micro: 0.6065353353818258
+
+2024-06-24 14:04:31,366 - INFO - Epoch 75/120
+2024-06-24 14:04:37,999 - INFO - Train Stats
+Loss:
+  supervised: 0.49835638088338513
+  total: 0.5782505080980413
+  unsupervised: 0.001065255087964675
+  unsupervised_weighted: 0.07989413203562007
+Metrics:
+  kitti_dice: 0.8599689357420978
+  kitti_jaccard_macro: 0.43477482830776887
+  kitti_jaccard_micro: 0.7703744102926815
+
+2024-06-24 14:04:38,429 - INFO - Validation Stats
+Loss:
+  total: 0.9917709628740946
+Metrics:
+  kitti_dice: 0.7272685766220093
+  kitti_jaccard_macro: 0.2694617509841919
+  kitti_jaccard_micro: 0.5859672029813131
+
+2024-06-24 14:04:38,429 - INFO - Epoch 76/120
+2024-06-24 14:04:45,069 - INFO - Train Stats
+Loss:
+  supervised: 0.5133630931377411
+  total: 0.5954396917539484
+  unsupervised: 0.0010943546452943016
+  unsupervised_weighted: 0.08207659839707263
+Metrics:
+  kitti_dice: 0.8696805098477531
+  kitti_jaccard_macro: 0.43537043999223146
+  kitti_jaccard_micro: 0.7869616536533132
+
+2024-06-24 14:04:45,504 - INFO - Validation Stats
+Loss:
+  total: 0.9724564552307129
+Metrics:
+  kitti_dice: 0.7364465196927389
+  kitti_jaccard_macro: 0.2719908356666565
+  kitti_jaccard_micro: 0.5973096688588461
+
+2024-06-24 14:04:45,505 - INFO - Epoch 77/120
+2024-06-24 14:04:52,148 - INFO - Train Stats
+Loss:
+  supervised: 0.5011847843142117
+  total: 0.5802651871653164
+  unsupervised: 0.0010544054299209487
+  unsupervised_weighted: 0.07908040789120338
+Metrics:
+  kitti_dice: 0.8678708462154164
+  kitti_jaccard_macro: 0.4259222027133493
+  kitti_jaccard_micro: 0.7820886618950788
+
+2024-06-24 14:04:52,580 - INFO - Validation Stats
+Loss:
+  total: 0.9265150229136149
+Metrics:
+  kitti_dice: 0.7451064387957255
+  kitti_jaccard_macro: 0.2801637103160222
+  kitti_jaccard_micro: 0.6082043647766113
+
+2024-06-24 14:04:52,580 - INFO - Epoch 78/120
+2024-06-24 14:04:59,241 - INFO - Train Stats
+Loss:
+  supervised: 0.5284756685004515
+  total: 0.6177275408716763
+  unsupervised: 0.0011900249416665995
+  unsupervised_weighted: 0.08925187171382062
+Metrics:
+  kitti_dice: 0.859491698882159
+  kitti_jaccard_macro: 0.4259539123843698
+  kitti_jaccard_micro: 0.7719771458822138
+
+2024-06-24 14:04:59,672 - INFO - Validation Stats
+Loss:
+  total: 0.9098655184110006
+Metrics:
+  kitti_dice: 0.7546509703000387
+  kitti_jaccard_macro: 0.2821861058473587
+  kitti_jaccard_micro: 0.6219449440638224
+
+2024-06-24 14:04:59,672 - INFO - Epoch 79/120
+2024-06-24 14:05:06,314 - INFO - Train Stats
+Loss:
+  supervised: 0.49346263180760774
+  total: 0.5663883738658008
+  unsupervised: 0.0009723432834588868
+  unsupervised_weighted: 0.07292574709829162
+Metrics:
+  kitti_dice: 0.881836852606605
+  kitti_jaccard_macro: 0.45483391775804405
+  kitti_jaccard_micro: 0.8020446195321924
+
+2024-06-24 14:05:06,745 - INFO - Validation Stats
+Loss:
+  total: 0.9496345321337382
+Metrics:
+  kitti_dice: 0.7388041019439697
+  kitti_jaccard_macro: 0.2759527067343394
+  kitti_jaccard_micro: 0.6010329127311707
+
+2024-06-24 14:05:06,745 - INFO - Epoch 80/120
+2024-06-24 14:05:13,360 - INFO - Train Stats
+Loss:
+  supervised: 0.5557115989572862
+  total: 0.6392021845368778
+  unsupervised: 0.001113207750570248
+  unsupervised_weighted: 0.08349058097776245
+Metrics:
+  kitti_dice: 0.8433402811779696
+  kitti_jaccard_macro: 0.4184606767752591
+  kitti_jaccard_micro: 0.7499539010664996
+
+2024-06-24 14:05:13,795 - INFO - Validation Stats
+Loss:
+  total: 0.9331554373105367
+Metrics:
+  kitti_dice: 0.744809607664744
+  kitti_jaccard_macro: 0.27873867253462475
+  kitti_jaccard_micro: 0.6083467205365499
+
+2024-06-24 14:05:13,988 - INFO - Epoch 81/120
+2024-06-24 14:05:20,609 - INFO - Train Stats
+Loss:
+  supervised: 0.5552918332464555
+  total: 0.6544949640245998
+  unsupervised: 0.0013227085172034362
+  unsupervised_weighted: 0.0992031384478597
+Metrics:
+  kitti_dice: 0.834702218280119
+  kitti_jaccard_macro: 0.3741321686436148
+  kitti_jaccard_micro: 0.7329506909146029
+
+2024-06-24 14:05:21,043 - INFO - Validation Stats
+Loss:
+  total: 0.9298551877339681
+Metrics:
+  kitti_dice: 0.7478629151980082
+  kitti_jaccard_macro: 0.27890239159266156
+  kitti_jaccard_micro: 0.6125690340995789
+
+2024-06-24 14:05:21,043 - INFO - Epoch 82/120
+2024-06-24 14:05:27,670 - INFO - Train Stats
+Loss:
+  supervised: 0.5249593573458055
+  total: 0.6040539005223442
+  unsupervised: 0.0010545938275754452
+  unsupervised_weighted: 0.07909453704076655
+Metrics:
+  kitti_dice: 0.8705353561569663
+  kitti_jaccard_macro: 0.42097688597791333
+  kitti_jaccard_micro: 0.783778099452748
+
+2024-06-24 14:05:28,098 - INFO - Validation Stats
+Loss:
+  total: 0.9284964203834534
+Metrics:
+  kitti_dice: 0.7508133848508199
+  kitti_jaccard_macro: 0.2841331164042155
+  kitti_jaccard_micro: 0.6162675221761068
+
+2024-06-24 14:05:28,098 - INFO - Epoch 83/120
+2024-06-24 14:05:34,728 - INFO - Train Stats
+Loss:
+  supervised: 0.47380508920725656
+  total: 0.5459288130788242
+  unsupervised: 0.0009616496356423287
+  unsupervised_weighted: 0.0721237232141635
+Metrics:
+  kitti_dice: 0.8768651695812449
+  kitti_jaccard_macro: 0.44294819586417256
+  kitti_jaccard_micro: 0.7932424124549416
+
+2024-06-24 14:05:35,163 - INFO - Validation Stats
+Loss:
+  total: 0.9694132010142008
+Metrics:
+  kitti_dice: 0.7318198482195536
+  kitti_jaccard_macro: 0.2698281804720561
+  kitti_jaccard_micro: 0.5917960405349731
+
+2024-06-24 14:05:35,163 - INFO - Epoch 84/120
+2024-06-24 14:05:41,795 - INFO - Train Stats
+Loss:
+  supervised: 0.49009620442109947
+  total: 0.5808124577297884
+  unsupervised: 0.001209549979060231
+  unsupervised_weighted: 0.0907162487068597
+Metrics:
+  kitti_dice: 0.8590859385097728
+  kitti_jaccard_macro: 0.4222705767435186
+  kitti_jaccard_micro: 0.7714040033957538
+
+2024-06-24 14:05:42,225 - INFO - Validation Stats
+Loss:
+  total: 0.8937064210573832
+Metrics:
+  kitti_dice: 0.7599134047826132
+  kitti_jaccard_macro: 0.28827646871407825
+  kitti_jaccard_micro: 0.6281755367914835
+
+2024-06-24 14:05:42,225 - INFO - Epoch 85/120
+2024-06-24 14:05:48,867 - INFO - Train Stats
+Loss:
+  supervised: 0.5274882562020246
+  total: 0.6078921836965224
+  unsupervised: 0.0010720525135505287
+  unsupervised_weighted: 0.0804039382320993
+Metrics:
+  kitti_dice: 0.8412553247283486
+  kitti_jaccard_macro: 0.4220539594397825
+  kitti_jaccard_micro: 0.7531506384120268
+
+2024-06-24 14:05:49,294 - INFO - Validation Stats
+Loss:
+  total: 0.9503111243247986
+Metrics:
+  kitti_dice: 0.7373605966567993
+  kitti_jaccard_macro: 0.27754323681195575
+  kitti_jaccard_micro: 0.5987669825553894
+
+2024-06-24 14:05:49,294 - INFO - Epoch 86/120
+2024-06-24 14:05:55,927 - INFO - Train Stats
+Loss:
+  supervised: 0.4711153419578777
+  total: 0.535371803185519
+  unsupervised: 0.000856752774459036
+  unsupervised_weighted: 0.06425645881715943
+Metrics:
+  kitti_dice: 0.8864961722317863
+  kitti_jaccard_macro: 0.45042382618960214
+  kitti_jaccard_micro: 0.8076994734651902
+
+2024-06-24 14:05:56,397 - INFO - Validation Stats
+Loss:
+  total: 0.863054354985555
+Metrics:
+  kitti_dice: 0.7677907347679138
+  kitti_jaccard_macro: 0.2918602079153061
+  kitti_jaccard_micro: 0.6392187674840292
+
+2024-06-24 14:05:56,511 - INFO - Epoch 87/120
+2024-06-24 14:06:03,127 - INFO - Train Stats
+Loss:
+  supervised: 0.5115374589667601
+  total: 0.591930676909054
+  unsupervised: 0.0010719095914871158
+  unsupervised_weighted: 0.08039321991450646
+Metrics:
+  kitti_dice: 0.8621580986415639
+  kitti_jaccard_macro: 0.40816754803938027
+  kitti_jaccard_micro: 0.7747259630876429
+
+2024-06-24 14:06:03,557 - INFO - Validation Stats
+Loss:
+  total: 0.9141342639923096
+Metrics:
+  kitti_dice: 0.7571968237559
+  kitti_jaccard_macro: 0.28540151317914325
+  kitti_jaccard_micro: 0.6248176097869873
+
+2024-06-24 14:06:03,557 - INFO - Epoch 88/120
+2024-06-24 14:06:10,184 - INFO - Train Stats
+Loss:
+  supervised: 0.5325842043932747
+  total: 0.6222546048024121
+  unsupervised: 0.0011956052724545931
+  unsupervised_weighted: 0.0896703958073083
+Metrics:
+  kitti_dice: 0.8545718403423533
+  kitti_jaccard_macro: 0.42191051122020273
+  kitti_jaccard_micro: 0.762741448248134
+
+2024-06-24 14:06:10,615 - INFO - Validation Stats
+Loss:
+  total: 0.9156974951426188
+Metrics:
+  kitti_dice: 0.753362794717153
+  kitti_jaccard_macro: 0.28627415498097736
+  kitti_jaccard_micro: 0.6200911998748779
+
+2024-06-24 14:06:10,615 - INFO - Epoch 89/120
+2024-06-24 14:06:17,245 - INFO - Train Stats
+Loss:
+  supervised: 0.5204723976990756
+  total: 0.6057419776916504
+  unsupervised: 0.0011369277661501924
+  unsupervised_weighted: 0.08526958240305677
+Metrics:
+  kitti_dice: 0.8396920596852022
+  kitti_jaccard_macro: 0.4033176986610188
+  kitti_jaccard_micro: 0.7458377112360561
+
+2024-06-24 14:06:17,682 - INFO - Validation Stats
+Loss:
+  total: 0.9108157356580099
+Metrics:
+  kitti_dice: 0.757296601931254
+  kitti_jaccard_macro: 0.2851719558238983
+  kitti_jaccard_micro: 0.624598761399587
+
+2024-06-24 14:06:17,682 - INFO - Epoch 90/120
+2024-06-24 14:06:24,311 - INFO - Train Stats
+Loss:
+  supervised: 0.4637562702683842
+  total: 0.5365130726028892
+  unsupervised: 0.0009700907702448175
+  unsupervised_weighted: 0.07275680759373833
+Metrics:
+  kitti_dice: 0.8760619163513184
+  kitti_jaccard_macro: 0.44852976939257455
+  kitti_jaccard_micro: 0.794005457092734
+
+2024-06-24 14:06:24,744 - INFO - Validation Stats
+Loss:
+  total: 0.9169609546661377
+Metrics:
+  kitti_dice: 0.7533307075500488
+  kitti_jaccard_macro: 0.2872847964366277
+  kitti_jaccard_micro: 0.6208905577659607
+
+2024-06-24 14:06:24,854 - INFO - Epoch 91/120
+2024-06-24 14:06:31,487 - INFO - Train Stats
+Loss:
+  supervised: 0.5196683231522056
+  total: 0.59866865066921
+  unsupervised: 0.001053337605245521
+  unsupervised_weighted: 0.0790003211620976
+Metrics:
+  kitti_dice: 0.862881667473737
+  kitti_jaccard_macro: 0.41943637851406546
+  kitti_jaccard_micro: 0.7756873228970695
+
+2024-06-24 14:06:31,921 - INFO - Validation Stats
+Loss:
+  total: 0.959341029326121
+Metrics:
+  kitti_dice: 0.7411601742108663
+  kitti_jaccard_macro: 0.27516353130340576
+  kitti_jaccard_micro: 0.6040921211242676
+
+2024-06-24 14:06:31,921 - INFO - Epoch 92/120
+2024-06-24 14:06:38,551 - INFO - Train Stats
+Loss:
+  supervised: 0.4748412326854818
+  total: 0.5438138579621035
+  unsupervised: 0.0009196349625092219
+  unsupervised_weighted: 0.06897262177046608
+Metrics:
+  kitti_dice: 0.8827573867405162
+  kitti_jaccard_macro: 0.4455200468792635
+  kitti_jaccard_micro: 0.8024792460834279
+
+2024-06-24 14:06:38,980 - INFO - Validation Stats
+Loss:
+  total: 0.9319390455881754
+Metrics:
+  kitti_dice: 0.7508815924326578
+  kitti_jaccard_macro: 0.28403520087401074
+  kitti_jaccard_micro: 0.6162744760513306
+
+2024-06-24 14:06:38,980 - INFO - Epoch 93/120
+2024-06-24 14:06:45,613 - INFO - Train Stats
+Loss:
+  supervised: 0.5473459818783928
+  total: 0.6203499664278591
+  unsupervised: 0.0009733863339266356
+  unsupervised_weighted: 0.07300397556494265
+Metrics:
+  kitti_dice: 0.8770078946562374
+  kitti_jaccard_macro: 0.43185478974791136
+  kitti_jaccard_micro: 0.794475324013654
+
+2024-06-24 14:06:46,044 - INFO - Validation Stats
+Loss:
+  total: 0.9512885808944702
+Metrics:
+  kitti_dice: 0.746556301911672
+  kitti_jaccard_macro: 0.2801043689250946
+  kitti_jaccard_micro: 0.6101203362147013
+
+2024-06-24 14:06:46,044 - INFO - Epoch 94/120
+2024-06-24 14:06:52,673 - INFO - Train Stats
+Loss:
+  supervised: 0.5564531613798702
+  total: 0.6457899353083443
+  unsupervised: 0.0011911569745279849
+  unsupervised_weighted: 0.08933677261366564
+Metrics:
+  kitti_dice: 0.8546847420580247
+  kitti_jaccard_macro: 0.43014175663976106
+  kitti_jaccard_micro: 0.7664103578118717
+
+2024-06-24 14:06:53,104 - INFO - Validation Stats
+Loss:
+  total: 0.9368285536766052
+Metrics:
+  kitti_dice: 0.748606006304423
+  kitti_jaccard_macro: 0.2773066113392512
+  kitti_jaccard_micro: 0.6136106848716736
+
+2024-06-24 14:06:53,104 - INFO - Epoch 95/120
+2024-06-24 14:06:59,723 - INFO - Train Stats
+Loss:
+  supervised: 0.48018314733224754
+  total: 0.5464858903604395
+  unsupervised: 0.0008840365266865667
+  unsupervised_weighted: 0.06630273996030583
+Metrics:
+  kitti_dice: 0.8699455296292025
+  kitti_jaccard_macro: 0.4313044705811669
+  kitti_jaccard_micro: 0.7887963582487667
+
+2024-06-24 14:07:00,158 - INFO - Validation Stats
+Loss:
+  total: 0.9378724098205566
+Metrics:
+  kitti_dice: 0.7482465902964274
+  kitti_jaccard_macro: 0.28021643062432605
+  kitti_jaccard_micro: 0.6127123435338339
+
+2024-06-24 14:07:00,158 - INFO - Epoch 96/120
+2024-06-24 14:07:06,803 - INFO - Train Stats
+Loss:
+  supervised: 0.5585839783444124
+  total: 0.645943804698832
+  unsupervised: 0.0011647977380027227
+  unsupervised_weighted: 0.0873598302988445
+Metrics:
+  kitti_dice: 0.8455305835779976
+  kitti_jaccard_macro: 0.40516306722865386
+  kitti_jaccard_micro: 0.755579997511471
+
+2024-06-24 14:07:07,235 - INFO - Validation Stats
+Loss:
+  total: 0.9439053932825724
+Metrics:
+  kitti_dice: 0.7444620728492737
+  kitti_jaccard_macro: 0.279397318760554
+  kitti_jaccard_micro: 0.6079117854436239
+
+2024-06-24 14:07:07,235 - INFO - Epoch 97/120
+2024-06-24 14:07:13,861 - INFO - Train Stats
+Loss:
+  supervised: 0.5358962486771977
+  total: 0.6169721501715043
+  unsupervised: 0.0010810118915020104
+  unsupervised_weighted: 0.08107589316718719
+Metrics:
+  kitti_dice: 0.8673308035906624
+  kitti_jaccard_macro: 0.43195515345124635
+  kitti_jaccard_micro: 0.7808159624829012
+
+2024-06-24 14:07:14,294 - INFO - Validation Stats
+Loss:
+  total: 0.9326716462771097
+Metrics:
+  kitti_dice: 0.7450580596923828
+  kitti_jaccard_macro: 0.2788083801666896
+  kitti_jaccard_micro: 0.6084842085838318
+
+2024-06-24 14:07:14,294 - INFO - Epoch 98/120
+2024-06-24 14:07:20,935 - INFO - Train Stats
+Loss:
+  supervised: 0.5073841705041773
+  total: 0.5850611346609452
+  unsupervised: 0.0010356929406578489
+  unsupervised_weighted: 0.07767696963513598
+Metrics:
+  kitti_dice: 0.8458706771626192
+  kitti_jaccard_macro: 0.398386571337195
+  kitti_jaccard_micro: 0.751012921333313
+
+2024-06-24 14:07:21,368 - INFO - Validation Stats
+Loss:
+  total: 0.9135709603627523
+Metrics:
+  kitti_dice: 0.7525925040245056
+  kitti_jaccard_macro: 0.28234249353408813
+  kitti_jaccard_micro: 0.6184846957524618
+
+2024-06-24 14:07:21,368 - INFO - Epoch 99/120
+2024-06-24 14:07:27,976 - INFO - Train Stats
+Loss:
+  supervised: 0.4774220585823059
+  total: 0.5562240516438204
+  unsupervised: 0.0010506933082497733
+  unsupervised_weighted: 0.07880199875901728
+Metrics:
+  kitti_dice: 0.8665732530986562
+  kitti_jaccard_macro: 0.44203849049175487
+  kitti_jaccard_micro: 0.779845819753759
+
+2024-06-24 14:07:28,410 - INFO - Validation Stats
+Loss:
+  total: 0.950463593006134
+Metrics:
+  kitti_dice: 0.7462251981099447
+  kitti_jaccard_macro: 0.27374714612960815
+  kitti_jaccard_micro: 0.610773503780365
+
+2024-06-24 14:07:28,410 - INFO - Epoch 100/120
+2024-06-24 14:07:35,028 - INFO - Train Stats
+Loss:
+  supervised: 0.5688597805359784
+  total: 0.6509169129764333
+  unsupervised: 0.0010940951795098098
+  unsupervised_weighted: 0.08205713769968818
+Metrics:
+  kitti_dice: 0.8509991729960722
+  kitti_jaccard_macro: 0.4133810348370496
+  kitti_jaccard_micro: 0.7596340459935805
+
+2024-06-24 14:07:35,460 - INFO - Validation Stats
+Loss:
+  total: 0.9384037454922994
+Metrics:
+  kitti_dice: 0.7456918557484945
+  kitti_jaccard_macro: 0.2779161036014557
+  kitti_jaccard_micro: 0.6097357074419657
+
+2024-06-24 14:07:35,652 - INFO - Epoch 101/120
+2024-06-24 14:07:42,291 - INFO - Train Stats
+Loss:
+  supervised: 0.5009069968672359
+  total: 0.5794704100664925
+  unsupervised: 0.0010475121397415504
+  unsupervised_weighted: 0.07856341100790921
+Metrics:
+  kitti_dice: 0.8709839301950791
+  kitti_jaccard_macro: 0.4260473303935107
+  kitti_jaccard_micro: 0.7854659943019643
+
+2024-06-24 14:07:42,726 - INFO - Validation Stats
+Loss:
+  total: 0.9786616166432699
+Metrics:
+  kitti_dice: 0.7378087639808655
+  kitti_jaccard_macro: 0.2731906970342
+  kitti_jaccard_micro: 0.5992738803227743
+
+2024-06-24 14:07:42,727 - INFO - Epoch 102/120
+2024-06-24 14:07:49,356 - INFO - Train Stats
+Loss:
+  supervised: 0.4907021347214194
+  total: 0.5803520626881543
+  unsupervised: 0.00119533234529252
+  unsupervised_weighted: 0.08964992599452243
+Metrics:
+  kitti_dice: 0.8576740903012893
+  kitti_jaccard_macro: 0.4047447995227926
+  kitti_jaccard_micro: 0.7673918499666101
+
+2024-06-24 14:07:49,786 - INFO - Validation Stats
+Loss:
+  total: 0.9021985332171122
+Metrics:
+  kitti_dice: 0.761851966381073
+  kitti_jaccard_macro: 0.29320814708868664
+  kitti_jaccard_micro: 0.6303617159525553
+
+2024-06-24 14:07:49,786 - INFO - Epoch 103/120
+2024-06-24 14:07:56,431 - INFO - Train Stats
+Loss:
+  supervised: 0.4842071428018458
+  total: 0.5691799451323116
+  unsupervised: 0.0011329706758260727
+  unsupervised_weighted: 0.08497280013911865
+Metrics:
+  kitti_dice: 0.8624533695333144
+  kitti_jaccard_macro: 0.4344950072905597
+  kitti_jaccard_micro: 0.7764423594755285
+
+2024-06-24 14:07:56,862 - INFO - Validation Stats
+Loss:
+  total: 0.9123876889546713
+Metrics:
+  kitti_dice: 0.754194974899292
+  kitti_jaccard_macro: 0.28529734909534454
+  kitti_jaccard_micro: 0.6209173798561096
+
+2024-06-24 14:07:56,862 - INFO - Epoch 104/120
+2024-06-24 14:08:03,511 - INFO - Train Stats
+Loss:
+  supervised: 0.5405782355981714
+  total: 0.633635962710661
+  unsupervised: 0.00124076970935087
+  unsupervised_weighted: 0.0930577271124896
+Metrics:
+  kitti_dice: 0.8602891459184534
+  kitti_jaccard_macro: 0.4089001487283146
+  kitti_jaccard_micro: 0.7712471555261051
+
+2024-06-24 14:08:03,939 - INFO - Validation Stats
+Loss:
+  total: 0.934975802898407
+Metrics:
+  kitti_dice: 0.7487256526947021
+  kitti_jaccard_macro: 0.2812778155008952
+  kitti_jaccard_micro: 0.6139970620473226
+
+2024-06-24 14:08:03,939 - INFO - Epoch 105/120
+2024-06-24 14:08:10,555 - INFO - Train Stats
+Loss:
+  supervised: 0.5000880027518553
+  total: 0.5778111482367796
+  unsupervised: 0.001036308500367929
+  unsupervised_weighted: 0.07772313759607427
+Metrics:
+  kitti_dice: 0.8782289764460396
+  kitti_jaccard_macro: 0.4351603774463429
+  kitti_jaccard_micro: 0.7967320435187396
+
+2024-06-24 14:08:10,989 - INFO - Validation Stats
+Loss:
+  total: 0.9441864490509033
+Metrics:
+  kitti_dice: 0.7448362509409586
+  kitti_jaccard_macro: 0.27817097802956897
+  kitti_jaccard_micro: 0.6085420846939087
+
+2024-06-24 14:08:10,989 - INFO - Epoch 106/120
+2024-06-24 14:08:17,647 - INFO - Train Stats
+Loss:
+  supervised: 0.5168284090126262
+  total: 0.5991264879703522
+  unsupervised: 0.0010973077048273647
+  unsupervised_weighted: 0.08229807698551346
+Metrics:
+  kitti_dice: 0.8633781426093158
+  kitti_jaccard_macro: 0.4303234403624254
+  kitti_jaccard_micro: 0.7744340405744665
+
+2024-06-24 14:08:18,078 - INFO - Validation Stats
+Loss:
+  total: 0.9764789342880249
+Metrics:
+  kitti_dice: 0.7362075646718343
+  kitti_jaccard_macro: 0.27227529386679333
+  kitti_jaccard_micro: 0.597581128279368
+
+2024-06-24 14:08:18,078 - INFO - Epoch 107/120
+2024-06-24 14:08:24,715 - INFO - Train Stats
+Loss:
+  supervised: 0.48794346872498007
+  total: 0.5702457743532517
+  unsupervised: 0.0010973640429951688
+  unsupervised_weighted: 0.08230230299865499
+Metrics:
+  kitti_dice: 0.8676511890747968
+  kitti_jaccard_macro: 0.4214569575646344
+  kitti_jaccard_micro: 0.7802830583908978
+
+2024-06-24 14:08:25,150 - INFO - Validation Stats
+Loss:
+  total: 0.9199321071306864
+Metrics:
+  kitti_dice: 0.752812663714091
+  kitti_jaccard_macro: 0.2833554744720459
+  kitti_jaccard_micro: 0.6186870535214742
+
+2024-06-24 14:08:25,150 - INFO - Epoch 108/120
+2024-06-24 14:08:31,785 - INFO - Train Stats
+Loss:
+  supervised: 0.4955967331633848
+  total: 0.5659843770896688
+  unsupervised: 0.0009385018664247849
+  unsupervised_weighted: 0.07038764063926305
+Metrics:
+  kitti_dice: 0.8809219984447255
+  kitti_jaccard_macro: 0.4550715106375077
+  kitti_jaccard_micro: 0.8018209969296175
+
+2024-06-24 14:08:32,218 - INFO - Validation Stats
+Loss:
+  total: 0.9211862285931905
+Metrics:
+  kitti_dice: 0.7498311400413513
+  kitti_jaccard_macro: 0.2864059954881668
+  kitti_jaccard_micro: 0.6154246926307678
+
+2024-06-24 14:08:32,218 - INFO - Epoch 109/120
+2024-06-24 14:08:38,856 - INFO - Train Stats
+Loss:
+  supervised: 0.49069444484570446
+  total: 0.5648218989372253
+  unsupervised: 0.0009883660925826168
+  unsupervised_weighted: 0.07412745694027227
+Metrics:
+  kitti_dice: 0.8702429568066317
+  kitti_jaccard_macro: 0.4314794592997607
+  kitti_jaccard_micro: 0.7865054712576025
+
+2024-06-24 14:08:39,290 - INFO - Validation Stats
+Loss:
+  total: 0.9426079988479614
+Metrics:
+  kitti_dice: 0.7469627857208252
+  kitti_jaccard_macro: 0.27811697622140247
+  kitti_jaccard_micro: 0.6111674904823303
+
+2024-06-24 14:08:39,290 - INFO - Epoch 110/120
+2024-06-24 14:08:45,911 - INFO - Train Stats
+Loss:
+  supervised: 0.4888061249957365
+  total: 0.5666669712347143
+  unsupervised: 0.0010381446233676637
+  unsupervised_weighted: 0.07786084755378611
+Metrics:
+  kitti_dice: 0.8588561310487635
+  kitti_jaccard_macro: 0.4369413221583647
+  kitti_jaccard_micro: 0.7705599946134231
+
+2024-06-24 14:08:46,346 - INFO - Validation Stats
+Loss:
+  total: 0.9520833889643351
+Metrics:
+  kitti_dice: 0.7404306729634603
+  kitti_jaccard_macro: 0.28003910183906555
+  kitti_jaccard_micro: 0.6020236412684122
+
+2024-06-24 14:08:46,536 - INFO - Epoch 111/120
+2024-06-24 14:08:53,172 - INFO - Train Stats
+Loss:
+  supervised: 0.5329635108218473
+  total: 0.6146603542215684
+  unsupervised: 0.0010892913200865116
+  unsupervised_weighted: 0.08169684887808912
+Metrics:
+  kitti_dice: 0.8613958218518425
+  kitti_jaccard_macro: 0.4240259142482982
+  kitti_jaccard_micro: 0.7727052499266232
+
+2024-06-24 14:08:53,605 - INFO - Validation Stats
+Loss:
+  total: 0.9505629539489746
+Metrics:
+  kitti_dice: 0.7448111971219381
+  kitti_jaccard_macro: 0.2777022421360016
+  kitti_jaccard_micro: 0.6085552374521891
+
+2024-06-24 14:08:53,605 - INFO - Epoch 112/120
+2024-06-24 14:09:00,247 - INFO - Train Stats
+Loss:
+  supervised: 0.5607487839810988
+  total: 0.6446497580584358
+  unsupervised: 0.0011186796130941196
+  unsupervised_weighted: 0.08390097035204663
+Metrics:
+  kitti_dice: 0.8330838399774888
+  kitti_jaccard_macro: 0.3836761923397289
+  kitti_jaccard_micro: 0.7381134278634015
+
+2024-06-24 14:09:00,681 - INFO - Validation Stats
+Loss:
+  total: 0.9796448548634847
+Metrics:
+  kitti_dice: 0.7339615623156229
+  kitti_jaccard_macro: 0.2741547226905823
+  kitti_jaccard_micro: 0.5941819548606873
+
+2024-06-24 14:09:00,681 - INFO - Epoch 113/120
+2024-06-24 14:09:07,314 - INFO - Train Stats
+Loss:
+  supervised: 0.5039741186534658
+  total: 0.5915693710832035
+  unsupervised: 0.001167936747044544
+  unsupervised_weighted: 0.08759525571675862
+Metrics:
+  kitti_dice: 0.8539607630056494
+  kitti_jaccard_macro: 0.409345022019218
+  kitti_jaccard_micro: 0.7642976536470301
+
+2024-06-24 14:09:07,752 - INFO - Validation Stats
+Loss:
+  total: 0.9735186497370402
+Metrics:
+  kitti_dice: 0.7350944876670837
+  kitti_jaccard_macro: 0.2713422626256943
+  kitti_jaccard_micro: 0.5964124401410421
+
+2024-06-24 14:09:07,752 - INFO - Epoch 114/120
+2024-06-24 14:09:14,399 - INFO - Train Stats
+Loss:
+  supervised: 0.5014393189374138
+  total: 0.5827861936653361
+  unsupervised: 0.0010846249848220717
+  unsupervised_weighted: 0.08134687363224871
+Metrics:
+  kitti_dice: 0.8766000831828398
+  kitti_jaccard_macro: 0.44890471416361194
+  kitti_jaccard_micro: 0.7941130960688871
+
+2024-06-24 14:09:14,828 - INFO - Validation Stats
+Loss:
+  total: 0.9453272620836893
+Metrics:
+  kitti_dice: 0.7445937196413676
+  kitti_jaccard_macro: 0.27669771512349445
+  kitti_jaccard_micro: 0.6083204547564188
+
+2024-06-24 14:09:14,829 - INFO - Epoch 115/120
+2024-06-24 14:09:21,444 - INFO - Train Stats
+Loss:
+  supervised: 0.45394478124730725
+  total: 0.5253993185127482
+  unsupervised: 0.0009527271681958262
+  unsupervised_weighted: 0.07145453770371045
+Metrics:
+  kitti_dice: 0.8808937563615686
+  kitti_jaccard_macro: 0.45930524959283714
+  kitti_jaccard_micro: 0.8004684939103968
+
+2024-06-24 14:09:21,874 - INFO - Validation Stats
+Loss:
+  total: 0.9443590442339579
+Metrics:
+  kitti_dice: 0.7473532756169637
+  kitti_jaccard_macro: 0.2803101936976115
+  kitti_jaccard_micro: 0.6120022932688395
+
+2024-06-24 14:09:21,875 - INFO - Epoch 116/120
+2024-06-24 14:09:28,511 - INFO - Train Stats
+Loss:
+  supervised: 0.5187250235501457
+  total: 0.6067901867277482
+  unsupervised: 0.0011742021956974093
+  unsupervised_weighted: 0.08806516383500661
+Metrics:
+  kitti_dice: 0.8572534357800203
+  kitti_jaccard_macro: 0.41118724556530223
+  kitti_jaccard_micro: 0.7670797740711885
+
+2024-06-24 14:09:28,947 - INFO - Validation Stats
+Loss:
+  total: 0.9678727388381958
+Metrics:
+  kitti_dice: 0.7414772113164266
+  kitti_jaccard_macro: 0.27697790662447613
+  kitti_jaccard_micro: 0.6043822566668192
+
+2024-06-24 14:09:28,947 - INFO - Epoch 117/120
+2024-06-24 14:09:35,583 - INFO - Train Stats
+Loss:
+  supervised: 0.49552925544626575
+  total: 0.5845253607806038
+  unsupervised: 0.001186614763676463
+  unsupervised_weighted: 0.0889961070874158
+Metrics:
+  kitti_dice: 0.8675492335768307
+  kitti_jaccard_macro: 0.43440934840370626
+  kitti_jaccard_micro: 0.7794023752212524
+
+2024-06-24 14:09:36,018 - INFO - Validation Stats
+Loss:
+  total: 0.9429792761802673
+Metrics:
+  kitti_dice: 0.7492713133494059
+  kitti_jaccard_macro: 0.28412775695323944
+  kitti_jaccard_micro: 0.6146611173947653
+
+2024-06-24 14:09:36,018 - INFO - Epoch 118/120
+2024-06-24 14:09:42,646 - INFO - Train Stats
+Loss:
+  supervised: 0.47784074790337505
+  total: 0.5454928857438704
+  unsupervised: 0.000902028485571089
+  unsupervised_weighted: 0.06765213652568705
+Metrics:
+  kitti_dice: 0.875353686949786
+  kitti_jaccard_macro: 0.43962277910288644
+  kitti_jaccard_micro: 0.792857520720538
+
+2024-06-24 14:09:43,080 - INFO - Validation Stats
+Loss:
+  total: 0.9315980672836304
+Metrics:
+  kitti_dice: 0.7534384528795878
+  kitti_jaccard_macro: 0.2835918466250102
+  kitti_jaccard_micro: 0.6193615198135376
+
+2024-06-24 14:09:43,081 - INFO - Epoch 119/120
+2024-06-24 14:09:49,715 - INFO - Train Stats
+Loss:
+  supervised: 0.5988328439347884
+  total: 0.686113343519323
+  unsupervised: 0.001163739964420743
+  unsupervised_weighted: 0.08728049805059153
+Metrics:
+  kitti_dice: 0.8302271260934717
+  kitti_jaccard_macro: 0.38969819335376515
+  kitti_jaccard_micro: 0.7436324918971342
+
+2024-06-24 14:09:50,149 - INFO - Validation Stats
+Loss:
+  total: 0.9741686781247457
+Metrics:
+  kitti_dice: 0.7416606744130453
+  kitti_jaccard_macro: 0.2776964604854584
+  kitti_jaccard_micro: 0.604690949122111
+
+2024-06-24 14:09:50,149 - INFO - Epoch 120/120
+2024-06-24 14:09:56,786 - INFO - Train Stats
+Loss:
+  supervised: 0.525979212101768
+  total: 0.6121029152589685
+  unsupervised: 0.0011483160265283112
+  unsupervised_weighted: 0.08612370140412275
+Metrics:
+  kitti_dice: 0.865518776809468
+  kitti_jaccard_macro: 0.43284887426039753
+  kitti_jaccard_micro: 0.7787033179227043
+
+2024-06-24 14:09:57,213 - INFO - Validation Stats
+Loss:
+  total: 0.9661642909049988
+Metrics:
+  kitti_dice: 0.7371265490849813
+  kitti_jaccard_macro: 0.27139459053675336
+  kitti_jaccard_micro: 0.5988004207611084
+
+2024-06-24 14:09:57,750 - INFO - Best validation loss: 0.863054354985555
+2024-06-24 14:09:57,833 - INFO - Best model saved to /home/up201905337/exploring-label-efficiency/weights/mixmatch_seg_kitti_mobilenet_35l.pth
+2024-06-24 14:09:57,834 - INFO - Training took 844.9910459518433 seconds to complete
