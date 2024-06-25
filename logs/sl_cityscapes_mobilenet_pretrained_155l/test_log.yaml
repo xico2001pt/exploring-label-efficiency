@@ -1,0 +1,51 @@
+device: cuda
+duration: 24.45910406112671
+hyperparameters:
+  batch_size: 16
+  num_workers: 4
+loss:
+  args:
+    ignore_index: 0
+  class: CrossEntropyLoss
+metrics:
+  cityscapes_dice:
+    args:
+      average: micro
+      ignore_index: 0
+      num_classes: 20
+    class: Dice
+  cityscapes_jaccard_macro:
+    args:
+      average: macro
+      ignore_index: 0
+      num_classes: 20
+      task: multiclass
+      validate_args: false
+    class: JaccardIndex
+  cityscapes_jaccard_micro:
+    args:
+      average: micro
+      ignore_index: 0
+      num_classes: 20
+      task: multiclass
+      validate_args: false
+    class: JaccardIndex
+model:
+  args:
+    backbone: mobilenet_v3_large
+    num_classes: 20
+    weights_backbone: DEFAULT
+  class: DeepLabV3
+test_dataset:
+  args:
+    mode: fine
+    root: /data/auto/cityscapes
+    train_val_split: 2475
+  class: CityscapesSeg
+test_history:
+  loss:
+    total: 0.3926361948251724
+  metrics:
+    cityscapes_dice: 0.833222221583128
+    cityscapes_jaccard_macro: 0.3331666998565197
+    cityscapes_jaccard_micro: 0.7862119488418102
