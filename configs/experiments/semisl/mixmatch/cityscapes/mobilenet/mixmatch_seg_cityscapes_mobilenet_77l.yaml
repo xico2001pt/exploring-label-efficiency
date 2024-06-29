@@ -1,0 +1,29 @@
+name: mixmatch_seg_cityscapes_mobilenet_77l  # Name of experiment (used for log folder and model naming). If null, the name is the current date and time
+
+model: cityscapes_deeplabv3_mobilenet  # Name of model
+
+semisl_train:
+  train_dataset: semi_supervised_cityscapes_segmentation_77l  # Dataset to use for training
+  val_dataset: cityscapes_segmentation  # Dataset to use for validation
+  optimizer: mixmatch_seg_sgd  # Optimizer
+  method: mixmatch_v2_cityscapes_seg  # Semi-supervised method
+  val_loss: cityscapes_cross_entropy  # Loss function
+  metrics: [cityscapes_jaccard_macro, cityscapes_jaccard_micro, cityscapes_dice]  # Metrics to evaluate
+  scheduler: mixmatch_seg_cosine_lr  # Learning rate scheduler. Can be null
+  stop_condition: null  # Condition to stop training. Can be null
+  hyperparameters:  # Hyperparameters for training
+    epochs: 120  # Number of training epochs
+    num_workers: 4  # Number of workers for data loading
+    labeled_batch_size: 1  # Training labeled batch size
+    unlabeled_batch_size: 3  # Training unlabeled batch size
+    save_freq: 10  # Save model every save_freq epochs. If 0, only the best model is saved
+    ema_decay: 0.99  # Exponential moving average decay
+
+test:
+  test_dataset: cityscapes_segmentation  # Dataset to use for testing
+  model_weights_path: mixmatch_seg_cityscapes_mobilenet_77l.pth  # Path to model weights (relative to weights folder). If null, config name is used
+  loss: cityscapes_cross_entropy  # Loss function
+  metrics: [cityscapes_jaccard_macro, cityscapes_jaccard_micro, cityscapes_dice]  # Metrics to evaluate
+  hyperparameters:  # Hyperparameters for testing
+    num_workers: 4  # Number of workers for data loading
+    batch_size: 16  # Test batch size
