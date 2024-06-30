@@ -1,0 +1,2974 @@
+2024-06-29 17:18:42,263 - INFO - Loading configuration files...
+2024-06-29 17:18:42,647 - INFO - Loading model configuration
+args:
+  backbone: mobilenet_v3_large
+  num_classes: 20
+class: DeepLabV3
+
+2024-06-29 17:18:42,675 - INFO - Loading train_dataset configuration
+args:
+  num_labeled: 309
+  root: /data/auto/cityscapes
+  train_val_split: 2475
+class: SemiSupervisedCityscapesSeg
+
+2024-06-29 17:18:42,862 - INFO - Loading train_dataset configuration
+args:
+  num_labeled: 309
+  root: /data/auto/cityscapes
+  train_val_split: 2475
+class: SemiSupervisedCityscapesSeg
+
+2024-06-29 17:18:42,896 - INFO - Loading val_dataset configuration
+args:
+  mode: fine
+  root: /data/auto/cityscapes
+  train_val_split: 2475
+class: CityscapesSeg
+
+2024-06-29 17:18:42,906 - INFO - Loading optimizer configuration
+args:
+  lr: 0.01
+  momentum: 0.9
+  nesterov: true
+  weight_decay: 0.0005
+class: SGD
+
+2024-06-29 17:18:42,916 - INFO - Loading method configuration
+args:
+  alpha: 0.75
+  k: 2
+  temperature: 0.5
+  unsupervised_weight_rampup_length: 60
+  wr: 0.5
+  wu1_max: 0.16666666
+  wu_max: 0.5
+class: ReMixMatchV2CityscapesSeg
+
+2024-06-29 17:18:42,919 - INFO - Loading loss configuration
+args:
+  ignore_index: 0
+class: CrossEntropyLoss
+
+2024-06-29 17:18:42,940 - INFO - Loading metrics configuration
+cityscapes_dice:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+  class: Dice
+cityscapes_jaccard_macro:
+  args:
+    average: macro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+cityscapes_jaccard_micro:
+  args:
+    average: micro
+    ignore_index: 0
+    num_classes: 20
+    task: multiclass
+    validate_args: false
+  class: JaccardIndex
+
+2024-06-29 17:18:42,944 - INFO - Loading scheduler configuration
+args:
+  T_max: 120
+class: CosineAnnealingLR
+
+2024-06-29 17:18:42,945 - INFO - Loading hyperparameters configuration
+ema_decay: 0.99
+epochs: 120
+labeled_batch_size: 1
+num_workers: 4
+save_freq: 10
+unlabeled_batch_size: 3
+
+2024-06-29 17:18:43,333 - INFO - Using device: cuda
+2024-06-29 17:18:44,012 - INFO - Training for 120 epochs
+2024-06-29 17:18:44,054 - INFO - Epoch 1/120
+2024-06-29 17:19:53,928 - INFO - Train Stats
+Loss:
+  rotation: 0.011818988237170513
+  rotation_weighted: 0.005909494118585257
+  supervised: 1.0596530527165793
+  total: 1.0655625435526703
+  unsupervised: 0.9199167032843655
+  unsupervised1: 1.0931501839924784
+  unsupervised1_weighted: 0.0
+  unsupervised_weighted: 0.0
+Metrics:
+  cityscapes_dice: 0.7195082327296722
+  cityscapes_jaccard_macro: 0.24233860453111528
+  cityscapes_jaccard_micro: 0.6076934842609809
+
+2024-06-29 17:20:20,316 - INFO - Validation Stats
+Loss:
+  total: 0.6311496801376343
+Metrics:
+  cityscapes_dice: 0.8023857665061951
+  cityscapes_jaccard_macro: 0.2599120044708252
+  cityscapes_jaccard_micro: 0.7057660889625549
+
+2024-06-29 17:20:20,600 - INFO - Epoch 2/120
+2024-06-29 17:21:29,856 - INFO - Train Stats
+Loss:
+  rotation: 0.00010060671452545143
+  rotation_weighted: 5.030335726272571e-05
+  supervised: 0.9398168368825635
+  total: 0.9492662839326272
+  unsupervised: 0.8094542769166644
+  unsupervised1: 0.9553291143722904
+  unsupervised1_weighted: 0.0026536918246009445
+  unsupervised_weighted: 0.006745452646009359
+Metrics:
+  cityscapes_dice: 0.7586913446513002
+  cityscapes_jaccard_macro: 0.2656887899812998
+  cityscapes_jaccard_micro: 0.656405892982645
+
+2024-06-29 17:21:56,157 - INFO - Validation Stats
+Loss:
+  total: 0.634368941783905
+Metrics:
+  cityscapes_dice: 0.8073802795410157
+  cityscapes_jaccard_macro: 0.27920763647556307
+  cityscapes_jaccard_micro: 0.7083372173309326
+
+2024-06-29 17:21:56,157 - INFO - Epoch 3/120
+2024-06-29 17:23:03,303 - INFO - Train Stats
+Loss:
+  rotation: 5.992370758965248e-05
+  rotation_weighted: 2.996185379482624e-05
+  supervised: 0.865864251423808
+  total: 0.8840550962582375
+  unsupervised: 0.7841501641042025
+  unsupervised1: 0.9165088028005026
+  unsupervised1_weighted: 0.0050917152567046264
+  unsupervised_weighted: 0.013069170081089808
+Metrics:
+  cityscapes_dice: 0.7841431740128878
+  cityscapes_jaccard_macro: 0.29190268400079994
+  cityscapes_jaccard_micro: 0.6851694840684678
+
+2024-06-29 17:23:28,483 - INFO - Validation Stats
+Loss:
+  total: 0.5540698082447052
+Metrics:
+  cityscapes_dice: 0.8219649353027344
+  cityscapes_jaccard_macro: 0.300182892203331
+  cityscapes_jaccard_micro: 0.7383717675209045
+
+2024-06-29 17:23:28,780 - INFO - Epoch 4/120
+2024-06-29 17:24:35,550 - INFO - Train Stats
+Loss:
+  rotation: 5.131379157319316e-05
+  rotation_weighted: 2.565689578659658e-05
+  supervised: 0.8350723524695461
+  total: 0.8614234415072839
+  unsupervised: 0.7663748571980733
+  unsupervised1: 0.8599276532054333
+  unsupervised1_weighted: 0.007166063356511656
+  unsupervised_weighted: 0.019159371744612273
+Metrics:
+  cityscapes_dice: 0.7907942734224703
+  cityscapes_jaccard_macro: 0.30872929701430896
+  cityscapes_jaccard_micro: 0.6964161955422954
+
+2024-06-29 17:25:02,217 - INFO - Validation Stats
+Loss:
+  total: 0.4940789723396301
+Metrics:
+  cityscapes_dice: 0.8455491399765015
+  cityscapes_jaccard_macro: 0.3321387180089951
+  cityscapes_jaccard_micro: 0.769654935836792
+
+2024-06-29 17:25:02,476 - INFO - Epoch 5/120
+2024-06-29 17:26:09,797 - INFO - Train Stats
+Loss:
+  rotation: 6.499262997920325e-05
+  rotation_weighted: 3.2496314989601624e-05
+  supervised: 0.827871277204995
+  total: 0.8626409404486128
+  unsupervised: 0.7607301453363549
+  unsupervised1: 0.8441549043825143
+  unsupervised1_weighted: 0.009379498378756458
+  unsupervised_weighted: 0.02535767281807742
+Metrics:
+  cityscapes_dice: 0.8043192404180669
+  cityscapes_jaccard_macro: 0.3089258577734907
+  cityscapes_jaccard_micro: 0.7122344340900001
+
+2024-06-29 17:26:36,534 - INFO - Validation Stats
+Loss:
+  total: 0.49627431321144105
+Metrics:
+  cityscapes_dice: 0.8463313875198364
+  cityscapes_jaccard_macro: 0.33485765409469603
+  cityscapes_jaccard_micro: 0.7757326889038086
+
+2024-06-29 17:26:36,534 - INFO - Epoch 6/120
+2024-06-29 17:27:43,540 - INFO - Train Stats
+Loss:
+  rotation: 8.389959258977158e-05
+  rotation_weighted: 4.194979629488579e-05
+  supervised: 0.7758996636157669
+  total: 0.8172996772338658
+  unsupervised: 0.7245977777493424
+  unsupervised1: 0.8039872843084983
+  unsupervised1_weighted: 0.01116648936511581
+  unsupervised_weighted: 0.030191574926852795
+Metrics:
+  cityscapes_dice: 0.815731151734741
+  cityscapes_jaccard_macro: 0.3200638726908219
+  cityscapes_jaccard_micro: 0.7276954000339539
+
+2024-06-29 17:28:08,853 - INFO - Validation Stats
+Loss:
+  total: 0.4951611876487732
+Metrics:
+  cityscapes_dice: 0.841999635219574
+  cityscapes_jaccard_macro: 0.3370537309646606
+  cityscapes_jaccard_micro: 0.7630900502204895
+
+2024-06-29 17:28:08,853 - INFO - Epoch 7/120
+2024-06-29 17:29:16,358 - INFO - Train Stats
+Loss:
+  rotation: 0.00011188189539604204
+  rotation_weighted: 5.594094769802102e-05
+  supervised: 0.7734027026540639
+  total: 0.8230038545664075
+  unsupervised: 0.7222061838146938
+  unsupervised1: 0.8060941972007257
+  unsupervised1_weighted: 0.013434902478527869
+  unsupervised_weighted: 0.03611030981764438
+Metrics:
+  cityscapes_dice: 0.8178902112646782
+  cityscapes_jaccard_macro: 0.33544732109435554
+  cityscapes_jaccard_micro: 0.7321034730396996
+
+2024-06-29 17:29:41,101 - INFO - Validation Stats
+Loss:
+  total: 0.4526311550140381
+Metrics:
+  cityscapes_dice: 0.8464145030975342
+  cityscapes_jaccard_macro: 0.3372923765182495
+  cityscapes_jaccard_micro: 0.7750123329162598
+
+2024-06-29 17:29:41,412 - INFO - Epoch 8/120
+2024-06-29 17:30:48,809 - INFO - Train Stats
+Loss:
+  rotation: 0.00013977739208977493
+  rotation_weighted: 6.988869604488746e-05
+  supervised: 0.7446229957454027
+  total: 0.8001866850845251
+  unsupervised: 0.691161705066471
+  unsupervised1: 0.780481767403655
+  unsupervised1_weighted: 0.015176033444437395
+  unsupervised_weighted: 0.04031776638044508
+Metrics:
+  cityscapes_dice: 0.8271380072658502
+  cityscapes_jaccard_macro: 0.3381618937676393
+  cityscapes_jaccard_micro: 0.7428869541408947
+
+2024-06-29 17:31:14,954 - INFO - Validation Stats
+Loss:
+  total: 0.4439818651676178
+Metrics:
+  cityscapes_dice: 0.8574146556854249
+  cityscapes_jaccard_macro: 0.35312449538707735
+  cityscapes_jaccard_micro: 0.7821855511665344
+
+2024-06-29 17:31:15,302 - INFO - Epoch 9/120
+2024-06-29 17:32:24,334 - INFO - Train Stats
+Loss:
+  rotation: 0.0001560713095492706
+  rotation_weighted: 7.80356547746353e-05
+  supervised: 0.7336468739995679
+  total: 0.7963154877273781
+  unsupervised: 0.685390463538926
+  unsupervised1: 0.7604045314310438
+  unsupervised1_weighted: 0.016897877440169982
+  unsupervised_weighted: 0.04569269983779072
+Metrics:
+  cityscapes_dice: 0.8312347505760038
+  cityscapes_jaccard_macro: 0.3494811097587968
+  cityscapes_jaccard_micro: 0.7493564227541674
+
+2024-06-29 17:32:50,667 - INFO - Validation Stats
+Loss:
+  total: 0.45518524837493896
+Metrics:
+  cityscapes_dice: 0.8487805275917053
+  cityscapes_jaccard_macro: 0.3566385521888733
+  cityscapes_jaccard_micro: 0.7689102363586425
+
+2024-06-29 17:32:50,667 - INFO - Epoch 10/120
+2024-06-29 17:33:58,126 - INFO - Train Stats
+Loss:
+  rotation: 0.0002259088950323975
+  rotation_weighted: 0.00011295444751619874
+  supervised: 0.7387179990320144
+  total: 0.8089414341164253
+  unsupervised: 0.6844844130443524
+  unsupervised1: 0.7509658923041087
+  unsupervised1_weighted: 0.018774146144805794
+  unsupervised_weighted: 0.051336333113436175
+Metrics:
+  cityscapes_dice: 0.8290305725000437
+  cityscapes_jaccard_macro: 0.347816490191472
+  cityscapes_jaccard_micro: 0.7467638469243898
+
+2024-06-29 17:34:23,222 - INFO - Validation Stats
+Loss:
+  total: 0.41572048938274386
+Metrics:
+  cityscapes_dice: 0.8600688986778259
+  cityscapes_jaccard_macro: 0.36339664554595946
+  cityscapes_jaccard_micro: 0.791730908870697
+
+2024-06-29 17:34:23,911 - INFO - Epoch 11/120
+2024-06-29 17:35:31,441 - INFO - Train Stats
+Loss:
+  rotation: 0.0002631344657998252
+  rotation_weighted: 0.0001315672328999126
+  supervised: 0.700665313593778
+  total: 0.7793441659810088
+  unsupervised: 0.6863142988828393
+  unsupervised1: 0.768759353743402
+  unsupervised1_weighted: 0.02135442518312665
+  unsupervised_weighted: 0.05719285985171602
+Metrics:
+  cityscapes_dice: 0.8376390141190835
+  cityscapes_jaccard_macro: 0.35117729991963764
+  cityscapes_jaccard_micro: 0.7544609480884082
+
+2024-06-29 17:35:58,111 - INFO - Validation Stats
+Loss:
+  total: 0.4161940666437149
+Metrics:
+  cityscapes_dice: 0.8618162117004394
+  cityscapes_jaccard_macro: 0.36320287668704987
+  cityscapes_jaccard_micro: 0.7897039804458618
+
+2024-06-29 17:35:58,111 - INFO - Epoch 12/120
+2024-06-29 17:37:05,353 - INFO - Train Stats
+Loss:
+  rotation: 0.0003550696626999174
+  rotation_weighted: 0.0001775348313499587
+  supervised: 0.72984359521889
+  total: 0.8128157005340921
+  unsupervised: 0.6592450289471635
+  unsupervised1: 0.7319054282406001
+  unsupervised1_weighted: 0.022363775650877205
+  unsupervised_weighted: 0.0604307956414894
+Metrics:
+  cityscapes_dice: 0.8328958814391041
+  cityscapes_jaccard_macro: 0.3563822452159761
+  cityscapes_jaccard_micro: 0.7515724297962528
+
+2024-06-29 17:37:30,511 - INFO - Validation Stats
+Loss:
+  total: 0.44545918405056
+Metrics:
+  cityscapes_dice: 0.8606496992111206
+  cityscapes_jaccard_macro: 0.37135332250595093
+  cityscapes_jaccard_micro: 0.7833308610916138
+
+2024-06-29 17:37:30,511 - INFO - Epoch 13/120
+2024-06-29 17:38:39,397 - INFO - Train Stats
+Loss:
+  rotation: 0.0003796932818729756
+  rotation_weighted: 0.0001898466409364878
+  supervised: 0.7171239589120963
+  total: 0.8076523255954668
+  unsupervised: 0.6592097917035173
+  unsupervised1: 0.7325261990422184
+  unsupervised1_weighted: 0.0244175384851914
+  unsupervised_weighted: 0.06592098031566752
+Metrics:
+  cityscapes_dice: 0.8376215688619028
+  cityscapes_jaccard_macro: 0.3632154974688604
+  cityscapes_jaccard_micro: 0.7570928296610762
+
+2024-06-29 17:39:06,035 - INFO - Validation Stats
+Loss:
+  total: 0.417401612997055
+Metrics:
+  cityscapes_dice: 0.8647421226501465
+  cityscapes_jaccard_macro: 0.37203924560546875
+  cityscapes_jaccard_micro: 0.7971934008598328
+
+2024-06-29 17:39:06,035 - INFO - Epoch 14/120
+2024-06-29 17:40:14,040 - INFO - Train Stats
+Loss:
+  rotation: 0.0003412464304823763
+  rotation_weighted: 0.00017062321524118814
+  supervised: 0.7065807611811122
+  total: 0.8042968847219226
+  unsupervised: 0.6606627168393058
+  unsupervised1: 0.7192718864065929
+  unsupervised1_weighted: 0.025973705475408476
+  unsupervised_weighted: 0.07157179515531534
+Metrics:
+  cityscapes_dice: 0.8409158277858808
+  cityscapes_jaccard_macro: 0.363570149180187
+  cityscapes_jaccard_micro: 0.7615800619028918
+
+2024-06-29 17:40:39,319 - INFO - Validation Stats
+Loss:
+  total: 0.4000176796913147
+Metrics:
+  cityscapes_dice: 0.8665979733467102
+  cityscapes_jaccard_macro: 0.3795514644384384
+  cityscapes_jaccard_micro: 0.7956816534996033
+
+2024-06-29 17:40:39,650 - INFO - Epoch 15/120
+2024-06-29 17:41:46,620 - INFO - Train Stats
+Loss:
+  rotation: 0.00036561874479027525
+  rotation_weighted: 0.00018280937239513763
+  supervised: 0.7020032892431642
+  total: 0.8029865317745888
+  unsupervised: 0.6341393651699943
+  unsupervised1: 0.6895930623352334
+  unsupervised1_weighted: 0.026817506429374603
+  unsupervised_weighted: 0.07398292646535391
+Metrics:
+  cityscapes_dice: 0.8363020174132968
+  cityscapes_jaccard_macro: 0.3605916336130556
+  cityscapes_jaccard_micro: 0.7548658994891497
+
+2024-06-29 17:42:12,889 - INFO - Validation Stats
+Loss:
+  total: 0.4058807897567749
+Metrics:
+  cityscapes_dice: 0.8690475182533264
+  cityscapes_jaccard_macro: 0.3680227155685425
+  cityscapes_jaccard_micro: 0.8013048515319824
+
+2024-06-29 17:42:12,889 - INFO - Epoch 16/120
+2024-06-29 17:43:20,201 - INFO - Train Stats
+Loss:
+  rotation: 0.000436568241468465
+  rotation_weighted: 0.0002182841207342325
+  supervised: 0.6649129717191832
+  total: 0.7718136905659364
+  unsupervised: 0.6245638002855493
+  unsupervised1: 0.6866871029813698
+  unsupervised1_weighted: 0.028611960772629886
+  unsupervised_weighted: 0.07807047503569366
+Metrics:
+  cityscapes_dice: 0.8499584689881038
+  cityscapes_jaccard_macro: 0.3751028725051571
+  cityscapes_jaccard_micro: 0.774277528512825
+
+2024-06-29 17:43:43,627 - INFO - Validation Stats
+Loss:
+  total: 0.37365932178497313
+Metrics:
+  cityscapes_dice: 0.8720554466247559
+  cityscapes_jaccard_macro: 0.38855673956871034
+  cityscapes_jaccard_micro: 0.8082257194519042
+
+2024-06-29 17:43:43,955 - INFO - Epoch 17/120
+2024-06-29 17:44:51,218 - INFO - Train Stats
+Loss:
+  rotation: 0.0005050860207850373
+  rotation_weighted: 0.00025254301039251864
+  supervised: 0.6885644624727058
+  total: 0.8018104320205145
+  unsupervised: 0.6224042819541635
+  unsupervised1: 0.6751391720810369
+  unsupervised1_weighted: 0.030006183694119785
+  unsupervised_weighted: 0.08298724190509821
+Metrics:
+  cityscapes_dice: 0.8394990139023
+  cityscapes_jaccard_macro: 0.3648863856991132
+  cityscapes_jaccard_micro: 0.7607915156481722
+
+2024-06-29 17:45:15,298 - INFO - Validation Stats
+Loss:
+  total: 0.3809015126228332
+Metrics:
+  cityscapes_dice: 0.8735325112342834
+  cityscapes_jaccard_macro: 0.38976559352874757
+  cityscapes_jaccard_micro: 0.8102661747932434
+
+2024-06-29 17:45:15,298 - INFO - Epoch 18/120
+2024-06-29 17:46:23,771 - INFO - Train Stats
+Loss:
+  rotation: 0.0005066947750901671
+  rotation_weighted: 0.00025334738754508355
+  supervised: 0.6834891891305886
+  total: 0.8054270668612329
+  unsupervised: 0.6302366435142011
+  unsupervised1: 0.6861390077952042
+  unsupervised1_weighted: 0.03240100678936563
+  unsupervised_weighted: 0.08928352393041152
+Metrics:
+  cityscapes_dice: 0.8475519057037761
+  cityscapes_jaccard_macro: 0.3764528090128235
+  cityscapes_jaccard_micro: 0.7733208960506909
+
+2024-06-29 17:46:49,072 - INFO - Validation Stats
+Loss:
+  total: 0.3753928323984146
+Metrics:
+  cityscapes_dice: 0.873489525794983
+  cityscapes_jaccard_macro: 0.3708831014633179
+  cityscapes_jaccard_micro: 0.8060821828842163
+
+2024-06-29 17:46:49,073 - INFO - Epoch 19/120
+2024-06-29 17:47:56,793 - INFO - Train Stats
+Loss:
+  rotation: 0.0005525023922095118
+  rotation_weighted: 0.0002762511961047559
+  supervised: 0.6787958968322254
+  total: 0.8074225530655252
+  unsupervised: 0.6257707528697635
+  unsupervised1: 0.6896958512202821
+  unsupervised1_weighted: 0.034484790372858155
+  unsupervised_weighted: 0.09386561651831692
+Metrics:
+  cityscapes_dice: 0.8488297861756631
+  cityscapes_jaccard_macro: 0.37348430167317004
+  cityscapes_jaccard_micro: 0.7727959084665119
+
+2024-06-29 17:48:23,198 - INFO - Validation Stats
+Loss:
+  total: 0.3466370334625244
+Metrics:
+  cityscapes_dice: 0.8784387726783752
+  cityscapes_jaccard_macro: 0.388075688123703
+  cityscapes_jaccard_micro: 0.819596667766571
+
+2024-06-29 17:48:23,560 - INFO - Epoch 20/120
+2024-06-29 17:49:31,344 - INFO - Train Stats
+Loss:
+  rotation: 0.0007013176805392499
+  rotation_weighted: 0.00035065884026962493
+  supervised: 0.6517134252875368
+  total: 0.784184149457413
+  unsupervised: 0.6108817190992794
+  unsupervised1: 0.6706825122478325
+  unsupervised1_weighted: 0.03539713043237292
+  unsupervised_weighted: 0.09672293773457456
+Metrics:
+  cityscapes_dice: 0.8510155427031533
+  cityscapes_jaccard_macro: 0.37466715553528285
+  cityscapes_jaccard_micro: 0.7760023030069654
+
+2024-06-29 17:49:57,880 - INFO - Validation Stats
+Loss:
+  total: 0.38036032712459567
+Metrics:
+  cityscapes_dice: 0.8725053849220276
+  cityscapes_jaccard_macro: 0.3942281577587128
+  cityscapes_jaccard_micro: 0.8072696652412414
+
+2024-06-29 17:49:58,141 - INFO - Epoch 21/120
+2024-06-29 17:51:05,336 - INFO - Train Stats
+Loss:
+  rotation: 0.0006194548991442474
+  rotation_weighted: 0.0003097274495721237
+  supervised: 0.6719571053981781
+  total: 0.8156332486462825
+  unsupervised: 0.6268770742956489
+  unsupervised1: 0.6999642191195565
+  unsupervised1_weighted: 0.03888689866440196
+  unsupervised_weighted: 0.10447951497865726
+Metrics:
+  cityscapes_dice: 0.8474869657681597
+  cityscapes_jaccard_macro: 0.37522653299820846
+  cityscapes_jaccard_micro: 0.7718471954169782
+
+2024-06-29 17:51:32,338 - INFO - Validation Stats
+Loss:
+  total: 0.35952049839496614
+Metrics:
+  cityscapes_dice: 0.8769705357551575
+  cityscapes_jaccard_macro: 0.39524679708480837
+  cityscapes_jaccard_micro: 0.8122934327125549
+
+2024-06-29 17:51:32,338 - INFO - Epoch 22/120
+2024-06-29 17:52:40,585 - INFO - Train Stats
+Loss:
+  rotation: 0.0007625417802222887
+  rotation_weighted: 0.00038127089011114436
+  supervised: 0.6744746817064903
+  total: 0.819574167813298
+  unsupervised: 0.6050322237138224
+  unsupervised1: 0.6657870144712886
+  unsupervised1_weighted: 0.038837573512134814
+  unsupervised_weighted: 0.10588063767426995
+Metrics:
+  cityscapes_dice: 0.8519545579419553
+  cityscapes_jaccard_macro: 0.3787938424395126
+  cityscapes_jaccard_micro: 0.7763247232413987
+
+2024-06-29 17:53:05,892 - INFO - Validation Stats
+Loss:
+  total: 0.35653365671634674
+Metrics:
+  cityscapes_dice: 0.874753002166748
+  cityscapes_jaccard_macro: 0.3981034197807312
+  cityscapes_jaccard_micro: 0.8136095962524414
+
+2024-06-29 17:53:05,892 - INFO - Epoch 23/120
+2024-06-29 17:54:13,279 - INFO - Train Stats
+Loss:
+  rotation: 0.000757580120448011
+  rotation_weighted: 0.0003787900602240055
+  supervised: 0.6417371607521205
+  total: 0.7879341230230424
+  unsupervised: 0.5834569502802729
+  unsupervised1: 0.635744712788696
+  unsupervised1_weighted: 0.03885106343329917
+  unsupervised_weighted: 0.10696710964429726
+Metrics:
+  cityscapes_dice: 0.8598118773556064
+  cityscapes_jaccard_macro: 0.3832892657869456
+  cityscapes_jaccard_micro: 0.783897014304658
+
+2024-06-29 17:54:39,940 - INFO - Validation Stats
+Loss:
+  total: 0.3971994584798813
+Metrics:
+  cityscapes_dice: 0.8783742051124572
+  cityscapes_jaccard_macro: 0.397337126493454
+  cityscapes_jaccard_micro: 0.8094417815208435
+
+2024-06-29 17:54:39,940 - INFO - Epoch 24/120
+2024-06-29 17:55:47,145 - INFO - Train Stats
+Loss:
+  rotation: 0.0008216987485118801
+  rotation_weighted: 0.00041084937425594006
+  supervised: 0.6577481839166875
+  total: 0.8133317058526196
+  unsupervised: 0.593482468795622
+  unsupervised1: 0.6483422969151469
+  unsupervised1_weighted: 0.04142186647841652
+  unsupervised_weighted: 0.11375080417950177
+Metrics:
+  cityscapes_dice: 0.8512026903891641
+  cityscapes_jaccard_macro: 0.3805435350990604
+  cityscapes_jaccard_micro: 0.7776937150067882
+
+2024-06-29 17:56:11,368 - INFO - Validation Stats
+Loss:
+  total: 0.3561798918247223
+Metrics:
+  cityscapes_dice: 0.8817177324295044
+  cityscapes_jaccard_macro: 0.4083252067565918
+  cityscapes_jaccard_micro: 0.8205025691986084
+
+2024-06-29 17:56:11,368 - INFO - Epoch 25/120
+2024-06-29 17:57:18,325 - INFO - Train Stats
+Loss:
+  rotation: 0.0007236125703989965
+  rotation_weighted: 0.00036180628519949824
+  supervised: 0.6341443027107461
+  total: 0.7888077870734687
+  unsupervised: 0.5649654491048028
+  unsupervised1: 0.6196288882142903
+  unsupervised1_weighted: 0.041308590141652474
+  unsupervised_weighted: 0.11299309164623227
+Metrics:
+  cityscapes_dice: 0.8536500483269058
+  cityscapes_jaccard_macro: 0.38814343615739477
+  cityscapes_jaccard_micro: 0.7804210591808106
+
+2024-06-29 17:57:43,865 - INFO - Validation Stats
+Loss:
+  total: 0.35010849833488467
+Metrics:
+  cityscapes_dice: 0.8800057163238525
+  cityscapes_jaccard_macro: 0.4014249711036682
+  cityscapes_jaccard_micro: 0.817948736667633
+
+2024-06-29 17:57:43,865 - INFO - Epoch 26/120
+2024-06-29 17:58:51,035 - INFO - Train Stats
+Loss:
+  rotation: 0.0007787746200029072
+  rotation_weighted: 0.0003893873100014536
+  supervised: 0.6496038494758236
+  total: 0.8169238987864028
+  unsupervised: 0.5883792703398609
+  unsupervised1: 0.6386637415700746
+  unsupervised1_weighted: 0.04435164605577787
+  unsupervised_weighted: 0.12257901201790204
+Metrics:
+  cityscapes_dice: 0.8566870743402771
+  cityscapes_jaccard_macro: 0.3890450754019049
+  cityscapes_jaccard_micro: 0.781891192963594
+
+2024-06-29 17:59:15,050 - INFO - Validation Stats
+Loss:
+  total: 0.34321987855434416
+Metrics:
+  cityscapes_dice: 0.8822152037620544
+  cityscapes_jaccard_macro: 0.40729418754577634
+  cityscapes_jaccard_micro: 0.8199187936782837
+
+2024-06-29 17:59:15,547 - INFO - Epoch 27/120
+2024-06-29 18:00:22,546 - INFO - Train Stats
+Loss:
+  rotation: 0.0009961534006307112
+  rotation_weighted: 0.0004980767003153556
+  supervised: 0.663959556509376
+  total: 0.8364652974416523
+  unsupervised: 0.5827637413173046
+  unsupervised1: 0.633353371836221
+  unsupervised1_weighted: 0.04574218528001633
+  unsupervised_weighted: 0.1262654781245105
+Metrics:
+  cityscapes_dice: 0.8513616318648687
+  cityscapes_jaccard_macro: 0.3855843783678746
+  cityscapes_jaccard_micro: 0.7799232896767002
+
+2024-06-29 18:00:48,354 - INFO - Validation Stats
+Loss:
+  total: 0.35689946699142455
+Metrics:
+  cityscapes_dice: 0.8813742365837097
+  cityscapes_jaccard_macro: 0.4130561065673828
+  cityscapes_jaccard_micro: 0.8169478197097778
+
+2024-06-29 18:00:48,354 - INFO - Epoch 28/120
+2024-06-29 18:01:55,241 - INFO - Train Stats
+Loss:
+  rotation: 0.0009123667805986087
+  rotation_weighted: 0.00045618339029930436
+  supervised: 0.6544104615847269
+  total: 0.832721787459642
+  unsupervised: 0.5796036713524544
+  unsupervised1: 0.6325910062465853
+  unsupervised1_weighted: 0.047444322559391794
+  unsupervised_weighted: 0.1304108227774935
+Metrics:
+  cityscapes_dice: 0.8541276479037448
+  cityscapes_jaccard_macro: 0.38580465471088693
+  cityscapes_jaccard_micro: 0.7806863773216322
+
+2024-06-29 18:02:20,349 - INFO - Validation Stats
+Loss:
+  total: 0.3804142423868179
+Metrics:
+  cityscapes_dice: 0.8810590238571167
+  cityscapes_jaccard_macro: 0.41072039103507996
+  cityscapes_jaccard_micro: 0.8173364701271058
+
+2024-06-29 18:02:20,349 - INFO - Epoch 29/120
+2024-06-29 18:03:29,393 - INFO - Train Stats
+Loss:
+  rotation: 0.0010908724534631222
+  rotation_weighted: 0.0005454362267315611
+  supervised: 0.6487190055037008
+  total: 0.8326208532628118
+  unsupervised: 0.5733697068151147
+  unsupervised1: 0.6373305069011392
+  unsupervised1_weighted: 0.049570147544868944
+  unsupervised_weighted: 0.13378626592818973
+Metrics:
+  cityscapes_dice: 0.85080223783706
+  cityscapes_jaccard_macro: 0.38810164061854185
+  cityscapes_jaccard_micro: 0.7769560666338912
+
+2024-06-29 18:03:56,067 - INFO - Validation Stats
+Loss:
+  total: 0.35671771597862245
+Metrics:
+  cityscapes_dice: 0.8789441437721253
+  cityscapes_jaccard_macro: 0.40870191049575805
+  cityscapes_jaccard_micro: 0.8184619336128235
+
+2024-06-29 18:03:56,067 - INFO - Epoch 30/120
+2024-06-29 18:05:02,731 - INFO - Train Stats
+Loss:
+  rotation: 0.0011405429464137983
+  rotation_weighted: 0.0005702714732068991
+  supervised: 0.6376598791300672
+  total: 0.8303876980222931
+  unsupervised: 0.5821705446081255
+  unsupervised1: 0.6388925499129063
+  unsupervised1_weighted: 0.05146634111536552
+  unsupervised_weighted: 0.14069121087446182
+Metrics:
+  cityscapes_dice: 0.8590297314148505
+  cityscapes_jaccard_macro: 0.39661564692420864
+  cityscapes_jaccard_micro: 0.7864575611734853
+
+2024-06-29 18:05:27,616 - INFO - Validation Stats
+Loss:
+  total: 0.32571995913982393
+Metrics:
+  cityscapes_dice: 0.886342912197113
+  cityscapes_jaccard_macro: 0.40575551414489747
+  cityscapes_jaccard_micro: 0.8269175777435303
+
+2024-06-29 18:05:28,181 - INFO - Epoch 31/120
+2024-06-29 18:06:36,246 - INFO - Train Stats
+Loss:
+  rotation: 0.0012241933610844863
+  rotation_weighted: 0.0006120966805422431
+  supervised: 0.6287524135463832
+  total: 0.8270172365853702
+  unsupervised: 0.5781542557535819
+  unsupervised1: 0.6373700327857799
+  unsupervised1_weighted: 0.05311416598898886
+  unsupervised_weighted: 0.14453856393839548
+Metrics:
+  cityscapes_dice: 0.865874939366066
+  cityscapes_jaccard_macro: 0.40159984231959656
+  cityscapes_jaccard_micro: 0.7942590635378384
+
+2024-06-29 18:07:01,926 - INFO - Validation Stats
+Loss:
+  total: 0.3671882547140121
+Metrics:
+  cityscapes_dice: 0.8757355370521546
+  cityscapes_jaccard_macro: 0.39810249185562135
+  cityscapes_jaccard_micro: 0.8100428385734558
+
+2024-06-29 18:07:01,926 - INFO - Epoch 32/120
+2024-06-29 18:08:09,783 - INFO - Train Stats
+Loss:
+  rotation: 0.0013388338403453792
+  rotation_weighted: 0.0006694169201726896
+  supervised: 0.6540628022071228
+  total: 0.8570162234375778
+  unsupervised: 0.5751148833618966
+  unsupervised1: 0.6237599922036662
+  unsupervised1_weighted: 0.0537126628217863
+  unsupervised_weighted: 0.1485713402285545
+Metrics:
+  cityscapes_dice: 0.8567232600500668
+  cityscapes_jaccard_macro: 0.39100578692545784
+  cityscapes_jaccard_micro: 0.7856017950090389
+
+2024-06-29 18:08:36,855 - INFO - Validation Stats
+Loss:
+  total: 0.4044424159526825
+Metrics:
+  cityscapes_dice: 0.8733780608177185
+  cityscapes_jaccard_macro: 0.38778361582756044
+  cityscapes_jaccard_micro: 0.8050999507904053
+
+2024-06-29 18:08:36,855 - INFO - Epoch 33/120
+2024-06-29 18:09:45,138 - INFO - Train Stats
+Loss:
+  rotation: 0.0015072802262166725
+  rotation_weighted: 0.0007536401131083363
+  supervised: 0.6336794334515014
+  total: 0.8394257735858843
+  unsupervised: 0.5623464690442995
+  unsupervised1: 0.6191284043117634
+  unsupervised1_weighted: 0.055033632671659435
+  unsupervised_weighted: 0.1499590665391348
+Metrics:
+  cityscapes_dice: 0.8630405864090596
+  cityscapes_jaccard_macro: 0.39494971598236306
+  cityscapes_jaccard_micro: 0.7925865650659241
+
+2024-06-29 18:10:11,726 - INFO - Validation Stats
+Loss:
+  total: 0.3516622973680496
+Metrics:
+  cityscapes_dice: 0.8821080741882324
+  cityscapes_jaccard_macro: 0.41104027509689334
+  cityscapes_jaccard_micro: 0.8205639042854309
+
+2024-06-29 18:10:11,726 - INFO - Epoch 34/120
+2024-06-29 18:11:18,995 - INFO - Train Stats
+Loss:
+  rotation: 0.0014078804743129602
+  rotation_weighted: 0.0007039402371564801
+  supervised: 0.6058084646957206
+  total: 0.8159113949749462
+  unsupervised: 0.5574500469135235
+  unsupervised1: 0.6120025099866985
+  unsupervised1_weighted: 0.05610022669760541
+  unsupervised_weighted: 0.15329876662650926
+Metrics:
+  cityscapes_dice: 0.8679137716980042
+  cityscapes_jaccard_macro: 0.394182992405876
+  cityscapes_jaccard_micro: 0.7986488131064813
+
+2024-06-29 18:11:44,288 - INFO - Validation Stats
+Loss:
+  total: 0.3412847683429718
+Metrics:
+  cityscapes_dice: 0.8848725323677062
+  cityscapes_jaccard_macro: 0.41177074575424194
+  cityscapes_jaccard_micro: 0.823909348487854
+
+2024-06-29 18:11:44,289 - INFO - Epoch 35/120
+2024-06-29 18:12:52,100 - INFO - Train Stats
+Loss:
+  rotation: 0.001505617419269816
+  rotation_weighted: 0.000752808709634908
+  supervised: 0.631167610052334
+  total: 0.8462802002923774
+  unsupervised: 0.5533867547812971
+  unsupervised1: 0.6095316072497938
+  unsupervised1_weighted: 0.05756687063687635
+  unsupervised_weighted: 0.15679291237905188
+Metrics:
+  cityscapes_dice: 0.8622829217741019
+  cityscapes_jaccard_macro: 0.3957072058059637
+  cityscapes_jaccard_micro: 0.7899544739607468
+
+2024-06-29 18:13:18,286 - INFO - Validation Stats
+Loss:
+  total: 0.3855890443325043
+Metrics:
+  cityscapes_dice: 0.8807455868721008
+  cityscapes_jaccard_macro: 0.38715340924263003
+  cityscapes_jaccard_micro: 0.8135569152832032
+
+2024-06-29 18:13:18,287 - INFO - Epoch 36/120
+2024-06-29 18:14:25,715 - INFO - Train Stats
+Loss:
+  rotation: 0.0016946127903075064
+  rotation_weighted: 0.0008473063951537532
+  supervised: 0.6517880495794383
+  total: 0.870220139960255
+  unsupervised: 0.5464041241743032
+  unsupervised1: 0.5988026151379335
+  unsupervised1_weighted: 0.058216917409914214
+  unsupervised_weighted: 0.15936786387248333
+Metrics:
+  cityscapes_dice: 0.8580457479436806
+  cityscapes_jaccard_macro: 0.3924471326051792
+  cityscapes_jaccard_micro: 0.7863203613117675
+
+2024-06-29 18:14:50,400 - INFO - Validation Stats
+Loss:
+  total: 0.38791544580459597
+Metrics:
+  cityscapes_dice: 0.877700809955597
+  cityscapes_jaccard_macro: 0.39443083572387694
+  cityscapes_jaccard_micro: 0.8135892038345337
+
+2024-06-29 18:14:50,401 - INFO - Epoch 37/120
+2024-06-29 18:15:59,441 - INFO - Train Stats
+Loss:
+  rotation: 0.0018643828598303195
+  rotation_weighted: 0.0009321914299151598
+  supervised: 0.6190801059833236
+  total: 0.8453149591063218
+  unsupervised: 0.5503422725933655
+  unsupervised1: 0.6019997402880956
+  unsupervised1_weighted: 0.060199970367415825
+  unsupervised_weighted: 0.16510268831233763
+Metrics:
+  cityscapes_dice: 0.8604818771572175
+  cityscapes_jaccard_macro: 0.39436009164574076
+  cityscapes_jaccard_micro: 0.7888885987229332
+
+2024-06-29 18:16:26,373 - INFO - Validation Stats
+Loss:
+  total: 0.36644380044937136
+Metrics:
+  cityscapes_dice: 0.8771517934799195
+  cityscapes_jaccard_macro: 0.40160678029060365
+  cityscapes_jaccard_micro: 0.8132052779197693
+
+2024-06-29 18:16:26,373 - INFO - Epoch 38/120
+2024-06-29 18:17:33,581 - INFO - Train Stats
+Loss:
+  rotation: 0.0017179336966223365
+  rotation_weighted: 0.0008589668483111682
+  supervised: 0.621481149472465
+  total: 0.8462913833968462
+  unsupervised: 0.5333870798831619
+  unsupervised1: 0.5788240965612498
+  unsupervised1_weighted: 0.0594902509419567
+  unsupervised_weighted: 0.16446101887326411
+Metrics:
+  cityscapes_dice: 0.8633546984504342
+  cityscapes_jaccard_macro: 0.3949812448381606
+  cityscapes_jaccard_micro: 0.793352580379128
+
+2024-06-29 18:17:58,555 - INFO - Validation Stats
+Loss:
+  total: 0.32921010637283327
+Metrics:
+  cityscapes_dice: 0.885213472366333
+  cityscapes_jaccard_macro: 0.4151856336593628
+  cityscapes_jaccard_micro: 0.827379780292511
+
+2024-06-29 18:17:58,555 - INFO - Epoch 39/120
+2024-06-29 18:19:07,953 - INFO - Train Stats
+Loss:
+  rotation: 0.0018428216843178623
+  rotation_weighted: 0.0009214108421589311
+  supervised: 0.6040253092363043
+  total: 0.8397370232540426
+  unsupervised: 0.5409678561691328
+  unsupervised1: 0.6014256993350859
+  unsupervised1_weighted: 0.06348381999843908
+  unsupervised_weighted: 0.1713064859551905
+Metrics:
+  cityscapes_dice: 0.8697116591976685
+  cityscapes_jaccard_macro: 0.4012168519512349
+  cityscapes_jaccard_micro: 0.7996960864869522
+
+2024-06-29 18:19:34,189 - INFO - Validation Stats
+Loss:
+  total: 0.3474676468372345
+Metrics:
+  cityscapes_dice: 0.8815722908973694
+  cityscapes_jaccard_macro: 0.4059381129741669
+  cityscapes_jaccard_micro: 0.8215150270462036
+
+2024-06-29 18:19:34,190 - INFO - Epoch 40/120
+2024-06-29 18:20:42,421 - INFO - Train Stats
+Loss:
+  rotation: 0.0018770711810680704
+  rotation_weighted: 0.0009385355905340352
+  supervised: 0.6013640201014608
+  total: 0.836953905600946
+  unsupervised: 0.5265245548536862
+  unsupervised1: 0.5864389050739869
+  unsupervised1_weighted: 0.06353087764245406
+  unsupervised_weighted: 0.17112047444655284
+Metrics:
+  cityscapes_dice: 0.870090684072871
+  cityscapes_jaccard_macro: 0.4061190043500712
+  cityscapes_jaccard_micro: 0.8006306056258747
+
+2024-06-29 18:21:08,151 - INFO - Validation Stats
+Loss:
+  total: 0.34330807757377624
+Metrics:
+  cityscapes_dice: 0.8830200800895691
+  cityscapes_jaccard_macro: 0.40872639608383177
+  cityscapes_jaccard_micro: 0.823287585735321
+
+2024-06-29 18:21:08,474 - INFO - Epoch 41/120
+2024-06-29 18:22:15,864 - INFO - Train Stats
+Loss:
+  rotation: 0.0021334910090156744
+  rotation_weighted: 0.0010667455045078372
+  supervised: 0.6013423682802318
+  total: 0.848077979191993
+  unsupervised: 0.539441676201558
+  unsupervised1: 0.5926947455286594
+  unsupervised1_weighted: 0.06585496790031978
+  unsupervised_weighted: 0.1798138969538667
+Metrics:
+  cityscapes_dice: 0.8708234127478306
+  cityscapes_jaccard_macro: 0.40947929463533134
+  cityscapes_jaccard_micro: 0.8022338762445357
+
+2024-06-29 18:22:42,396 - INFO - Validation Stats
+Loss:
+  total: 0.34305987691879275
+Metrics:
+  cityscapes_dice: 0.8831960287094116
+  cityscapes_jaccard_macro: 0.41192882871627806
+  cityscapes_jaccard_micro: 0.8249346413612366
+
+2024-06-29 18:22:42,396 - INFO - Epoch 42/120
+2024-06-29 18:23:49,525 - INFO - Train Stats
+Loss:
+  rotation: 0.00213301443859549
+  rotation_weighted: 0.001066507219297745
+  supervised: 0.6292392069467835
+  total: 0.8856956257596371
+  unsupervised: 0.5485167544829421
+  unsupervised1: 0.5968977871161063
+  unsupervised1_weighted: 0.06798002176276109
+  unsupervised_weighted: 0.1874098922201345
+Metrics:
+  cityscapes_dice: 0.8640159608669651
+  cityscapes_jaccard_macro: 0.4028081967703347
+  cityscapes_jaccard_micro: 0.7951688056142585
+
+2024-06-29 18:24:15,970 - INFO - Validation Stats
+Loss:
+  total: 0.3514996089935303
+Metrics:
+  cityscapes_dice: 0.8854989652633667
+  cityscapes_jaccard_macro: 0.40903175139427184
+  cityscapes_jaccard_micro: 0.8260573511123657
+
+2024-06-29 18:24:15,970 - INFO - Epoch 43/120
+2024-06-29 18:25:22,542 - INFO - Train Stats
+Loss:
+  rotation: 0.002342408525600764
+  rotation_weighted: 0.001171204262800382
+  supervised: 0.6027609095411394
+  total: 0.8538190975158346
+  unsupervised: 0.5223523400555151
+  unsupervised1: 0.5748314861340816
+  unsupervised1_weighted: 0.06706366938776955
+  unsupervised_weighted: 0.18282331651661388
+Metrics:
+  cityscapes_dice: 0.8645943851725569
+  cityscapes_jaccard_macro: 0.3998519813937277
+  cityscapes_jaccard_micro: 0.7931375875345712
+
+2024-06-29 18:25:47,925 - INFO - Validation Stats
+Loss:
+  total: 0.3816952623128891
+Metrics:
+  cityscapes_dice: 0.8829916243553162
+  cityscapes_jaccard_macro: 0.4062877190113068
+  cityscapes_jaccard_micro: 0.8199585733413697
+
+2024-06-29 18:25:47,925 - INFO - Epoch 44/120
+2024-06-29 18:26:57,340 - INFO - Train Stats
+Loss:
+  rotation: 0.0023428536115159978
+  rotation_weighted: 0.0011714268057579989
+  supervised: 0.6029155550458285
+  total: 0.8630804940334802
+  unsupervised: 0.5289385925411793
+  unsupervised1: 0.5815020985298558
+  unsupervised1_weighted: 0.06945719104561605
+  unsupervised_weighted: 0.1895363217032843
+Metrics:
+  cityscapes_dice: 0.8662427649697633
+  cityscapes_jaccard_macro: 0.40397785839091227
+  cityscapes_jaccard_micro: 0.7977227205561299
+
+2024-06-29 18:27:23,937 - INFO - Validation Stats
+Loss:
+  total: 0.3843201686143875
+Metrics:
+  cityscapes_dice: 0.8727691893577576
+  cityscapes_jaccard_macro: 0.3972698955535889
+  cityscapes_jaccard_micro: 0.8055884227752685
+
+2024-06-29 18:27:23,937 - INFO - Epoch 45/120
+2024-06-29 18:28:33,073 - INFO - Train Stats
+Loss:
+  rotation: 0.0029742665137510904
+  rotation_weighted: 0.0014871332568755452
+  supervised: 0.6757658349175284
+  total: 0.9505319970518255
+  unsupervised: 0.547060966298804
+  unsupervised1: 0.5947364408607236
+  unsupervised1_weighted: 0.07269000501332738
+  unsupervised_weighted: 0.20058902567644335
+Metrics:
+  cityscapes_dice: 0.8363812112981833
+  cityscapes_jaccard_macro: 0.3763425919712554
+  cityscapes_jaccard_micro: 0.7575634305145362
+
+2024-06-29 18:28:59,847 - INFO - Validation Stats
+Loss:
+  total: 0.38784588515758517
+Metrics:
+  cityscapes_dice: 0.8792140612602234
+  cityscapes_jaccard_macro: 0.3905286490917206
+  cityscapes_jaccard_micro: 0.813904233455658
+
+2024-06-29 18:28:59,847 - INFO - Epoch 46/120
+2024-06-29 18:30:08,452 - INFO - Train Stats
+Loss:
+  rotation: 0.0024768297638123236
+  rotation_weighted: 0.0012384148819061618
+  supervised: 0.6195340582853768
+  total: 0.8942001532389509
+  unsupervised: 0.5334893920275
+  unsupervised1: 0.5869532709272163
+  unsupervised1_weighted: 0.07336915260886104
+  unsupervised_weighted: 0.2000585224925507
+Metrics:
+  cityscapes_dice: 0.8573009733436177
+  cityscapes_jaccard_macro: 0.39189392843051635
+  cityscapes_jaccard_micro: 0.7832428519297572
+
+2024-06-29 18:30:34,816 - INFO - Validation Stats
+Loss:
+  total: 0.3714701293706894
+Metrics:
+  cityscapes_dice: 0.8825047578811646
+  cityscapes_jaccard_macro: 0.4045647141933441
+  cityscapes_jaccard_micro: 0.821384819984436
+
+2024-06-29 18:30:34,816 - INFO - Epoch 47/120
+2024-06-29 18:31:42,315 - INFO - Train Stats
+Loss:
+  rotation: 0.002478749451715752
+  rotation_weighted: 0.001239374725857876
+  supervised: 0.6021713742256937
+  total: 0.87668421478719
+  unsupervised: 0.5210878752581896
+  unsupervised1: 0.5753983376384939
+  unsupervised1_weighted: 0.07352311656023693
+  unsupervised_weighted: 0.1997503478164426
+Metrics:
+  cityscapes_dice: 0.8679430560000891
+  cityscapes_jaccard_macro: 0.4071634610976216
+  cityscapes_jaccard_micro: 0.7958479789854254
+
+2024-06-29 18:32:07,331 - INFO - Validation Stats
+Loss:
+  total: 0.3815973834991455
+Metrics:
+  cityscapes_dice: 0.8780256662368774
+  cityscapes_jaccard_macro: 0.3990587544441223
+  cityscapes_jaccard_micro: 0.8108100781440735
+
+2024-06-29 18:32:07,331 - INFO - Epoch 48/120
+2024-06-29 18:33:16,029 - INFO - Train Stats
+Loss:
+  rotation: 0.0026125914973288197
+  rotation_weighted: 0.0013062957486644098
+  supervised: 0.5900171049493802
+  total: 0.8675186382335367
+  unsupervised: 0.5154919754532934
+  unsupervised1: 0.5690620123472029
+  unsupervised1_weighted: 0.07429420712937429
+  unsupervised_weighted: 0.20190103026559053
+Metrics:
+  cityscapes_dice: 0.8724149799269766
+  cityscapes_jaccard_macro: 0.40953115557100395
+  cityscapes_jaccard_micro: 0.8034565933892642
+
+2024-06-29 18:33:42,921 - INFO - Validation Stats
+Loss:
+  total: 0.3671720823049545
+Metrics:
+  cityscapes_dice: 0.8783684673309327
+  cityscapes_jaccard_macro: 0.3976891796588898
+  cityscapes_jaccard_micro: 0.8133255205154419
+
+2024-06-29 18:33:42,921 - INFO - Epoch 49/120
+2024-06-29 18:34:49,959 - INFO - Train Stats
+Loss:
+  rotation: 0.002810910671895135
+  rotation_weighted: 0.0014054553359475674
+  supervised: 0.592478644066644
+  total: 0.8756039800381583
+  unsupervised: 0.5125854729062916
+  unsupervised1: 0.575142686035255
+  unsupervised1_weighted: 0.07668568673739541
+  unsupervised_weighted: 0.2050341922536637
+Metrics:
+  cityscapes_dice: 0.8696001528922023
+  cityscapes_jaccard_macro: 0.4053947424763229
+  cityscapes_jaccard_micro: 0.7981745690396689
+
+2024-06-29 18:35:16,646 - INFO - Validation Stats
+Loss:
+  total: 0.3477829694747925
+Metrics:
+  cityscapes_dice: 0.8919907035827637
+  cityscapes_jaccard_macro: 0.4157902719974518
+  cityscapes_jaccard_micro: 0.8322267017364502
+
+2024-06-29 18:35:16,646 - INFO - Epoch 50/120
+2024-06-29 18:36:23,713 - INFO - Train Stats
+Loss:
+  rotation: 0.002728229550219783
+  rotation_weighted: 0.0013641147751098915
+  supervised: 0.6100264778511424
+  total: 0.9072186997021672
+  unsupervised: 0.527571313589522
+  unsupervised1: 0.5907170586890773
+  unsupervised1_weighted: 0.08040315466767183
+  unsupervised_weighted: 0.21542495163609682
+Metrics:
+  cityscapes_dice: 0.8651224612032326
+  cityscapes_jaccard_macro: 0.40433978388224606
+  cityscapes_jaccard_micro: 0.794095086337679
+
+2024-06-29 18:36:48,631 - INFO - Validation Stats
+Loss:
+  total: 0.36700966012477876
+Metrics:
+  cityscapes_dice: 0.8792660422325135
+  cityscapes_jaccard_macro: 0.4271476364135742
+  cityscapes_jaccard_micro: 0.8122726736068726
+
+2024-06-29 18:36:48,905 - INFO - Epoch 51/120
+2024-06-29 18:37:55,565 - INFO - Train Stats
+Loss:
+  rotation: 0.002791533531458343
+  rotation_weighted: 0.0013957667657291716
+  supervised: 0.6068405383613117
+  total: 0.9030569649051309
+  unsupervised: 0.5186374893466246
+  unsupervised1: 0.5667963179376905
+  unsupervised1_weighted: 0.07872170618581541
+  unsupervised_weighted: 0.21609894887914935
+Metrics:
+  cityscapes_dice: 0.865597666949516
+  cityscapes_jaccard_macro: 0.4100509218413467
+  cityscapes_jaccard_micro: 0.7943296020663672
+
+2024-06-29 18:38:20,227 - INFO - Validation Stats
+Loss:
+  total: 0.3515758956670761
+Metrics:
+  cityscapes_dice: 0.8841789116859436
+  cityscapes_jaccard_macro: 0.4130701465606689
+  cityscapes_jaccard_micro: 0.8220588555335998
+
+2024-06-29 18:38:20,227 - INFO - Epoch 52/120
+2024-06-29 18:39:26,787 - INFO - Train Stats
+Loss:
+  rotation: 0.0028257314846655023
+  rotation_weighted: 0.0014128657423327512
+  supervised: 0.604780410196403
+  total: 0.9030060849143463
+  unsupervised: 0.5085200545857254
+  unsupervised1: 0.5695890605835467
+  unsupervised1_weighted: 0.08069178307712271
+  unsupervised_weighted: 0.21612102916904252
+Metrics:
+  cityscapes_dice: 0.8693410362626357
+  cityscapes_jaccard_macro: 0.4114865080534833
+  cityscapes_jaccard_micro: 0.7991458007818673
+
+2024-06-29 18:39:50,519 - INFO - Validation Stats
+Loss:
+  total: 0.3329767862558365
+Metrics:
+  cityscapes_dice: 0.8898025302886963
+  cityscapes_jaccard_macro: 0.4280998842716217
+  cityscapes_jaccard_micro: 0.8333989381790161
+
+2024-06-29 18:39:50,519 - INFO - Epoch 53/120
+2024-06-29 18:40:56,959 - INFO - Train Stats
+Loss:
+  rotation: 0.0029049128411536658
+  rotation_weighted: 0.0014524564205768329
+  supervised: 0.5771605161208551
+  total: 0.875320937158992
+  unsupervised: 0.5023039286672876
+  unsupervised1: 0.5472203205704304
+  unsupervised1_weighted: 0.07904293035491577
+  unsupervised_weighted: 0.21766503750795685
+Metrics:
+  cityscapes_dice: 0.8682571997727391
+  cityscapes_jaccard_macro: 0.41293786697596024
+  cityscapes_jaccard_micro: 0.7989427588132593
+
+2024-06-29 18:41:21,606 - INFO - Validation Stats
+Loss:
+  total: 0.36194189608097077
+Metrics:
+  cityscapes_dice: 0.8817903590202332
+  cityscapes_jaccard_macro: 0.4046461148262024
+  cityscapes_jaccard_micro: 0.8159831981658936
+
+2024-06-29 18:41:21,606 - INFO - Epoch 54/120
+2024-06-29 18:42:28,625 - INFO - Train Stats
+Loss:
+  rotation: 0.003056808598987565
+  rotation_weighted: 0.0015284042994937826
+  supervised: 0.6024004334770746
+  total: 0.9044497448070922
+  unsupervised: 0.49611977953162395
+  unsupervised1: 0.5529147890972088
+  unsupervised1_weighted: 0.08140134320723971
+  unsupervised_weighted: 0.21911956736377913
+Metrics:
+  cityscapes_dice: 0.8649306893107575
+  cityscapes_jaccard_macro: 0.4073817638324688
+  cityscapes_jaccard_micro: 0.793786573130336
+
+2024-06-29 18:42:53,557 - INFO - Validation Stats
+Loss:
+  total: 0.36418140614032746
+Metrics:
+  cityscapes_dice: 0.8831473293304444
+  cityscapes_jaccard_macro: 0.4095829131603241
+  cityscapes_jaccard_micro: 0.8181286635398864
+
+2024-06-29 18:42:53,557 - INFO - Epoch 55/120
+2024-06-29 18:44:00,650 - INFO - Train Stats
+Loss:
+  rotation: 0.0030861868192275993
+  rotation_weighted: 0.0015430934096137996
+  supervised: 0.5922937387401618
+  total: 0.9052085254377532
+  unsupervised: 0.5047673342876065
+  unsupervised1: 0.5615093391207815
+  unsupervised1_weighted: 0.08422639563342128
+  unsupervised_weighted: 0.2271452950958681
+Metrics:
+  cityscapes_dice: 0.8707019885381063
+  cityscapes_jaccard_macro: 0.4123302021072906
+  cityscapes_jaccard_micro: 0.8025143319156177
+
+2024-06-29 18:44:25,547 - INFO - Validation Stats
+Loss:
+  total: 0.3307290894985199
+Metrics:
+  cityscapes_dice: 0.8906421966552734
+  cityscapes_jaccard_macro: 0.41962124180793764
+  cityscapes_jaccard_micro: 0.8322262363433838
+
+2024-06-29 18:44:25,547 - INFO - Epoch 56/120
+2024-06-29 18:45:32,881 - INFO - Train Stats
+Loss:
+  rotation: 0.0030074765699279636
+  rotation_weighted: 0.0015037382849639818
+  supervised: 0.5781415389868819
+  total: 0.8916649946695778
+  unsupervised: 0.4967147746518206
+  unsupervised1: 0.5521665216938964
+  unsupervised1_weighted: 0.08435877326960317
+  unsupervised_weighted: 0.22766094353399616
+Metrics:
+  cityscapes_dice: 0.8755538856134446
+  cityscapes_jaccard_macro: 0.41582491858877413
+  cityscapes_jaccard_micro: 0.8078069919810712
+
+2024-06-29 18:45:56,658 - INFO - Validation Stats
+Loss:
+  total: 0.3644927339553833
+Metrics:
+  cityscapes_dice: 0.8850500283241272
+  cityscapes_jaccard_macro: 0.40539559841156003
+  cityscapes_jaccard_micro: 0.8222775058746338
+
+2024-06-29 18:45:56,658 - INFO - Epoch 57/120
+2024-06-29 18:47:03,998 - INFO - Train Stats
+Loss:
+  rotation: 0.002931526855680139
+  rotation_weighted: 0.0014657634278400695
+  supervised: 0.5776951912923153
+  total: 0.9000708238013739
+  unsupervised: 0.5005523244154106
+  unsupervised1: 0.5613350842184234
+  unsupervised1_weighted: 0.08731878571766866
+  unsupervised_weighted: 0.23359108627035394
+Metrics:
+  cityscapes_dice: 0.8712565366504261
+  cityscapes_jaccard_macro: 0.4180023786657065
+  cityscapes_jaccard_micro: 0.8015521978869021
+
+2024-06-29 18:47:28,457 - INFO - Validation Stats
+Loss:
+  total: 0.353938535451889
+Metrics:
+  cityscapes_dice: 0.8807262468338013
+  cityscapes_jaccard_macro: 0.41108504128456114
+  cityscapes_jaccard_micro: 0.8164181237220764
+
+2024-06-29 18:47:28,457 - INFO - Epoch 58/120
+2024-06-29 18:48:35,484 - INFO - Train Stats
+Loss:
+  rotation: 0.003112984821200371
+  rotation_weighted: 0.0015564924106001854
+  supervised: 0.596622897342185
+  total: 0.9203695696341567
+  unsupervised: 0.4956242003776495
+  unsupervised1: 0.548012777970061
+  unsupervised1_weighted: 0.08676868850745044
+  unsupervised_weighted: 0.23542149256444672
+Metrics:
+  cityscapes_dice: 0.869152517959138
+  cityscapes_jaccard_macro: 0.4117257699707951
+  cityscapes_jaccard_micro: 0.7984471998168426
+
+2024-06-29 18:48:59,481 - INFO - Validation Stats
+Loss:
+  total: 0.3560653089284897
+Metrics:
+  cityscapes_dice: 0.8843090395927429
+  cityscapes_jaccard_macro: 0.40765803861618044
+  cityscapes_jaccard_micro: 0.8203786373138428
+
+2024-06-29 18:48:59,481 - INFO - Epoch 59/120
+2024-06-29 18:50:06,804 - INFO - Train Stats
+Loss:
+  rotation: 0.0029673348663187913
+  rotation_weighted: 0.0014836674331593957
+  supervised: 0.6164859890166224
+  total: 0.9591503717174036
+  unsupervised: 0.5115655346692187
+  unsupervised1: 0.5829768703593405
+  unsupervised1_weighted: 0.0939240458159192
+  unsupervised_weighted: 0.2472566684231789
+Metrics:
+  cityscapes_dice: 0.8601429121008197
+  cityscapes_jaccard_macro: 0.4105243267171977
+  cityscapes_jaccard_micro: 0.7885454890218754
+
+2024-06-29 18:50:31,729 - INFO - Validation Stats
+Loss:
+  total: 0.3374338973760605
+Metrics:
+  cityscapes_dice: 0.89028240442276
+  cityscapes_jaccard_macro: 0.4213291480541229
+  cityscapes_jaccard_micro: 0.8292666225433349
+
+2024-06-29 18:50:31,729 - INFO - Epoch 60/120
+2024-06-29 18:51:38,710 - INFO - Train Stats
+Loss:
+  rotation: 0.0031822753639162357
+  rotation_weighted: 0.0015911376819581179
+  supervised: 0.575775643479091
+  total: 0.9144601573064489
+  unsupervised: 0.49823130373044305
+  unsupervised1: 0.5621470309866284
+  unsupervised1_weighted: 0.09212965098688904
+  unsupervised_weighted: 0.24496372813256428
+Metrics:
+  cityscapes_dice: 0.8731354469234504
+  cityscapes_jaccard_macro: 0.42080244079569784
+  cityscapes_jaccard_micro: 0.8051238972874522
+
+2024-06-29 18:52:02,771 - INFO - Validation Stats
+Loss:
+  total: 0.3228044352531433
+Metrics:
+  cityscapes_dice: 0.8906367263793945
+  cityscapes_jaccard_macro: 0.4349845154285431
+  cityscapes_jaccard_micro: 0.833687584400177
+
+2024-06-29 18:52:03,447 - INFO - Epoch 61/120
+2024-06-29 18:53:10,257 - INFO - Train Stats
+Loss:
+  rotation: 0.0030308780524108112
+  rotation_weighted: 0.0015154390262054056
+  supervised: 0.5779825809221824
+  total: 0.9136484844977801
+  unsupervised: 0.4893797916212514
+  unsupervised1: 0.5367634437230798
+  unsupervised1_weighted: 0.0894605685206293
+  unsupervised_weighted: 0.2446898958106257
+Metrics:
+  cityscapes_dice: 0.877999374685164
+  cityscapes_jaccard_macro: 0.4227830775829581
+  cityscapes_jaccard_micro: 0.8122715518891233
+
+2024-06-29 18:53:34,230 - INFO - Validation Stats
+Loss:
+  total: 0.3518394508361816
+Metrics:
+  cityscapes_dice: 0.8889001965522766
+  cityscapes_jaccard_macro: 0.4183233470916748
+  cityscapes_jaccard_micro: 0.8264145355224609
+
+2024-06-29 18:53:34,230 - INFO - Epoch 62/120
+2024-06-29 18:54:41,457 - INFO - Train Stats
+Loss:
+  rotation: 0.003097652569172066
+  rotation_weighted: 0.001548826284586033
+  supervised: 0.5661679257949194
+  total: 0.9031648993685022
+  unsupervised: 0.48930289965231444
+  unsupervised1: 0.5447802133255406
+  unsupervised1_weighted: 0.09079669641999943
+  unsupervised_weighted: 0.24465144982615722
+Metrics:
+  cityscapes_dice: 0.8757184776673425
+  cityscapes_jaccard_macro: 0.42039847084619464
+  cityscapes_jaccard_micro: 0.807524916423563
+
+2024-06-29 18:55:05,751 - INFO - Validation Stats
+Loss:
+  total: 0.31429304456710816
+Metrics:
+  cityscapes_dice: 0.8906817507743835
+  cityscapes_jaccard_macro: 0.432148859500885
+  cityscapes_jaccard_micro: 0.8341724500656128
+
+2024-06-29 18:55:06,079 - INFO - Epoch 63/120
+2024-06-29 18:56:13,602 - INFO - Train Stats
+Loss:
+  rotation: 0.0031294061864114405
+  rotation_weighted: 0.0015647030932057202
+  supervised: 0.5409890981119814
+  total: 0.8652937864601419
+  unsupervised: 0.4692255396480313
+  unsupervised1: 0.5287633130754854
+  unsupervised1_weighted: 0.08812721323788551
+  unsupervised_weighted: 0.23461276982401566
+Metrics:
+  cityscapes_dice: 0.8764963898458141
+  cityscapes_jaccard_macro: 0.416049080325176
+  cityscapes_jaccard_micro: 0.8089538797687944
+
+2024-06-29 18:56:38,837 - INFO - Validation Stats
+Loss:
+  total: 0.379901903629303
+Metrics:
+  cityscapes_dice: 0.8816230173110962
+  cityscapes_jaccard_macro: 0.4139971354007721
+  cityscapes_jaccard_micro: 0.813082670211792
+
+2024-06-29 18:56:38,837 - INFO - Epoch 64/120
+2024-06-29 18:57:46,310 - INFO - Train Stats
+Loss:
+  rotation: 0.0032826908201003344
+  rotation_weighted: 0.0016413454100501672
+  supervised: 0.5601288178109814
+  total: 0.8939071360336538
+  unsupervised: 0.4825982326539203
+  unsupervised1: 0.5450271977575851
+  unsupervised1_weighted: 0.09083786067887417
+  unsupervised_weighted: 0.24129911632696016
+Metrics:
+  cityscapes_dice: 0.8775446042659599
+  cityscapes_jaccard_macro: 0.4190778479124736
+  cityscapes_jaccard_micro: 0.8110456141646241
+
+2024-06-29 18:58:10,927 - INFO - Validation Stats
+Loss:
+  total: 0.362332883477211
+Metrics:
+  cityscapes_dice: 0.8826151494979858
+  cityscapes_jaccard_macro: 0.41910606479644774
+  cityscapes_jaccard_micro: 0.8190096039772033
+
+2024-06-29 18:58:10,927 - INFO - Epoch 65/120
+2024-06-29 18:59:18,354 - INFO - Train Stats
+Loss:
+  rotation: 0.0031769214775172155
+  rotation_weighted: 0.0015884607387586078
+  supervised: 0.57866253330098
+  total: 0.9109111066582134
+  unsupervised: 0.4832763970380462
+  unsupervised1: 0.5341315706378048
+  unsupervised1_weighted: 0.08902192275525105
+  unsupervised_weighted: 0.2416381985190231
+Metrics:
+  cityscapes_dice: 0.8774703563609941
+  cityscapes_jaccard_macro: 0.4224046636794763
+  cityscapes_jaccard_micro: 0.8130530262167014
+
+2024-06-29 18:59:45,591 - INFO - Validation Stats
+Loss:
+  total: 0.42510291600227357
+Metrics:
+  cityscapes_dice: 0.8721356921195984
+  cityscapes_jaccard_macro: 0.4062338671684265
+  cityscapes_jaccard_micro: 0.7971141171455384
+
+2024-06-29 18:59:45,592 - INFO - Epoch 66/120
+2024-06-29 19:00:52,765 - INFO - Train Stats
+Loss:
+  rotation: 0.0031638506763768427
+  rotation_weighted: 0.0015819253381884214
+  supervised: 0.5775412844319174
+  total: 0.9058059585133031
+  unsupervised: 0.47437643271819674
+  unsupervised1: 0.536967233064491
+  unsupervised1_weighted: 0.08949453318581997
+  unsupervised_weighted: 0.23718821635909837
+Metrics:
+  cityscapes_dice: 0.8749036730107366
+  cityscapes_jaccard_macro: 0.42291118310686066
+  cityscapes_jaccard_micro: 0.8085054859856572
+
+2024-06-29 19:01:18,640 - INFO - Validation Stats
+Loss:
+  total: 0.3660455689430237
+Metrics:
+  cityscapes_dice: 0.8819263706207275
+  cityscapes_jaccard_macro: 0.41183272218704225
+  cityscapes_jaccard_micro: 0.8181829018592834
+
+2024-06-29 19:01:18,640 - INFO - Epoch 67/120
+2024-06-29 19:02:26,027 - INFO - Train Stats
+Loss:
+  rotation: 0.0031364737824509732
+  rotation_weighted: 0.0015682368912254866
+  supervised: 0.5721179034717646
+  total: 0.9055743112340329
+  unsupervised: 0.483021603336612
+  unsupervised1: 0.5422642604722174
+  unsupervised1_weighted: 0.09037737087210984
+  unsupervised_weighted: 0.241510801668306
+Metrics:
+  cityscapes_dice: 0.8681813793853649
+  cityscapes_jaccard_macro: 0.41478610120737824
+  cityscapes_jaccard_micro: 0.7981123098663527
+
+2024-06-29 19:02:51,707 - INFO - Validation Stats
+Loss:
+  total: 0.36455752241611483
+Metrics:
+  cityscapes_dice: 0.8867416996955871
+  cityscapes_jaccard_macro: 0.4253226492404938
+  cityscapes_jaccard_micro: 0.8212198362350464
+
+2024-06-29 19:02:51,707 - INFO - Epoch 68/120
+2024-06-29 19:03:59,356 - INFO - Train Stats
+Loss:
+  rotation: 0.002983490995984392
+  rotation_weighted: 0.001491745497992196
+  supervised: 0.583540544251408
+  total: 0.9226792726701903
+  unsupervised: 0.49187444859338036
+  unsupervised1: 0.5502585898421729
+  unsupervised1_weighted: 0.09170975952038488
+  unsupervised_weighted: 0.24593722429669018
+Metrics:
+  cityscapes_dice: 0.8751617246654041
+  cityscapes_jaccard_macro: 0.4164375006959662
+  cityscapes_jaccard_micro: 0.8059956786316189
+
+2024-06-29 19:04:23,514 - INFO - Validation Stats
+Loss:
+  total: 0.35178317296504974
+Metrics:
+  cityscapes_dice: 0.8877638702392578
+  cityscapes_jaccard_macro: 0.4047842388153076
+  cityscapes_jaccard_micro: 0.8247309584617615
+
+2024-06-29 19:04:23,514 - INFO - Epoch 69/120
+2024-06-29 19:05:30,936 - INFO - Train Stats
+Loss:
+  rotation: 0.0029650050091849563
+  rotation_weighted: 0.0014825025045924782
+  supervised: 0.5664825877807673
+  total: 0.8996822844624134
+  unsupervised: 0.4830666972884854
+  unsupervised1: 0.5411031124179031
+  unsupervised1_weighted: 0.09018384631494103
+  unsupervised_weighted: 0.2415333486442427
+Metrics:
+  cityscapes_dice: 0.8741978388581075
+  cityscapes_jaccard_macro: 0.4185278884174369
+  cityscapes_jaccard_micro: 0.8053647974162426
+
+2024-06-29 19:05:56,738 - INFO - Validation Stats
+Loss:
+  total: 0.33764278066158293
+Metrics:
+  cityscapes_dice: 0.8844339509010315
+  cityscapes_jaccard_macro: 0.4284483087062836
+  cityscapes_jaccard_micro: 0.8231450066566467
+
+2024-06-29 19:05:56,738 - INFO - Epoch 70/120
+2024-06-29 19:07:03,815 - INFO - Train Stats
+Loss:
+  rotation: 0.003013521933198747
+  rotation_weighted: 0.0015067609665993735
+  supervised: 0.5624306914682913
+  total: 0.8882218243427646
+  unsupervised: 0.47309180771070003
+  unsupervised1: 0.5264308358087508
+  unsupervised1_weighted: 0.08773846703680974
+  unsupervised_weighted: 0.23654590385535001
+Metrics:
+  cityscapes_dice: 0.8776047353219831
+  cityscapes_jaccard_macro: 0.42468673429635734
+  cityscapes_jaccard_micro: 0.8096433442001589
+
+2024-06-29 19:07:28,569 - INFO - Validation Stats
+Loss:
+  total: 0.36849813652038577
+Metrics:
+  cityscapes_dice: 0.8794338912963867
+  cityscapes_jaccard_macro: 0.4107305483818054
+  cityscapes_jaccard_micro: 0.80931907081604
+
+2024-06-29 19:07:28,931 - INFO - Epoch 71/120
+2024-06-29 19:08:36,161 - INFO - Train Stats
+Loss:
+  rotation: 0.0030774619704576566
+  rotation_weighted: 0.0015387309852288283
+  supervised: 0.5391392491781981
+  total: 0.8589905954680397
+  unsupervised: 0.4613529694986961
+  unsupervised1: 0.5258168129666337
+  unsupervised1_weighted: 0.08763612993664341
+  unsupervised_weighted: 0.23067648474934804
+Metrics:
+  cityscapes_dice: 0.8832969205472075
+  cityscapes_jaccard_macro: 0.43543371201333103
+  cityscapes_jaccard_micro: 0.8176698026919442
+
+2024-06-29 19:09:02,376 - INFO - Validation Stats
+Loss:
+  total: 0.32427935564517973
+Metrics:
+  cityscapes_dice: 0.8913025712966919
+  cityscapes_jaccard_macro: 0.4309869375228882
+  cityscapes_jaccard_micro: 0.8338645648956299
+
+2024-06-29 19:09:02,376 - INFO - Epoch 72/120
+2024-06-29 19:10:10,188 - INFO - Train Stats
+Loss:
+  rotation: 0.0029977335418276125
+  rotation_weighted: 0.0014988667709138063
+  supervised: 0.5655634706074366
+  total: 0.8938963425776719
+  unsupervised: 0.47645666187442237
+  unsupervised1: 0.5316341029401735
+  unsupervised1_weighted: 0.08860567820930558
+  unsupervised_weighted: 0.23822833093721119
+Metrics:
+  cityscapes_dice: 0.8781196745082398
+  cityscapes_jaccard_macro: 0.43071644326436864
+  cityscapes_jaccard_micro: 0.8124805203726376
+
+2024-06-29 19:10:37,435 - INFO - Validation Stats
+Loss:
+  total: 0.3196047365665436
+Metrics:
+  cityscapes_dice: 0.8914934377670288
+  cityscapes_jaccard_macro: 0.4414548132419586
+  cityscapes_jaccard_micro: 0.8354091515541077
+
+2024-06-29 19:10:37,436 - INFO - Epoch 73/120
+2024-06-29 19:11:47,064 - INFO - Train Stats
+Loss:
+  rotation: 0.0030311364130475664
+  rotation_weighted: 0.0015155682065237832
+  supervised: 0.5452327595655972
+  total: 0.8696912642821525
+  unsupervised: 0.47148420292775606
+  unsupervised1: 0.5232050488778303
+  unsupervised1_weighted: 0.08720083593791743
+  unsupervised_weighted: 0.23574210146387803
+Metrics:
+  cityscapes_dice: 0.8814885174994234
+  cityscapes_jaccard_macro: 0.4303559442578203
+  cityscapes_jaccard_micro: 0.8177178046962964
+
+2024-06-29 19:12:12,686 - INFO - Validation Stats
+Loss:
+  total: 0.3385169507265091
+Metrics:
+  cityscapes_dice: 0.8798547382354737
+  cityscapes_jaccard_macro: 0.4222221643924713
+  cityscapes_jaccard_micro: 0.8176467881202698
+
+2024-06-29 19:12:12,687 - INFO - Epoch 74/120
+2024-06-29 19:13:21,311 - INFO - Train Stats
+Loss:
+  rotation: 0.002994981735287698
+  rotation_weighted: 0.001497490867643849
+  supervised: 0.5411191000135971
+  total: 0.8642851711283995
+  unsupervised: 0.4659344904052401
+  unsupervised1: 0.5322080557400355
+  unsupervised1_weighted: 0.08870133697311469
+  unsupervised_weighted: 0.23296724520262005
+Metrics:
+  cityscapes_dice: 0.8835394556082569
+  cityscapes_jaccard_macro: 0.43390532667389964
+  cityscapes_jaccard_micro: 0.8200057964880489
+
+2024-06-29 19:13:48,870 - INFO - Validation Stats
+Loss:
+  total: 0.3647082072496414
+Metrics:
+  cityscapes_dice: 0.8830263991355896
+  cityscapes_jaccard_macro: 0.41658817148208616
+  cityscapes_jaccard_micro: 0.8185843181610107
+
+2024-06-29 19:13:48,870 - INFO - Epoch 75/120
+2024-06-29 19:14:56,211 - INFO - Train Stats
+Loss:
+  rotation: 0.0034072336553924486
+  rotation_weighted: 0.0017036168276962243
+  supervised: 0.5831688377270806
+  total: 0.9198217631157933
+  unsupervised: 0.48977416416202163
+  unsupervised1: 0.5403734143690769
+  unsupervised1_weighted: 0.09006222977052808
+  unsupervised_weighted: 0.24488708208101082
+Metrics:
+  cityscapes_dice: 0.8733528622917373
+  cityscapes_jaccard_macro: 0.4203515660656694
+  cityscapes_jaccard_micro: 0.8082418908579064
+
+2024-06-29 19:15:21,666 - INFO - Validation Stats
+Loss:
+  total: 0.3444823191165924
+Metrics:
+  cityscapes_dice: 0.8885914559364319
+  cityscapes_jaccard_macro: 0.4328131422996521
+  cityscapes_jaccard_micro: 0.8277003750801086
+
+2024-06-29 19:15:21,666 - INFO - Epoch 76/120
+2024-06-29 19:16:28,914 - INFO - Train Stats
+Loss:
+  rotation: 0.0029759106262433298
+  rotation_weighted: 0.0014879553131216649
+  supervised: 0.5658390844138309
+  total: 0.8921412253167637
+  unsupervised: 0.4716644534497585
+  unsupervised1: 0.5338918229619276
+  unsupervised1_weighted: 0.08898196493585904
+  unsupervised_weighted: 0.23583222672487925
+Metrics:
+  cityscapes_dice: 0.8843876470639868
+  cityscapes_jaccard_macro: 0.435996806110379
+  cityscapes_jaccard_micro: 0.8209471232875651
+
+2024-06-29 19:16:54,606 - INFO - Validation Stats
+Loss:
+  total: 0.3687414628267288
+Metrics:
+  cityscapes_dice: 0.8895195007324219
+  cityscapes_jaccard_macro: 0.4275417220592499
+  cityscapes_jaccard_micro: 0.8252263631820679
+
+2024-06-29 19:16:54,606 - INFO - Epoch 77/120
+2024-06-29 19:18:02,412 - INFO - Train Stats
+Loss:
+  rotation: 0.0028823777327983127
+  rotation_weighted: 0.0014411888663991563
+  supervised: 0.5313976442736715
+  total: 0.8478599721174024
+  unsupervised: 0.45991875530253723
+  unsupervised1: 0.5103706372690818
+  unsupervised1_weighted: 0.08506176769010072
+  unsupervised_weighted: 0.22995937765126861
+Metrics:
+  cityscapes_dice: 0.8831341383333731
+  cityscapes_jaccard_macro: 0.435984609726949
+  cityscapes_jaccard_micro: 0.8181907041751837
+
+2024-06-29 19:18:26,887 - INFO - Validation Stats
+Loss:
+  total: 0.3458148821592331
+Metrics:
+  cityscapes_dice: 0.8899113421440125
+  cityscapes_jaccard_macro: 0.4239823913574219
+  cityscapes_jaccard_micro: 0.8272577867507934
+
+2024-06-29 19:18:26,887 - INFO - Epoch 78/120
+2024-06-29 19:19:33,931 - INFO - Train Stats
+Loss:
+  rotation: 0.0029266514660169682
+  rotation_weighted: 0.0014633257330084841
+  supervised: 0.5653985970228621
+  total: 0.8949837318130296
+  unsupervised: 0.4759254463282218
+  unsupervised1: 0.5409545436453279
+  unsupervised1_weighted: 0.09015908491312492
+  unsupervised_weighted: 0.2379627231641109
+Metrics:
+  cityscapes_dice: 0.8792377900344268
+  cityscapes_jaccard_macro: 0.4266277040960719
+  cityscapes_jaccard_micro: 0.8131064402729177
+
+2024-06-29 19:20:01,109 - INFO - Validation Stats
+Loss:
+  total: 0.33362369775772094
+Metrics:
+  cityscapes_dice: 0.8916984705924987
+  cityscapes_jaccard_macro: 0.4302930872440338
+  cityscapes_jaccard_micro: 0.8310354690551758
+
+2024-06-29 19:20:01,109 - INFO - Epoch 79/120
+2024-06-29 19:21:08,574 - INFO - Train Stats
+Loss:
+  rotation: 0.0028652572803934706
+  rotation_weighted: 0.0014326286401967353
+  supervised: 0.5394902914087364
+  total: 0.8588911300723993
+  unsupervised: 0.4628701472841806
+  unsupervised1: 0.5191988720766549
+  unsupervised1_weighted: 0.08653313994504101
+  unsupervised_weighted: 0.2314350736420903
+Metrics:
+  cityscapes_dice: 0.8913360631581649
+  cityscapes_jaccard_macro: 0.4435162862407158
+  cityscapes_jaccard_micro: 0.8307560977667666
+
+2024-06-29 19:21:35,535 - INFO - Validation Stats
+Loss:
+  total: 0.35453872299194333
+Metrics:
+  cityscapes_dice: 0.8837518811225891
+  cityscapes_jaccard_macro: 0.40729118156433103
+  cityscapes_jaccard_micro: 0.819392373085022
+
+2024-06-29 19:21:35,536 - INFO - Epoch 80/120
+2024-06-29 19:22:42,820 - INFO - Train Stats
+Loss:
+  rotation: 0.002890679371184564
+  rotation_weighted: 0.001445339685592282
+  supervised: 0.5466753786194671
+  total: 0.8736615544576861
+  unsupervised: 0.47072856234308197
+  unsupervised1: 0.5410593712889261
+  unsupervised1_weighted: 0.09017655636789729
+  unsupervised_weighted: 0.23536428117154098
+Metrics:
+  cityscapes_dice: 0.8835237435152615
+  cityscapes_jaccard_macro: 0.4370814866136193
+  cityscapes_jaccard_micro: 0.8191653204581498
+
+2024-06-29 19:23:08,557 - INFO - Validation Stats
+Loss:
+  total: 0.34033205592632293
+Metrics:
+  cityscapes_dice: 0.8886696071624756
+  cityscapes_jaccard_macro: 0.4311403615474701
+  cityscapes_jaccard_micro: 0.8265657291412354
+
+2024-06-29 19:23:08,889 - INFO - Epoch 81/120
+2024-06-29 19:24:16,388 - INFO - Train Stats
+Loss:
+  rotation: 0.002860598116932274
+  rotation_weighted: 0.001430299058466137
+  supervised: 0.5437477395951169
+  total: 0.8642694463043151
+  unsupervised: 0.46203819336821733
+  unsupervised1: 0.5284339180366893
+  unsupervised1_weighted: 0.08807231421344296
+  unsupervised_weighted: 0.23101909668410867
+Metrics:
+  cityscapes_dice: 0.883590073840132
+  cityscapes_jaccard_macro: 0.43359715373384916
+  cityscapes_jaccard_micro: 0.8185808213011733
+
+2024-06-29 19:24:43,760 - INFO - Validation Stats
+Loss:
+  total: 0.32808147943019866
+Metrics:
+  cityscapes_dice: 0.8923561515808105
+  cityscapes_jaccard_macro: 0.4322264049053192
+  cityscapes_jaccard_micro: 0.8312834849357605
+
+2024-06-29 19:24:43,760 - INFO - Epoch 82/120
+2024-06-29 19:25:51,802 - INFO - Train Stats
+Loss:
+  rotation: 0.0028419916655169045
+  rotation_weighted: 0.0014209958327584522
+  supervised: 0.5264059153285999
+  total: 0.8510126777258505
+  unsupervised: 0.4675064437983491
+  unsupervised1: 0.5365952978627967
+  unsupervised1_weighted: 0.08943254384890344
+  unsupervised_weighted: 0.23375322189917455
+Metrics:
+  cityscapes_dice: 0.8841850208811776
+  cityscapes_jaccard_macro: 0.4429604600162568
+  cityscapes_jaccard_micro: 0.8202642126183679
+
+2024-06-29 19:26:16,414 - INFO - Validation Stats
+Loss:
+  total: 0.33409616219997407
+Metrics:
+  cityscapes_dice: 0.888010061264038
+  cityscapes_jaccard_macro: 0.4254660966396332
+  cityscapes_jaccard_micro: 0.8257313013076782
+
+2024-06-29 19:26:16,414 - INFO - Epoch 83/120
+2024-06-29 19:27:24,796 - INFO - Train Stats
+Loss:
+  rotation: 0.0028126711473411437
+  rotation_weighted: 0.0014063355736705719
+  supervised: 0.5290165934651415
+  total: 0.8467319867178846
+  unsupervised: 0.458404799302419
+  unsupervised1: 0.5226399997870127
+  unsupervised1_weighted: 0.08710666131047369
+  unsupervised_weighted: 0.2292023996512095
+Metrics:
+  cityscapes_dice: 0.8875589831747284
+  cityscapes_jaccard_macro: 0.44522684771555526
+  cityscapes_jaccard_micro: 0.8247086200320605
+
+2024-06-29 19:27:52,320 - INFO - Validation Stats
+Loss:
+  total: 0.31388571751117705
+Metrics:
+  cityscapes_dice: 0.8906113891601563
+  cityscapes_jaccard_macro: 0.43406907391548155
+  cityscapes_jaccard_micro: 0.8348538284301757
+
+2024-06-29 19:27:52,617 - INFO - Epoch 84/120
+2024-06-29 19:28:58,519 - INFO - Train Stats
+Loss:
+  rotation: 0.002849987283059694
+  rotation_weighted: 0.001424993641529847
+  supervised: 0.5293162833525525
+  total: 0.8547985843084391
+  unsupervised: 0.46936208385865663
+  unsupervised1: 0.5362576356694151
+  unsupervised1_weighted: 0.08937626704573631
+  unsupervised_weighted: 0.23468104192932832
+Metrics:
+  cityscapes_dice: 0.887329056425002
+  cityscapes_jaccard_macro: 0.4345595608058485
+  cityscapes_jaccard_micro: 0.8251340428795244
+
+2024-06-29 19:29:24,044 - INFO - Validation Stats
+Loss:
+  total: 0.3708976149559021
+Metrics:
+  cityscapes_dice: 0.8862594590187073
+  cityscapes_jaccard_macro: 0.4201321313381195
+  cityscapes_jaccard_micro: 0.8213897199630738
+
+2024-06-29 19:29:24,044 - INFO - Epoch 85/120
+2024-06-29 19:30:30,734 - INFO - Train Stats
+Loss:
+  rotation: 0.002799137600947738
+  rotation_weighted: 0.001399568800473869
+  supervised: 0.5398182100269787
+  total: 0.857821011620432
+  unsupervised: 0.45819184632555954
+  unsupervised1: 0.5250438912304474
+  unsupervised1_weighted: 0.08750730958498991
+  unsupervised_weighted: 0.22909592316277977
+Metrics:
+  cityscapes_dice: 0.887701503667245
+  cityscapes_jaccard_macro: 0.4514369479950192
+  cityscapes_jaccard_micro: 0.8243175749832758
+
+2024-06-29 19:30:56,803 - INFO - Validation Stats
+Loss:
+  total: 0.36322429394721983
+Metrics:
+  cityscapes_dice: 0.8899156951904297
+  cityscapes_jaccard_macro: 0.4222263534069061
+  cityscapes_jaccard_micro: 0.8259081106185913
+
+2024-06-29 19:30:56,803 - INFO - Epoch 86/120
+2024-06-29 19:32:03,947 - INFO - Train Stats
+Loss:
+  rotation: 0.002835636636736565
+  rotation_weighted: 0.0014178183183682824
+  supervised: 0.5312002817211028
+  total: 0.8598937923661327
+  unsupervised: 0.4729831913624767
+  unsupervised1: 0.544704608643325
+  unsupervised1_weighted: 0.09078409577626434
+  unsupervised_weighted: 0.23649159568123834
+Metrics:
+  cityscapes_dice: 0.8769098210681989
+  cityscapes_jaccard_macro: 0.439508488022008
+  cityscapes_jaccard_micro: 0.8106754612189666
+
+2024-06-29 19:32:28,044 - INFO - Validation Stats
+Loss:
+  total: 0.3244606113433838
+Metrics:
+  cityscapes_dice: 0.8953905129432678
+  cityscapes_jaccard_macro: 0.4347639479637146
+  cityscapes_jaccard_micro: 0.8364605455398559
+
+2024-06-29 19:32:28,044 - INFO - Epoch 87/120
+2024-06-29 19:33:35,172 - INFO - Train Stats
+Loss:
+  rotation: 0.002882850942620857
+  rotation_weighted: 0.0014414254713104285
+  supervised: 0.5292571298175259
+  total: 0.8430786441444965
+  unsupervised: 0.45079379372033485
+  unsupervised1: 0.5218991605884434
+  unsupervised1_weighted: 0.08698318808860957
+  unsupervised_weighted: 0.22539689686016742
+Metrics:
+  cityscapes_dice: 0.8877623749589457
+  cityscapes_jaccard_macro: 0.44710711425947913
+  cityscapes_jaccard_micro: 0.8239397288911937
+
+2024-06-29 19:33:58,906 - INFO - Validation Stats
+Loss:
+  total: 0.32221262085437774
+Metrics:
+  cityscapes_dice: 0.892645161151886
+  cityscapes_jaccard_macro: 0.43614075136184693
+  cityscapes_jaccard_micro: 0.8332045059204102
+
+2024-06-29 19:33:58,907 - INFO - Epoch 88/120
+2024-06-29 19:35:05,931 - INFO - Train Stats
+Loss:
+  rotation: 0.0028340874486949452
+  rotation_weighted: 0.0014170437243474726
+  supervised: 0.513679044700942
+  total: 0.8294403524074739
+  unsupervised: 0.45428530235313674
+  unsupervised1: 0.5232097132788507
+  unsupervised1_weighted: 0.08720161346266571
+  unsupervised_weighted: 0.22714265117656837
+Metrics:
+  cityscapes_dice: 0.8938530378742897
+  cityscapes_jaccard_macro: 0.4477279184319826
+  cityscapes_jaccard_micro: 0.8345550007418907
+
+2024-06-29 19:35:31,448 - INFO - Validation Stats
+Loss:
+  total: 0.321676867723465
+Metrics:
+  cityscapes_dice: 0.8947160696983337
+  cityscapes_jaccard_macro: 0.4359327795505524
+  cityscapes_jaccard_micro: 0.8357376155853271
+
+2024-06-29 19:35:31,449 - INFO - Epoch 89/120
+2024-06-29 19:36:38,836 - INFO - Train Stats
+Loss:
+  rotation: 0.0028124835981134457
+  rotation_weighted: 0.0014062417990567228
+  supervised: 0.5464411323172761
+  total: 0.8686234019335034
+  unsupervised: 0.46588172360917124
+  unsupervised1: 0.5270110424668272
+  unsupervised1_weighted: 0.08783516821882485
+  unsupervised_weighted: 0.23294086180458562
+Metrics:
+  cityscapes_dice: 0.8795003991296761
+  cityscapes_jaccard_macro: 0.4361807252596883
+  cityscapes_jaccard_micro: 0.8130589941558715
+
+2024-06-29 19:37:02,687 - INFO - Validation Stats
+Loss:
+  total: 0.3110754129886627
+Metrics:
+  cityscapes_dice: 0.8936949019432068
+  cityscapes_jaccard_macro: 0.4405384261608124
+  cityscapes_jaccard_micro: 0.8381247715950012
+
+2024-06-29 19:37:03,054 - INFO - Epoch 90/120
+2024-06-29 19:38:09,742 - INFO - Train Stats
+Loss:
+  rotation: 0.0028057053804240854
+  rotation_weighted: 0.0014028526902120427
+  supervised: 0.5301901806616088
+  total: 0.8523230222822393
+  unsupervised: 0.46600509847252114
+  unsupervised1: 0.5263646983309471
+  unsupervised1_weighted: 0.08772744428860717
+  unsupervised_weighted: 0.23300254923626057
+Metrics:
+  cityscapes_dice: 0.8882358755108608
+  cityscapes_jaccard_macro: 0.4513517575260119
+  cityscapes_jaccard_micro: 0.8249869707332845
+
+2024-06-29 19:38:33,554 - INFO - Validation Stats
+Loss:
+  total: 0.3116633596420288
+Metrics:
+  cityscapes_dice: 0.8958224201202393
+  cityscapes_jaccard_macro: 0.44897817087173464
+  cityscapes_jaccard_micro: 0.8383340005874633
+
+2024-06-29 19:38:33,875 - INFO - Epoch 91/120
+2024-06-29 19:39:41,039 - INFO - Train Stats
+Loss:
+  rotation: 0.002791735218554542
+  rotation_weighted: 0.001395867609277271
+  supervised: 0.5310537330203458
+  total: 0.8547658730286225
+  unsupervised: 0.465289680269158
+  unsupervised1: 0.5380286213167277
+  unsupervised1_weighted: 0.08967143128412056
+  unsupervised_weighted: 0.232644840134579
+Metrics:
+  cityscapes_dice: 0.8874172439081384
+  cityscapes_jaccard_macro: 0.44425642133530674
+  cityscapes_jaccard_micro: 0.826174686063069
+
+2024-06-29 19:40:04,579 - INFO - Validation Stats
+Loss:
+  total: 0.32440031599998476
+Metrics:
+  cityscapes_dice: 0.8927188148498535
+  cityscapes_jaccard_macro: 0.43462852549552916
+  cityscapes_jaccard_micro: 0.83429842710495
+
+2024-06-29 19:40:04,579 - INFO - Epoch 92/120
+2024-06-29 19:41:11,546 - INFO - Train Stats
+Loss:
+  rotation: 0.0027921126046275245
+  rotation_weighted: 0.0013960563023137623
+  supervised: 0.5263292193412781
+  total: 0.8432005140387896
+  unsupervised: 0.45790197929325227
+  unsupervised1: 0.5191455199880507
+  unsupervised1_weighted: 0.08652424795438557
+  unsupervised_weighted: 0.22895098964662614
+Metrics:
+  cityscapes_dice: 0.8920707860810857
+  cityscapes_jaccard_macro: 0.4493305406572364
+  cityscapes_jaccard_micro: 0.8299912634790908
+
+2024-06-29 19:41:36,672 - INFO - Validation Stats
+Loss:
+  total: 0.3056025683879852
+Metrics:
+  cityscapes_dice: 0.8962328925132751
+  cityscapes_jaccard_macro: 0.4360438301563263
+  cityscapes_jaccard_micro: 0.84090993309021
+
+2024-06-29 19:41:36,971 - INFO - Epoch 93/120
+2024-06-29 19:42:43,921 - INFO - Train Stats
+Loss:
+  rotation: 0.002732578778042666
+  rotation_weighted: 0.001366289389021333
+  supervised: 0.5236879673252985
+  total: 0.843078559463464
+  unsupervised: 0.45900667601032935
+  unsupervised1: 0.5311258398599223
+  unsupervised1_weighted: 0.08852096776625679
+  unsupervised_weighted: 0.22950333800516468
+Metrics:
+  cityscapes_dice: 0.89449900620192
+  cityscapes_jaccard_macro: 0.4542003728232337
+  cityscapes_jaccard_micro: 0.8331512302449606
+
+2024-06-29 19:43:07,326 - INFO - Validation Stats
+Loss:
+  total: 0.31157957315444945
+Metrics:
+  cityscapes_dice: 0.8974526567459107
+  cityscapes_jaccard_macro: 0.44202476263046264
+  cityscapes_jaccard_micro: 0.8419010453224182
+
+2024-06-29 19:43:07,327 - INFO - Epoch 94/120
+2024-06-29 19:44:14,992 - INFO - Train Stats
+Loss:
+  rotation: 0.0027248702836328437
+  rotation_weighted: 0.0013624351418164218
+  supervised: 0.5411525610050723
+  total: 0.8616866347859207
+  unsupervised: 0.4627556422285278
+  unsupervised1: 0.526762953516349
+  unsupervised1_weighted: 0.08779381989564711
+  unsupervised_weighted: 0.2313778211142639
+Metrics:
+  cityscapes_dice: 0.8958167071095562
+  cityscapes_jaccard_macro: 0.45019081852196874
+  cityscapes_jaccard_micro: 0.8357373255163335
+
+2024-06-29 19:44:39,894 - INFO - Validation Stats
+Loss:
+  total: 0.3265275728702545
+Metrics:
+  cityscapes_dice: 0.8915476140975952
+  cityscapes_jaccard_macro: 0.4296240587234497
+  cityscapes_jaccard_micro: 0.8317812056541443
+
+2024-06-29 19:44:39,894 - INFO - Epoch 95/120
+2024-06-29 19:45:46,376 - INFO - Train Stats
+Loss:
+  rotation: 0.002751882039583183
+  rotation_weighted: 0.0013759410197915914
+  supervised: 0.5201476890967501
+  total: 0.8343676132870338
+  unsupervised: 0.4526290474971907
+  unsupervised1: 0.5191767990203351
+  unsupervised1_weighted: 0.08652946103400397
+  unsupervised_weighted: 0.22631452374859534
+Metrics:
+  cityscapes_dice: 0.8954637502003642
+  cityscapes_jaccard_macro: 0.4512535839501322
+  cityscapes_jaccard_micro: 0.8350761534712461
+
+2024-06-29 19:46:11,266 - INFO - Validation Stats
+Loss:
+  total: 0.34782490706443786
+Metrics:
+  cityscapes_dice: 0.8943177237510681
+  cityscapes_jaccard_macro: 0.440065452337265
+  cityscapes_jaccard_micro: 0.8315488562583924
+
+2024-06-29 19:46:11,266 - INFO - Epoch 96/120
+2024-06-29 19:47:18,355 - INFO - Train Stats
+Loss:
+  rotation: 0.0027488130898272144
+  rotation_weighted: 0.0013744065449136072
+  supervised: 0.51667919099138
+  total: 0.8412328655665746
+  unsupervised: 0.4673425708580943
+  unsupervised1: 0.5370479411774083
+  unsupervised1_weighted: 0.08950798453395421
+  unsupervised_weighted: 0.23367128542904714
+Metrics:
+  cityscapes_dice: 0.8926343805967412
+  cityscapes_jaccard_macro: 0.45125066059789226
+  cityscapes_jaccard_micro: 0.8315248679381744
+
+2024-06-29 19:47:44,726 - INFO - Validation Stats
+Loss:
+  total: 0.29822315740585326
+Metrics:
+  cityscapes_dice: 0.8988738341331481
+  cityscapes_jaccard_macro: 0.4508035206794739
+  cityscapes_jaccard_micro: 0.8464102430343627
+
+2024-06-29 19:47:45,052 - INFO - Epoch 97/120
+2024-06-29 19:48:52,124 - INFO - Train Stats
+Loss:
+  rotation: 0.0027343843887261683
+  rotation_weighted: 0.0013671921943630842
+  supervised: 0.5274880123128783
+  total: 0.8447346922649149
+  unsupervised: 0.45736706039859254
+  unsupervised1: 0.5231757866140322
+  unsupervised1_weighted: 0.08719595909890233
+  unsupervised_weighted: 0.22868353019929627
+Metrics:
+  cityscapes_dice: 0.8898552146930139
+  cityscapes_jaccard_macro: 0.45187458516517504
+  cityscapes_jaccard_micro: 0.8284697397627105
+
+2024-06-29 19:49:18,250 - INFO - Validation Stats
+Loss:
+  total: 0.34795741009712217
+Metrics:
+  cityscapes_dice: 0.8935675115585328
+  cityscapes_jaccard_macro: 0.4420015797615051
+  cityscapes_jaccard_micro: 0.8327367272377014
+
+2024-06-29 19:49:18,250 - INFO - Epoch 98/120
+2024-06-29 19:50:26,228 - INFO - Train Stats
+Loss:
+  rotation: 0.0027549203204949506
+  rotation_weighted: 0.0013774601602474753
+  supervised: 0.5101075892888226
+  total: 0.8222161400279566
+  unsupervised: 0.44918930511258565
+  unsupervised1: 0.5168186568905234
+  unsupervised1_weighted: 0.08613643745822427
+  unsupervised_weighted: 0.22459465255629282
+Metrics:
+  cityscapes_dice: 0.8928440267937469
+  cityscapes_jaccard_macro: 0.45967800329321795
+  cityscapes_jaccard_micro: 0.8322645312591085
+
+2024-06-29 19:50:53,785 - INFO - Validation Stats
+Loss:
+  total: 0.33416312670707704
+Metrics:
+  cityscapes_dice: 0.8933999991416931
+  cityscapes_jaccard_macro: 0.4438854157924652
+  cityscapes_jaccard_micro: 0.8341603384017945
+
+2024-06-29 19:50:53,785 - INFO - Epoch 99/120
+2024-06-29 19:52:02,834 - INFO - Train Stats
+Loss:
+  rotation: 0.0027584075538929806
+  rotation_weighted: 0.0013792037769464903
+  supervised: 0.52152852641726
+  total: 0.8315195190482155
+  unsupervised: 0.44564987111438825
+  unsupervised1: 0.5147211499102293
+  unsupervised1_weighted: 0.08578685290122881
+  unsupervised_weighted: 0.22282493555719413
+Metrics:
+  cityscapes_dice: 0.885830879693664
+  cityscapes_jaccard_macro: 0.44313364825588214
+  cityscapes_jaccard_micro: 0.8224839592250034
+
+2024-06-29 19:52:28,265 - INFO - Validation Stats
+Loss:
+  total: 0.30663652086257936
+Metrics:
+  cityscapes_dice: 0.8962730951309205
+  cityscapes_jaccard_macro: 0.43800843477249146
+  cityscapes_jaccard_micro: 0.8411157035827637
+
+2024-06-29 19:52:28,265 - INFO - Epoch 100/120
+2024-06-29 19:53:35,792 - INFO - Train Stats
+Loss:
+  rotation: 0.0027379781621113468
+  rotation_weighted: 0.0013689890810556734
+  supervised: 0.5250892420224001
+  total: 0.8432833140529089
+  unsupervised: 0.45945432261355873
+  unsupervised1: 0.5225875797202286
+  unsupervised1_weighted: 0.08709792449202353
+  unsupervised_weighted: 0.22972716130677936
+Metrics:
+  cityscapes_dice: 0.8889066845082156
+  cityscapes_jaccard_macro: 0.45292643650546427
+  cityscapes_jaccard_micro: 0.8271715643915157
+
+2024-06-29 19:54:01,591 - INFO - Validation Stats
+Loss:
+  total: 0.32753007793426514
+Metrics:
+  cityscapes_dice: 0.8964674706459046
+  cityscapes_jaccard_macro: 0.4356828796863556
+  cityscapes_jaccard_micro: 0.8371606140136719
+
+2024-06-29 19:54:01,909 - INFO - Epoch 101/120
+2024-06-29 19:55:10,196 - INFO - Train Stats
+Loss:
+  rotation: 0.0027223219138096935
+  rotation_weighted: 0.0013611609569048467
+  supervised: 0.5492386345820905
+  total: 0.86965319948289
+  unsupervised: 0.4594087390452141
+  unsupervised1: 0.5360942386982896
+  unsupervised1_weighted: 0.08934903433576563
+  unsupervised_weighted: 0.22970436952260706
+Metrics:
+  cityscapes_dice: 0.8867659098122113
+  cityscapes_jaccard_macro: 0.44750628191194103
+  cityscapes_jaccard_micro: 0.8237350968867058
+
+2024-06-29 19:55:37,760 - INFO - Validation Stats
+Loss:
+  total: 0.3201372427940369
+Metrics:
+  cityscapes_dice: 0.894887825012207
+  cityscapes_jaccard_macro: 0.4384065682888031
+  cityscapes_jaccard_micro: 0.8359587254524231
+
+2024-06-29 19:55:37,760 - INFO - Epoch 102/120
+2024-06-29 19:56:45,634 - INFO - Train Stats
+Loss:
+  rotation: 0.0027158934393939848
+  rotation_weighted: 0.0013579467196969924
+  supervised: 0.5258294344671721
+  total: 0.835830457773795
+  unsupervised: 0.4439858230958093
+  unsupervised1: 0.5199010401096159
+  unsupervised1_weighted: 0.08665016793847856
+  unsupervised_weighted: 0.22199291154790465
+Metrics:
+  cityscapes_dice: 0.8881991345519773
+  cityscapes_jaccard_macro: 0.4494022811886562
+  cityscapes_jaccard_micro: 0.8247312813707925
+
+2024-06-29 19:57:13,486 - INFO - Validation Stats
+Loss:
+  total: 0.3245901448726654
+Metrics:
+  cityscapes_dice: 0.8937342119216919
+  cityscapes_jaccard_macro: 0.4394090518951416
+  cityscapes_jaccard_micro: 0.8345364866256714
+
+2024-06-29 19:57:13,486 - INFO - Epoch 103/120
+2024-06-29 19:58:21,454 - INFO - Train Stats
+Loss:
+  rotation: 0.002720952933672273
+  rotation_weighted: 0.0013604764668361366
+  supervised: 0.5264494603071783
+  total: 0.8376439575431416
+  unsupervised: 0.44736597621903834
+  unsupervised1: 0.5169062456749018
+  unsupervised1_weighted: 0.08615103542418927
+  unsupervised_weighted: 0.22368298810951917
+Metrics:
+  cityscapes_dice: 0.8971486713701081
+  cityscapes_jaccard_macro: 0.4611624977445911
+  cityscapes_jaccard_micro: 0.8363948283072042
+
+2024-06-29 19:58:47,623 - INFO - Validation Stats
+Loss:
+  total: 0.31179113292694094
+Metrics:
+  cityscapes_dice: 0.8933374094963074
+  cityscapes_jaccard_macro: 0.4380199782848358
+  cityscapes_jaccard_micro: 0.8359060831069947
+
+2024-06-29 19:58:47,623 - INFO - Epoch 104/120
+2024-06-29 19:59:54,770 - INFO - Train Stats
+Loss:
+  rotation: 0.0027450694481037483
+  rotation_weighted: 0.0013725347240518741
+  supervised: 0.53496266812279
+  total: 0.8505551848789635
+  unsupervised: 0.45478107951412694
+  unsupervised1: 0.5209766908467395
+  unsupervised1_weighted: 0.08682944285638124
+  unsupervised_weighted: 0.22739053975706347
+Metrics:
+  cityscapes_dice: 0.8915498431253588
+  cityscapes_jaccard_macro: 0.45158670857114697
+  cityscapes_jaccard_micro: 0.8320807768303213
+
+2024-06-29 20:00:22,393 - INFO - Validation Stats
+Loss:
+  total: 0.3176364755630493
+Metrics:
+  cityscapes_dice: 0.8958911685943604
+  cityscapes_jaccard_macro: 0.43332409477233885
+  cityscapes_jaccard_micro: 0.8369605827331543
+
+2024-06-29 20:00:22,394 - INFO - Epoch 105/120
+2024-06-29 20:01:31,208 - INFO - Train Stats
+Loss:
+  rotation: 0.002719822164148719
+  rotation_weighted: 0.0013599110820743596
+  supervised: 0.5123542710463592
+  total: 0.814081951831151
+  unsupervised: 0.4327731317204565
+  unsupervised1: 0.5038872565169936
+  unsupervised1_weighted: 0.08398120403048676
+  unsupervised_weighted: 0.21638656586022825
+Metrics:
+  cityscapes_dice: 0.8926847325848916
+  cityscapes_jaccard_macro: 0.4576886371260322
+  cityscapes_jaccard_micro: 0.831143021342438
+
+2024-06-29 20:01:58,680 - INFO - Validation Stats
+Loss:
+  total: 0.3215562222003937
+Metrics:
+  cityscapes_dice: 0.8934620580673218
+  cityscapes_jaccard_macro: 0.43553461813926697
+  cityscapes_jaccard_micro: 0.8349786014556885
+
+2024-06-29 20:01:58,681 - INFO - Epoch 106/120
+2024-06-29 20:03:06,575 - INFO - Train Stats
+Loss:
+  rotation: 0.0027135716921508216
+  rotation_weighted: 0.0013567858460754108
+  supervised: 0.5214198150198822
+  total: 0.8306748973127321
+  unsupervised: 0.4442483558527474
+  unsupervised1: 0.5146447466897347
+  unsupervised1_weighted: 0.0857741191175474
+  unsupervised_weighted: 0.2221241779263737
+Metrics:
+  cityscapes_dice: 0.8906694907200761
+  cityscapes_jaccard_macro: 0.4470725763577088
+  cityscapes_jaccard_micro: 0.8294526241165149
+
+2024-06-29 20:03:31,847 - INFO - Validation Stats
+Loss:
+  total: 0.3098179445266724
+Metrics:
+  cityscapes_dice: 0.8961079931259155
+  cityscapes_jaccard_macro: 0.44045299220085143
+  cityscapes_jaccard_micro: 0.8395954422950744
+
+2024-06-29 20:03:31,847 - INFO - Epoch 107/120
+2024-06-29 20:04:38,889 - INFO - Train Stats
+Loss:
+  rotation: 0.0027102800922522556
+  rotation_weighted: 0.0013551400461261278
+  supervised: 0.5354291877700287
+  total: 0.8542012820158962
+  unsupervised: 0.45923348846559
+  unsupervised1: 0.5268012970010826
+  unsupervised1_weighted: 0.08780021046237074
+  unsupervised_weighted: 0.229616744232795
+Metrics:
+  cityscapes_dice: 0.8880008813054044
+  cityscapes_jaccard_macro: 0.4458679813638474
+  cityscapes_jaccard_micro: 0.8257557654265061
+
+2024-06-29 20:05:03,455 - INFO - Validation Stats
+Loss:
+  total: 0.31341268634796143
+Metrics:
+  cityscapes_dice: 0.8956591110229493
+  cityscapes_jaccard_macro: 0.4400537621974945
+  cityscapes_jaccard_micro: 0.8396126179695129
+
+2024-06-29 20:05:03,455 - INFO - Epoch 108/120
+2024-06-29 20:06:10,770 - INFO - Train Stats
+Loss:
+  rotation: 0.0027152221321360384
+  rotation_weighted: 0.0013576110660680192
+  supervised: 0.49730935253950387
+  total: 0.805057602214196
+  unsupervised: 0.44206514019024795
+  unsupervised1: 0.512148477643439
+  unsupervised1_weighted: 0.08535807409766809
+  unsupervised_weighted: 0.22103257009512398
+Metrics:
+  cityscapes_dice: 0.8952261344514618
+  cityscapes_jaccard_macro: 0.46229069542537615
+  cityscapes_jaccard_micro: 0.8349966826369462
+
+2024-06-29 20:06:34,490 - INFO - Validation Stats
+Loss:
+  total: 0.3224886791706085
+Metrics:
+  cityscapes_dice: 0.89344362449646
+  cityscapes_jaccard_macro: 0.4393112936019897
+  cityscapes_jaccard_micro: 0.8354755363464356
+
+2024-06-29 20:06:34,490 - INFO - Epoch 109/120
+2024-06-29 20:07:41,321 - INFO - Train Stats
+Loss:
+  rotation: 0.002726367120194011
+  rotation_weighted: 0.0013631835600970055
+  supervised: 0.5149004123743298
+  total: 0.8290585502258783
+  unsupervised: 0.4512013470856503
+  unsupervised1: 0.5231657380232148
+  unsupervised1_weighted: 0.08719428395400348
+  unsupervised_weighted: 0.22560067354282515
+Metrics:
+  cityscapes_dice: 0.8959938518244858
+  cityscapes_jaccard_macro: 0.45832715803172597
+  cityscapes_jaccard_micro: 0.8358390961071435
+
+2024-06-29 20:08:07,158 - INFO - Validation Stats
+Loss:
+  total: 0.3209181358814239
+Metrics:
+  cityscapes_dice: 0.8950438342094421
+  cityscapes_jaccard_macro: 0.44325886940956116
+  cityscapes_jaccard_micro: 0.8362653155326844
+
+2024-06-29 20:08:07,158 - INFO - Epoch 110/120
+2024-06-29 20:09:14,706 - INFO - Train Stats
+Loss:
+  rotation: 0.002694095005688158
+  rotation_weighted: 0.001347047502844079
+  supervised: 0.5001157123872764
+  total: 0.8071622481045214
+  unsupervised: 0.44141413676507263
+  unsupervised1: 0.509954556195867
+  unsupervised1_weighted: 0.08499242060344582
+  unsupervised_weighted: 0.22070706838253631
+Metrics:
+  cityscapes_dice: 0.8935128379022419
+  cityscapes_jaccard_macro: 0.45774643062870096
+  cityscapes_jaccard_micro: 0.8328388394082634
+
+2024-06-29 20:09:38,946 - INFO - Validation Stats
+Loss:
+  total: 0.30872856843471524
+Metrics:
+  cityscapes_dice: 0.8959242076873779
+  cityscapes_jaccard_macro: 0.44112009143829345
+  cityscapes_jaccard_micro: 0.8398646478652954
+
+2024-06-29 20:09:39,271 - INFO - Epoch 111/120
+2024-06-29 20:10:45,610 - INFO - Train Stats
+Loss:
+  rotation: 0.002715060491910548
+  rotation_weighted: 0.001357530245955274
+  supervised: 0.5206630732201064
+  total: 0.8308723051956942
+  unsupervised: 0.4453969681725919
+  unsupervised1: 0.5169193411915047
+  unsupervised1_weighted: 0.08615321833580057
+  unsupervised_weighted: 0.22269848408629594
+Metrics:
+  cityscapes_dice: 0.8888015349706014
+  cityscapes_jaccard_macro: 0.45790669756028257
+  cityscapes_jaccard_micro: 0.8258441766681794
+
+2024-06-29 20:11:12,449 - INFO - Validation Stats
+Loss:
+  total: 0.30286747109889983
+Metrics:
+  cityscapes_dice: 0.8997264051437378
+  cityscapes_jaccard_macro: 0.446141149520874
+  cityscapes_jaccard_micro: 0.8448092970848083
+
+2024-06-29 20:11:12,449 - INFO - Epoch 112/120
+2024-06-29 20:12:18,754 - INFO - Train Stats
+Loss:
+  rotation: 0.0027288301014507183
+  rotation_weighted: 0.0013644150507253591
+  supervised: 0.5041908797322739
+  total: 0.8129544322737599
+  unsupervised: 0.4445433792655136
+  unsupervised1: 0.5107647137638048
+  unsupervised1_weighted: 0.08512744701144957
+  unsupervised_weighted: 0.2222716896327568
+Metrics:
+  cityscapes_dice: 0.8973469464138488
+  cityscapes_jaccard_macro: 0.45959361726990794
+  cityscapes_jaccard_micro: 0.8378532201919741
+
+2024-06-29 20:12:44,496 - INFO - Validation Stats
+Loss:
+  total: 0.31547136533260345
+Metrics:
+  cityscapes_dice: 0.8964728994369506
+  cityscapes_jaccard_macro: 0.44666170406341554
+  cityscapes_jaccard_micro: 0.8388694052696228
+
+2024-06-29 20:12:44,496 - INFO - Epoch 113/120
+2024-06-29 20:13:50,797 - INFO - Train Stats
+Loss:
+  rotation: 0.0026909490748878244
+  rotation_weighted: 0.0013454745374439122
+  supervised: 0.4925836215705933
+  total: 0.8047697222927241
+  unsupervised: 0.4510705551572602
+  unsupervised1: 0.5118321388670541
+  unsupervised1_weighted: 0.08530535139022907
+  unsupervised_weighted: 0.2255352775786301
+Metrics:
+  cityscapes_dice: 0.9003762407981848
+  cityscapes_jaccard_macro: 0.45964176089632475
+  cityscapes_jaccard_micro: 0.8426018898348206
+
+2024-06-29 20:14:16,453 - INFO - Validation Stats
+Loss:
+  total: 0.3134719998836517
+Metrics:
+  cityscapes_dice: 0.8966933245658875
+  cityscapes_jaccard_macro: 0.4452239294052124
+  cityscapes_jaccard_micro: 0.8394347996711731
+
+2024-06-29 20:14:16,453 - INFO - Epoch 114/120
+2024-06-29 20:15:23,366 - INFO - Train Stats
+Loss:
+  rotation: 0.00270916809987964
+  rotation_weighted: 0.00135458404993982
+  supervised: 0.5106888626337437
+  total: 0.8216035304331857
+  unsupervised: 0.44610940551680656
+  unsupervised1: 0.5190323428235779
+  unsupervised1_weighted: 0.0865053850012111
+  unsupervised_weighted: 0.22305470275840328
+Metrics:
+  cityscapes_dice: 0.8937037662394995
+  cityscapes_jaccard_macro: 0.46128157738439474
+  cityscapes_jaccard_micro: 0.833014078992856
+
+2024-06-29 20:15:49,913 - INFO - Validation Stats
+Loss:
+  total: 0.309039715886116
+Metrics:
+  cityscapes_dice: 0.8961317729949951
+  cityscapes_jaccard_macro: 0.43908979296684264
+  cityscapes_jaccard_micro: 0.8406924328804016
+
+2024-06-29 20:15:49,913 - INFO - Epoch 115/120
+2024-06-29 20:16:58,340 - INFO - Train Stats
+Loss:
+  rotation: 0.0026943791781259777
+  rotation_weighted: 0.0013471895890629889
+  supervised: 0.5236255780199971
+  total: 0.8289476695762868
+  unsupervised: 0.4420861827999257
+  unsupervised1: 0.4975908719316655
+  unsupervised1_weighted: 0.08293180674025157
+  unsupervised_weighted: 0.22104309139996284
+Metrics:
+  cityscapes_dice: 0.8844428204217003
+  cityscapes_jaccard_macro: 0.44701733794605847
+  cityscapes_jaccard_micro: 0.8194987925318067
+
+2024-06-29 20:17:25,956 - INFO - Validation Stats
+Loss:
+  total: 0.31393373334407804
+Metrics:
+  cityscapes_dice: 0.897460054397583
+  cityscapes_jaccard_macro: 0.44996475076675413
+  cityscapes_jaccard_micro: 0.8411513805389405
+
+2024-06-29 20:17:25,956 - INFO - Epoch 116/120
+2024-06-29 20:18:33,437 - INFO - Train Stats
+Loss:
+  rotation: 0.002736389632472425
+  rotation_weighted: 0.0013681948162362124
+  supervised: 0.4961052035436661
+  total: 0.80201443171424
+  unsupervised: 0.4410147022660882
+  unsupervised1: 0.5042021382105775
+  unsupervised1_weighted: 0.0840336845036367
+  unsupervised_weighted: 0.2205073511330441
+Metrics:
+  cityscapes_dice: 0.8975888548545468
+  cityscapes_jaccard_macro: 0.45411081805005427
+  cityscapes_jaccard_micro: 0.837168233101422
+
+2024-06-29 20:18:57,291 - INFO - Validation Stats
+Loss:
+  total: 0.31498394179344175
+Metrics:
+  cityscapes_dice: 0.8959781498908996
+  cityscapes_jaccard_macro: 0.4432708628177643
+  cityscapes_jaccard_micro: 0.8386500244140624
+
+2024-06-29 20:18:57,291 - INFO - Epoch 117/120
+2024-06-29 20:20:04,755 - INFO - Train Stats
+Loss:
+  rotation: 0.002700659481832655
+  rotation_weighted: 0.0013503297409163276
+  supervised: 0.508531540077674
+  total: 0.8164670522351867
+  unsupervised: 0.4423596530091801
+  unsupervised1: 0.5124321757396834
+  unsupervised1_weighted: 0.08540535710969017
+  unsupervised_weighted: 0.22117982650459006
+Metrics:
+  cityscapes_dice: 0.8918636354427893
+  cityscapes_jaccard_macro: 0.45149282833808446
+  cityscapes_jaccard_micro: 0.8301609599281669
+
+2024-06-29 20:20:31,127 - INFO - Validation Stats
+Loss:
+  total: 0.3110587304830551
+Metrics:
+  cityscapes_dice: 0.8962457313537597
+  cityscapes_jaccard_macro: 0.44335831665992737
+  cityscapes_jaccard_micro: 0.8395233740806579
+
+2024-06-29 20:20:31,127 - INFO - Epoch 118/120
+2024-06-29 20:21:40,603 - INFO - Train Stats
+Loss:
+  rotation: 0.0027105130502369412
+  rotation_weighted: 0.0013552565251184706
+  supervised: 0.49759342576886456
+  total: 0.80341282429047
+  unsupervised: 0.44101190190870787
+  unsupervised1: 0.5037491644181095
+  unsupervised1_weighted: 0.08395818883740015
+  unsupervised_weighted: 0.22050595095435394
+Metrics:
+  cityscapes_dice: 0.9015009468813159
+  cityscapes_jaccard_macro: 0.4602730795258843
+  cityscapes_jaccard_micro: 0.8433694824045915
+
+2024-06-29 20:22:08,391 - INFO - Validation Stats
+Loss:
+  total: 0.31820442068576815
+Metrics:
+  cityscapes_dice: 0.8954279494285583
+  cityscapes_jaccard_macro: 0.4478656213283539
+  cityscapes_jaccard_micro: 0.8385294928550721
+
+2024-06-29 20:22:08,391 - INFO - Epoch 119/120
+2024-06-29 20:23:15,941 - INFO - Train Stats
+Loss:
+  rotation: 0.0027114047057034516
+  rotation_weighted: 0.0013557023528517258
+  supervised: 0.5066231149926926
+  total: 0.8209690631014629
+  unsupervised: 0.45367918739812657
+  unsupervised1: 0.5169039643505244
+  unsupervised1_weighted: 0.08615065543252287
+  unsupervised_weighted: 0.22683959369906329
+Metrics:
+  cityscapes_dice: 0.8927428998221857
+  cityscapes_jaccard_macro: 0.4570751982985191
+  cityscapes_jaccard_micro: 0.8325040017323972
+
+2024-06-29 20:23:40,712 - INFO - Validation Stats
+Loss:
+  total: 0.3201608792543411
+Metrics:
+  cityscapes_dice: 0.8959666800498962
+  cityscapes_jaccard_macro: 0.4422569873332977
+  cityscapes_jaccard_micro: 0.8380407428741455
+
+2024-06-29 20:23:40,712 - INFO - Epoch 120/120
+2024-06-29 20:24:49,653 - INFO - Train Stats
+Loss:
+  rotation: 0.002706952531698452
+  rotation_weighted: 0.001353476265849226
+  supervised: 0.5215077365486367
+  total: 0.8277323479405498
+  unsupervised: 0.44079852538201414
+  unsupervised1: 0.5068312758477375
+  unsupervised1_weighted: 0.08447187418618442
+  unsupervised_weighted: 0.22039926269100707
+Metrics:
+  cityscapes_dice: 0.892062080137938
+  cityscapes_jaccard_macro: 0.45673191725821943
+  cityscapes_jaccard_micro: 0.8314508365581722
+
+2024-06-29 20:25:14,862 - INFO - Validation Stats
+Loss:
+  total: 0.32742203199863434
+Metrics:
+  cityscapes_dice: 0.893590913772583
+  cityscapes_jaccard_macro: 0.4414271540641785
+  cityscapes_jaccard_micro: 0.8349127235412598
+
+2024-06-29 20:25:32,432 - INFO - Best validation loss: 0.29822315740585326
+2024-06-29 20:25:32,674 - INFO - Best model saved to /home/up201905337/exploring-label-efficiency/weights/remixmatch_seg_cityscapes_mobilenet_309l.pth
+2024-06-29 20:25:32,675 - INFO - Training took 11208.420492649078 seconds to complete
