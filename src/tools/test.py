@@ -53,10 +53,10 @@ def _load_model_weights(model, model_weights_path, logger):
     try:
         path = os.path.join(WEIGHTS_DIR, model_weights_path)
         model.load_state_dict(torch.load(path))
-        #log = "sl_svhn_resnet50_pretrained_250l"
-        #path = os.path.join(LOGS_DIR, log, 'checkpoints', "latest_checkpoint.pth")
-        #weights = torch.load(path)["model"]
-        #model.load_state_dict(weights)
+        # log = "sl_svhn_resnet50_pretrained_250l"
+        # path = os.path.join(LOGS_DIR, log, 'checkpoints', "latest_checkpoint.pth")
+        # weights = torch.load(path)["model"]
+        # model.load_state_dict(weights)
         logger.info("Model weights loaded successfully")
 
     except Exception:

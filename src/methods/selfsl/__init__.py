@@ -1,6 +1,5 @@
 from .simclr import SimCLRCIFAR10, SimCLRSVHN, SimCLRCityscapes, SimCLRKitti
-from .byol import BYOLKitti  # TODO: ADD LATER
-from .byol_wrapper import BYOLCIFAR10, BYOLSVHN, BYOLCityscapes
+from .byol import BYOLCIFAR10, BYOLSVHN, BYOLCityscapes, BYOLKitti
 from .moco import MoCoCIFAR10, MoCoSVHN, MoCoCityscapes, MoCoKitti
 from .rotation import RotationCIFAR10, RotationSVHN, RotationCityscapes
 

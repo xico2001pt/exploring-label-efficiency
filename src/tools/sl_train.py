@@ -92,9 +92,9 @@ def _load_model_weights(model, model_weights_path, logger):
     try:
         path = os.path.join(WEIGHTS_DIR, model_weights_path)
         model.load_state_dict(torch.load(path))
-        #path = os.path.join(LOGS_DIR, 'byol_cityscapes_deeplabv3_resnet101/checkpoints/latest_checkpoint.pth')
-        #state = torch.load(path)
-        #model.load_state_dict(state["model"])
+        # path = os.path.join(LOGS_DIR, 'byol_cityscapes_deeplabv3_resnet101/checkpoints/latest_checkpoint.pth')
+        # state = torch.load(path)
+        # model.load_state_dict(state["model"])
         logger.info("Model weights loaded successfully")
 
     except Exception:

@@ -49,7 +49,8 @@ class SimCLR(SelfSLMethod):
 
     def compute_loss(self, idx, unlabeled):
         unlabeled1, unlabeled2 = self.transform(unlabeled), self.transform(unlabeled)
-        unlabeled1, unlabeled2 = unlabeled1.to(self.device, non_blocking=True), unlabeled2.to(self.device, non_blocking=True)
+        unlabeled1 = unlabeled1.to(self.device, non_blocking=True)
+        unlabeled2 = unlabeled2.to(self.device, non_blocking=True)
         del unlabeled
 
         self.model(unlabeled1)

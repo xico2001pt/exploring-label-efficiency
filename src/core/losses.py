@@ -95,5 +95,8 @@ class InfoNCELoss(nn.Module):
 
         out = torch.cat([score_pos, score_neg], dim=1)
 
-        loss = F.cross_entropy(out / self.temperature, torch.zeros(query.size(0), dtype=torch.long, device=query.device))
+        loss = F.cross_entropy(
+            out / self.temperature,
+            torch.zeros(query.size(0), dtype=torch.long, device=query.device)
+        )
         return {"total": loss} if self.return_dict else loss

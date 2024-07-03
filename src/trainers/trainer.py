@@ -130,7 +130,11 @@ class Trainer:
         if self.train_data:
             self.on_start_train(self.train_data)
 
-        self.ema_model = swa_utils.AveragedModel(self.model, multi_avg_fn=swa_utils.get_ema_multi_avg_fn(ema_decay)) if ema_decay is not None and ema_decay > 0.0 else None
+        self.ema_model = (
+            swa_utils.AveragedModel(self.model, multi_avg_fn=swa_utils.get_ema_multi_avg_fn(ema_decay))
+            if ema_decay is not None and ema_decay > 0.0
+            else None
+        )
 
         for epoch in range(start_epoch, num_epochs + 1):
             self.logger.info(f"Epoch {epoch}/{num_epochs}")

@@ -91,7 +91,15 @@ def FixMatchCIFAR10(wu, confidence):
     ])
     supervised_loss = CrossEntropyLoss()
     unsupervised_loss = CrossEntropyLoss(reduction='none')  # Important not to have reduction here
-    return FixMatch(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss)
+    return FixMatch(
+        wu,
+        confidence,
+        labeled_transform,
+        weak_unlabeled_transform,
+        strong_unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss
+    )
 
 
 def FixMatchSVHN(wu, confidence):
@@ -108,7 +116,15 @@ def FixMatchSVHN(wu, confidence):
     ])
     supervised_loss = CrossEntropyLoss()
     unsupervised_loss = CrossEntropyLoss(reduction='none')  # Important not to have reduction here
-    return FixMatch(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss)
+    return FixMatch(
+        wu,
+        confidence,
+        labeled_transform,
+        weak_unlabeled_transform,
+        strong_unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss
+    )
 
 
 def FixMatchCityscapesSeg(wu, confidence):
@@ -129,4 +145,13 @@ def FixMatchCityscapesSeg(wu, confidence):
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return FixMatch(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
+    return FixMatch(
+        wu,
+        confidence,
+        labeled_transform,
+        weak_unlabeled_transform,
+        strong_unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        process_targets
+    )

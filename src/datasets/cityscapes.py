@@ -3,7 +3,7 @@ import torchvision
 from torchvision import tv_tensors
 import torchvision.transforms.v2 as v2
 from .semi_supervised import SemiSupervisedDataset
-from. unsupervised import UnsupervisedDataset
+from .unsupervised import UnsupervisedDataset
 from ..utils.utils import process_data_path, split_train_val_data
 
 
@@ -33,7 +33,14 @@ class CityscapesSegDataset(torch.utils.data.Dataset):
             elif split == 'val':
                 pseudo_split = 'train'
 
-        self.dataset = torchvision.datasets.Cityscapes(root, split=pseudo_split, mode=mode, target_type='semantic', transform=image_transform, target_transform=target_transform)
+        self.dataset = torchvision.datasets.Cityscapes(
+            root,
+            split=pseudo_split,
+            mode=mode,
+            target_type='semantic',
+            transform=image_transform,
+            target_transform=target_transform
+        )
 
         if mode == 'fine' and split in ['train', 'val']:
             splitted_data = split_train_val_data(self.dataset, train_val_split)
@@ -72,9 +79,11 @@ class SemiSupervisedCityscapesSegDataset(SemiSupervisedDataset):
             split = 'labeled'
 
         if split == 'labeled':
-            dataset = CityscapesSegDataset(root, split='train', mode='fine', train_val_split=train_val_split, transform=transform)
+            dataset = CityscapesSegDataset(root, split='train', mode='fine',
+                                           train_val_split=train_val_split, transform=transform)
         else:
-            dataset = CityscapesSegDataset(root, split='train_extra', mode='coarse', train_val_split=train_val_split, transform=transform)
+            dataset = CityscapesSegDataset(root, split='train_extra', mode='coarse',
+                                           train_val_split=train_val_split, transform=transform)
             num_labeled = 0
 
         super().__init__(dataset, split, num_labeled)
@@ -84,7 +93,9 @@ class UnsupervisedCityscapesSegDataset(UnsupervisedDataset):
     def __init__(self, root, split='train', mode='fine', train_val_split=2475, transform=None):
         if split == 'train':
             split = 'train_extra'
-        dataset = CityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
+        dataset = CityscapesSegDataset(
+            root, split=split, mode=mode, train_val_split=train_val_split, transform=transform
+        )
         super().__init__(dataset)
 
 
@@ -93,7 +104,9 @@ def CityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
         v2.Resize(int(512*1.05)),
         v2.RandomCrop(512),
     ])
-    return CityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
+    return CityscapesSegDataset(
+        root, split=split, mode=mode, train_val_split=train_val_split, transform=transform
+    )
 
 
 def SemiSupervisedCityscapesSeg(root, split='labeled', train_val_split=2475, num_labeled=372):
@@ -101,7 +114,9 @@ def SemiSupervisedCityscapesSeg(root, split='labeled', train_val_split=2475, num
         v2.Resize(int(512*1.05)),
         v2.RandomCrop(512),
     ])
-    return SemiSupervisedCityscapesSegDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+    return SemiSupervisedCityscapesSegDataset(
+        root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform
+    )
 
 
 def UnsupervisedCityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
@@ -109,7 +124,9 @@ def UnsupervisedCityscapesSeg(root, split='train', mode='fine', train_val_split=
         v2.Resize(int(512*1.05)),
         v2.RandomCrop(512),
     ])
-    return UnsupervisedCityscapesSegDataset(root, split=split, mode=mode, train_val_split=train_val_split, transform=transform)
+    return UnsupervisedCityscapesSegDataset(
+        root, split=split, mode=mode, train_val_split=train_val_split, transform=transform
+    )
 
 
 def LinearEvalCityscapesSeg(root, split='train', mode='fine', train_val_split=2475):
@@ -125,11 +142,13 @@ def FineTuningTrainCityscapesSeg(root, split='train', mode='fine', train_val_spl
         v2.Resize(int(512*1.05)),
         v2.RandomCrop(512),
     ])
-    return SemiSupervisedCityscapesSegDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+    return SemiSupervisedCityscapesSegDataset(
+        root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform
+    )
 
 
 if __name__ == "__main__":
-    ############  DEBUGGING  ############
+    #  DEBUGGING
     dataset = CityscapesSegDataset(root='/data/auto/cityscapes', split='train')
 
     from torchvision.utils import save_image

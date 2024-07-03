@@ -70,7 +70,17 @@ class SemiSLTrainer(Trainer):
             total_metrics = {metric: 0.0 for metric in metrics}
 
             with torch.set_grad_enabled(True):
-                self._semisl_batch_iteration(num_batches, labeled_dataloader, unlabeled_dataloader, optimizer, metrics, total_loss, loss_counter, total_metrics, description)
+                self._semisl_batch_iteration(
+                    num_batches,
+                    labeled_dataloader,
+                    unlabeled_dataloader,
+                    optimizer,
+                    metrics,
+                    total_loss,
+                    loss_counter,
+                    total_metrics,
+                    description
+                )
 
             for loss_term in total_loss:
                 total_loss[loss_term] /= loss_counter.get(loss_term, 1)

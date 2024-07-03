@@ -71,7 +71,16 @@ class SelfSLTrainer(Trainer):
         num_batches = min(self.num_batches, len(dataloader))
 
         with torch.set_grad_enabled(is_train):
-            self._selfsl_batch_iteration(num_batches, dataloader, optimizer, metrics, total_loss, loss_counter, total_metrics, description)
+            self._selfsl_batch_iteration(
+                num_batches,
+                dataloader,
+                optimizer,
+                metrics,
+                total_loss,
+                loss_counter,
+                total_metrics,
+                description
+            )
 
         for loss_term in total_loss:
             total_loss[loss_term] /= num_batches
@@ -103,7 +112,10 @@ class SelfSLTrainer(Trainer):
         if self.train_data:
             self.on_start_train(self.train_data)
 
-        self.ema_model = swa_utils.AveragedModel(self.model, multi_avg_fn=swa_utils.get_ema_multi_avg_fn(ema_decay)) if ema_decay is not None and ema_decay > 0.0 else None
+        self.ema_model = swa_utils.AveragedModel(
+            self.model,
+            multi_avg_fn=swa_utils.get_ema_multi_avg_fn(ema_decay)
+        ) if ema_decay is not None and ema_decay > 0.0 else None
 
         for epoch in range(start_epoch, num_epochs + 1):
             self.logger.info(f"Epoch {epoch}/{num_epochs}")

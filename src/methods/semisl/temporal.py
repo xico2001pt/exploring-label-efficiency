@@ -14,7 +14,15 @@ class TemporalEnsembling(PiModel):
         super().on_start_train(train_data)
 
         total_size = train_data.dataset_size["total"]
-        self.ema = EMA(self.accumlation_decay, torch.zeros(size=(total_size, self.num_classes), requires_grad=False, device=train_data.device, dtype=torch.float32))
+        self.ema = EMA(
+            self.accumlation_decay,
+            torch.zeros(
+                size=(total_size, self.num_classes),
+                requires_grad=False,
+                device=train_data.device,
+                dtype=torch.float32
+            )
+        )
         self.ensemble_predictions = self.ema.get_value().detach().clone()
 
     def on_end_epoch(self, epoch):
@@ -55,7 +63,14 @@ def TemporalEnsemblingCIFAR10(w_max, unsupervised_weight_rampup_length, accumlat
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
     unsupervised_loss = MSELoss(reduction='mean')
-    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, transform, supervised_loss, unsupervised_loss)
+    return TemporalEnsembling(
+        w_max,
+        unsupervised_weight_rampup_length,
+        accumlation_decay,
+        transform, transform,
+        supervised_loss,
+        unsupervised_loss
+    )
 
 
 def TemporalEnsemblingSVHN(w_max, unsupervised_weight_rampup_length, accumlation_decay):
@@ -64,4 +79,12 @@ def TemporalEnsemblingSVHN(w_max, unsupervised_weight_rampup_length, accumlation
     ])
     supervised_loss = CrossEntropyLoss(reduction='mean')
     unsupervised_loss = MSELoss(reduction='mean')
-    return TemporalEnsembling(w_max, unsupervised_weight_rampup_length, accumlation_decay, transform, transform, supervised_loss, unsupervised_loss)
+    return TemporalEnsembling(
+        w_max,
+        unsupervised_weight_rampup_length,
+        accumlation_decay,
+        transform,
+        transform,
+        supervised_loss,
+        unsupervised_loss
+    )

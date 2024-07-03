@@ -25,7 +25,18 @@ def MixMatchV2CityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, tem
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return MixMatchV2(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
+    return MixMatchV2(
+        alpha,
+        w_max,
+        unsupervised_weight_rampup_length,
+        temperature,
+        k,
+        labeled_transform,
+        unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        process_targets
+    )
 
 
 def MixMatchV2KittiSeg(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
@@ -42,4 +53,15 @@ def MixMatchV2KittiSeg(alpha, w_max, unsupervised_weight_rampup_length, temperat
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return MixMatchV2(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
+    return MixMatchV2(
+        alpha,
+        w_max,
+        unsupervised_weight_rampup_length,
+        temperature,
+        k,
+        labeled_transform,
+        unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        process_targets
+    )

@@ -13,8 +13,6 @@ class ReMixMatchV2(ReMixMatch):
         return super().compute_loss(idx, labeled, targets, unlabeled)
 
     def apply_distribution_alignment(self, gt_labels, preds):
-        #ratio = (1e-6 + gt_labels) / (1e-6 + self.preds_moving_average.get_value())
-        #preds = preds * ratio.view(-1, 1, 1)
         self.preds_moving_average.update(preds)
         return preds
 
@@ -38,7 +36,23 @@ def ReMixMatchV2CityscapesSeg(alpha, wu_max, wu1_max, wr, unsupervised_weight_ra
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return ReMixMatchV2(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets)
+    return ReMixMatchV2(
+        alpha,
+        wu_max,
+        wu1_max,
+        wr,
+        unsupervised_weight_rampup_length,
+        temperature,
+        k,
+        gt_labels,
+        labeled_transform,
+        weak_unlabeled_transform,
+        strong_unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        rotation_loss,
+        process_targets
+    )
 
 
 def ReMixMatchV2KittiSeg(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k):
@@ -61,4 +75,20 @@ def ReMixMatchV2KittiSeg(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return ReMixMatchV2(alpha, wu_max, wu1_max, wr, unsupervised_weight_rampup_length, temperature, k, gt_labels, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, rotation_loss, process_targets)
+    return ReMixMatchV2(
+        alpha,
+        wu_max,
+        wu1_max,
+        wr,
+        unsupervised_weight_rampup_length,
+        temperature,
+        k,
+        gt_labels,
+        labeled_transform,
+        weak_unlabeled_transform,
+        strong_unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        rotation_loss,
+        process_targets
+    )

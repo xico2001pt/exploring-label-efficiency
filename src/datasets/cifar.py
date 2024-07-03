@@ -81,11 +81,22 @@ def SemiSupervisedCIFAR10(root, split='labeled', train_val_split=0.9, num_labele
             v2.RandomHorizontalFlip(),
         ])
     transform = dataset_transform_filter(split, transform)
-    return SemiSupervisedCIFAR10Dataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+    return SemiSupervisedCIFAR10Dataset(
+        root,
+        split=split,
+        train_val_split=train_val_split,
+        num_labeled=num_labeled,
+        transform=transform
+    )
 
 
 def UnsupervisedCIFAR10(root, split, train_val_split=0.9):
-    return UnsupervisedCIFAR10Dataset(root, split, train_val_split=train_val_split, transform=None)
+    return UnsupervisedCIFAR10Dataset(
+        root,
+        split,
+        train_val_split=train_val_split,
+        transform=None
+    )
 
 
 def LinearEvalCIFAR10(root, split, train_val_split=0.9):
@@ -101,4 +112,10 @@ def FineTuningTrainCIFAR10(root, split, train_val_split=0.9, num_labeled=4000):
         v2.RandomCrop(32, padding=4),
         v2.Resize(224),
     ])
-    return SemiSupervisedCIFAR10Dataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+    return SemiSupervisedCIFAR10Dataset(
+        root,
+        split=split,
+        train_val_split=train_val_split,
+        num_labeled=num_labeled,
+        transform=transform
+    )

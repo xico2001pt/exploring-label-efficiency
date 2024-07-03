@@ -2,7 +2,6 @@ import logging
 import os
 import sys
 import yaml
-from .constants import Constants as c
 
 
 def create_logger(log_dir: str, console_output: bool = True, output_filename: str = None) -> logging.Logger:

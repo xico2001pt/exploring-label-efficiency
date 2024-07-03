@@ -30,7 +30,16 @@ def FixMatchV2CityscapesSeg(wu, confidence):
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return FixMatchV2(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
+    return FixMatchV2(
+        wu,
+        confidence,
+        labeled_transform,
+        weak_unlabeled_transform,
+        strong_unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        process_targets
+    )
 
 
 def FixMatchV2KittiSeg(wu, confidence):
@@ -52,4 +61,13 @@ def FixMatchV2KittiSeg(wu, confidence):
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return FixMatchV2(wu, confidence, labeled_transform, weak_unlabeled_transform, strong_unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
+    return FixMatchV2(
+        wu,
+        confidence,
+        labeled_transform,
+        weak_unlabeled_transform,
+        strong_unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        process_targets
+    )

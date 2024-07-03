@@ -106,7 +106,17 @@ def MixMatchCIFAR10(alpha, w_max, unsupervised_weight_rampup_length, temperature
     ])
     supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = MSELoss()
-    return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
+    return MixMatch(
+        alpha,
+        w_max,
+        unsupervised_weight_rampup_length,
+        temperature,
+        k,
+        labeled_transform,
+        unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss
+    )
 
 
 def MixMatchSVHN(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
@@ -119,7 +129,17 @@ def MixMatchSVHN(alpha, w_max, unsupervised_weight_rampup_length, temperature, k
     ])
     supervised_loss = CrossEntropyWithLogitsLoss(return_dict=False)
     unsupervised_loss = MSELoss()
-    return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss)
+    return MixMatch(
+        alpha,
+        w_max,
+        unsupervised_weight_rampup_length,
+        temperature,
+        k,
+        labeled_transform,
+        unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss
+    )
 
 
 def MixMatchCityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, temperature, k):
@@ -135,4 +155,15 @@ def MixMatchCityscapesSeg(alpha, w_max, unsupervised_weight_rampup_length, tempe
         targets = F.one_hot(targets, num_classes).float()
         targets = targets.permute(0, 3, 1, 2)
         return tv_tensors.Mask(targets)
-    return MixMatch(alpha, w_max, unsupervised_weight_rampup_length, temperature, k, labeled_transform, unlabeled_transform, supervised_loss, unsupervised_loss, process_targets)
+    return MixMatch(
+        alpha,
+        w_max,
+        unsupervised_weight_rampup_length,
+        temperature,
+        k,
+        labeled_transform,
+        unlabeled_transform,
+        supervised_loss,
+        unsupervised_loss,
+        process_targets
+    )

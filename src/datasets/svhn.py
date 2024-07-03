@@ -80,7 +80,9 @@ def SemiSupervisedSVHN(root, split='labeled', train_val_split=0.9, num_labeled=1
             v2.RandomCrop((32, 32), padding=4, padding_mode='reflect'),
         ])
     transform = dataset_transform_filter(split, transform)
-    return SemiSupervisedSVHNDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+    return SemiSupervisedSVHNDataset(
+        root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform
+    )
 
 
 def UnsupervisedSVHN(root, split, train_val_split=0.9):
@@ -99,4 +101,6 @@ def FineTuningTrainSVHN(root, split, train_val_split=0.9, num_labeled=1000):
         v2.RandomCrop(32, padding=4),
         v2.Resize(224),
     ])
-    return SemiSupervisedSVHNDataset(root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform)
+    return SemiSupervisedSVHNDataset(
+        root, split=split, train_val_split=train_val_split, num_labeled=num_labeled, transform=transform
+    )
