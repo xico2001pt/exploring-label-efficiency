@@ -67,7 +67,7 @@ More details about the usage of the scripts can be found on the [documentation](
 ## Project Structure
 
 ```python
-pytorch-project-template/
+exploring-label-efficiency/
 ├── configs/  # holds the configuration files
 │   ├── configs/  # configuration files for the experiments
 │   ├── datasets.yaml
