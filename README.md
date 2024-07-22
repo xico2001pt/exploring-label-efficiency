@@ -26,7 +26,7 @@ The prerequisites for this project are:
 - Python 3.11+
 - pip
 
-To intall this project, first clone the repository:
+To install this project, first clone the repository:
 
 ```bash
 git clone https://github.com/xico2001pt/exploring-label-efficiency
