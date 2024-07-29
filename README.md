@@ -40,7 +40,7 @@ pip install -r requirements.txt
 
 ## Getting Started
 
-To adapt this project to your needs, read the [Getting Started](docs/README.md#getting-started) section of the [documentation](docs/README.md).
+To adapt this project to your needs, it is recommended to read the [documentation](docs/README.md) file. This file contains a brief overview of the available documentation and links to the different sections of the documentation.
 
 ## Usage
 
@@ -62,8 +62,6 @@ For example, to use Supervised Learning to train the CIFAR-10 dataset, the follo
 python -m src.tools.sl_train --config configs/experiments/sl/cifar10/wideresnet/sl_cifar10_wideresnet.yaml
 ```
 
-More details about the usage of the scripts can be found on the [documentation](docs/README.md).
-
 ## Project Structure
 
 ```python
@@ -82,7 +80,7 @@ exploring-label-efficiency/
 ├── data/  # default directory for storing input data
 ├── docs/  # documentation files
 ├── logs/  # default directory for storing logs
-│── src/  # source code
+├── src/  # source code
 │   ├── core/  # contains the core functionalities
 │   ├── datasets/  # contains the datasets
 │   ├── methods/  # contains the SemiSL and SelfSL methods
