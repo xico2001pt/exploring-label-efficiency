@@ -53,13 +53,13 @@ There are 4 tool scripts in this repository, which correspond to three different
 To train or test a model, run the following command, where `{TOOL_SCRIPT}` is one of the tools above and `{CONFIG_PATH}` is the path for the configuration file:
 
 ```bash
-python -m src.tools.{TOOL_SCRIPT} --config configs/experiments/{CONFIG_PATH}
+python -m src.tools.{TOOL_SCRIPT} --config experiments/{CONFIG_PATH}
 ```
 
 For example, to use Supervised Learning to train the CIFAR-10 dataset, the following command can be used:
 
 ```bash
-python -m src.tools.sl_train --config configs/experiments/sl/cifar10/wideresnet/sl_cifar10_wideresnet.yaml
+python -m src.tools.sl_train --config experiments/sl/cifar10/wideresnet/sl_cifar10_wideresnet.yaml
 ```
 
 ## Project Structure
